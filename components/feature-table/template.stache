@@ -1,0 +1,3 @@
+<div class="container">
+    <list-table {objects}="features" id-prop="OBJECTID" {fields}="fields" />
+</div>

@@ -1,0 +1,13 @@
+# distributable files
+dist/*
+
+# docs and demos
+docs/*
+guides/*
+docs-site/*
+**/demo/*.js
+
+# build scripts
+build.js
+docs-bundle.js
+export.js

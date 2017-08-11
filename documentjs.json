@@ -1,0 +1,17 @@
+{
+  "siteDefaults": {
+    "static": "guides/site/static",
+    "templates": "guides/site/templates"
+  },
+  "sites": {
+    "docs": {
+      "glob": {
+        "ignore": "{docs,dist,node_modules}/**/*"
+      },
+      "parent": "spectre",
+      "dest": "./docs",
+      "templates": "guides/site/templates",
+      "static": "guides/site/static"
+    }
+  }
+}

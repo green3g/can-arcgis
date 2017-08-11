@@ -1,0 +1,15 @@
+# Dependency directory
+node_modules/
+bower_components/
+dist/
+
+#custom apps and modules
+custom/
+
+#docs and build output
+docs/
+
+.directory
+*.log
+
+.vscode/
