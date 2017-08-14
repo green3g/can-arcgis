@@ -16,39 +16,51 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
     },
     map: '*',
     view: '*',
-    createMap (element) {
-        esriPromise(['esri/Map', 'esri/views/MapView']).then(([Map, MapView]) => {
+    element: {
+        set (element) {
+            if (!element && this.view) {
+                this.view.destroy();
+                this.set({
+                    view: null,
+                    map: null
+                });
+                return element;
+            }
+            esriPromise(['esri/Map', 'esri/views/MapView']).then(([Map, MapView]) => {
 
             // create and add custom layers
-            const layers = this.mapOptions.layers;
-            createLayers(layers).then((l) => {
+                const layers = this.mapOptions.layers;
+                createLayers(layers).then((l) => {
             
-                const mapOptions = assign({
-                    basemap: 'streets-night-vector'
-                }, this.mapOptions, {
-                    layers: l
-                });
+                    const mapOptions = assign({
+                        basemap: 'streets-night-vector'
+                    }, this.mapOptions, {
+                        layers: l
+                    });
 
-                // create a map
-                this.map = new Map(mapOptions);
+                    // create a map
+                    this.map = new Map(mapOptions);
 
-                // create the view
-                this.view = new MapView(assign({
-                    container: element,
-                    map: this.map
-                }, this.viewOptions));
+                    // create the view
+                    this.view = new MapView(assign({
+                        container: element,
+                        map: this.map
+                    }, this.viewOptions));
 
-                // register custom action callers
-                this.view.popup.on('trigger-action', (event) => {
-                    const selected = this.view.popup.selectedFeature;
-                    if (typeof event.action.onClick === 'function') {
-                        event.action.onClick(selected, event, this);
-                    } else {
-                        actions.get(event.action.id)(selected, event, this);
-                    }
-                });
+
+                    // register custom action callers
+                    this.view.popup.on('trigger-action', (event) => {
+                        const selected = event.target.selectedFeature;
+                        if (typeof event.action.onClick === 'function') {
+                            event.action.onClick(selected, event, this);
+                        } else {
+                            actions.get(event.action.id)(selected, event, this);
+                        }
+                    });
      
-            });
-        });   
+                });
+            });   
+            return element;
+        }
     }
 });

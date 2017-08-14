@@ -7,11 +7,10 @@ Component.extend({
     ViewModel: ViewModel,
     events: {
         inserted (element) {
-            this.viewModel.createMap(element);
+            this.viewModel.element = element;
         },
-        removed (element) {
-            this.viewModel.view.destroy();
-            this.viewModel.set({}, true);
+        removed () {
+            this.viewModel.element = null;
         }
     }
 });
