@@ -16,24 +16,28 @@ export default DefineMap.extend('App',
     {seal: false}, {
         extensions: {
             type: '*',
-            value: extensions
+            value: extensions,
+            serialize: false
         },
-        mapOptions: {type: '*'},
-        viewOptions: {type: '*'},
-        debug: {value: true, type: 'boolean'},
+        debug: {
+            value: true, 
+            type: 'boolean',
+            serialize: false
+        },
+        defaultTemplate: {
+            type: '*',
+            serialize: false
+        },
+        
         /**
-         * A place for all route data...anything set in here will be put in the url hash
+         * @property {String}
+         * @description The name of the config file to load
+         * The default is 'viewer' and is loaded via the config extension 
+         * which loads the config file in 'config/viewer/viewer.js'
          */
-        routeData: {
-            Value: DefineMap.extend({seal: false}, {       
-                /**
-                 * @property {String}
-                 * @description The name of the config file to load
-                 * The default is 'viewer' and is loaded via the config extension 
-                 * which loads the config file in 'config/viewer/viewer.js'
-                 */
-                configName: {value: 'viewer', type: 'string'}
-            })
+        configName: {
+            value: 'viewer', 
+            type: 'string'
         },
         /**
          * @property {Promise<Object>}
@@ -41,58 +45,70 @@ export default DefineMap.extend('App',
          * resolved from the `loadConfig` extension
          */
         configPromise: {
+            serialize: false,
             get () {
-
                 // trigger observation
-                this.get('routeData.configName');
-            
-                return new Promise((resolve) => {
-                    this.handleEvent('loadConfig').then((config) => {
+                this.get('configName');
 
-                    // only handle first one for now...
+                const promise = new Promise((resolve) => {
+                    this.handleEvent('loadConfig').then((config) => {
+    
+                        // only handle first one for now...
                         resolve(config[0]);
                     });
                 });
+
+                return promise;
             }
         },
         config: {
             serialize: false, 
-            type: '*',
             get (val, set) {
-                this.configPromise.then((config) => {
-                    if (!config) {
-                        return; 
-                    }
-                    if (set) { 
-                        set(config); 
-                    }
+                
+                // reset initialization flags 
+                this.set({
+                    configured: false,
+                    started: false
+                });
 
-                    if (this.debug) {
+                this.configPromise.then((config) => {
+                    set(config);
+                    
+                    if (config.debug) {
                         window.app = this;
                     }
-
+                    
                     // event after config loads but before startup is called
                     this.handleEvent('postConfig').then(() => {
-                        this.set(config);
+                        this.set('configured', true);
+
                         // event to start layout
                         this.handleEvent('startup');
+                        this.set('started', true);
                     });
-
                 });
             }
+        },
+        configured: {
+            type: 'boolean',
+            serialize: false
+        },
+        started: {
+            type: 'boolean',
+            serialize: false
         },
         /**
          * @property {esri/views/MapView}
          */
         view: {
-            type: '*', 
+            type: '*',
             serialize: false
         },
         /**
          * initializes the viewmodel event listeners
          */
         init () {
-            route.data = this.routeData;
+            route.data = this;
 
             // init event is for logic that only needs to happen once
             // i.e. routing
