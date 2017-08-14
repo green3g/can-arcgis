@@ -1,5 +1,5 @@
 {
-  "name": "cmv-next",
+  "name": "steal-esri",
   "version": "1.0.0",
   "description": "A configureable mapping app built with stealjs",
   "main": "app/app.js",
