@@ -40,7 +40,7 @@
       "steal-dojo"
     ],
     "bundle": [
-      "cmv-next/config/viewer/viewer"
+      "steal-esri/config/viewer/viewer"
     ],
     "paths": {}
   }

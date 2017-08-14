@@ -6,12 +6,12 @@ export default {
         route('{configName}', {configName: 'viewer'});
         route.ready();
     },
-    loadConfig () {
+    loadConfig (vm) {
 
         const config = route.data.configName;
 
         return new Promise((resolve) => {
-            steal.import(`~/config/${config}/${config}`).then((module) => {
+            steal.import(`${vm.configRoot}/${config}/${config}`).then((module) => {
                 resolve(module.default);
             });
         });

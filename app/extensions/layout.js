@@ -3,7 +3,8 @@ import defaultTemplate from './layout/defaultTemplate.stache';
 
 export default {
     init (vm) {
+        const domNode = document.getElementById(vm.domNode) || document.body;
         vm.set('defaultTemplate', defaultTemplate);
-        document.body.appendChild(template(vm));
+        domNode.appendChild(template(vm));
     }
 };
