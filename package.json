@@ -40,8 +40,7 @@
       "steal-dojo"
     ],
     "bundle": [
-      "cmv-next/config/city-props/city-props",
-      "cmv-next/config/zoning/zoning"
+      "cmv-next/config/viewer/viewer"
     ],
     "paths": {}
   }

@@ -10,6 +10,9 @@ import 'can-stache-bindings';
 import route from 'can-route';
 import dev from 'can-util/js/dev/dev';
 
+// init dojo config
+import '../config/dojoConfig';
+
 export default DefineMap.extend('App', 
 
     //allow extra props to be added to viewmodel from template or other

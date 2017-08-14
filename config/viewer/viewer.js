@@ -1,11 +1,24 @@
 import getFragNode from '~/util/dom/getFragNode';
-import 'spectre-canjs/property-table/property-table';
 import stache from 'can-stache';
 
 const popupTemplate = stache('<property-table id="stachePropTable" {object}="graphic.attributes" />');
 
+
+// creating a custom dom node to add to the widget ui
 const element = document.createElement('p');
 element.innerHTML = 'Hello!';
+element.style = `background-color: #4CAF50; 
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;`;
+
+element.onclick = function () {
+    alert('you clicked me!');
+};
 
 export default {
     viewOptions: {
@@ -28,7 +41,7 @@ export default {
                         title: 'Quick Complete',
                         id: 'complete',
                         className: 'esri-icon-check-mark',
-                        onClick (selected) {
+                        onClick (event, selected) {
                             selected.attributes.feature_status = 'Closed';
                             selected.layer.applyEdits([selected]);
                         }
@@ -38,23 +51,23 @@ export default {
         }]
     },
     widgets: [{
-        type: 'expand', 
+        type: 'esri',
+        parent: 'expand', 
         path: 'dijit/layout/ContentPane', 
         position: 'top-right',
         iconClass: 'esri-icon-description',
         options: {
-            style: 'background-color: #fff',
+            style: 'background-color: #ff8040',
             content: 'Hello!'
         }
     }, {
-        type: 'view',
-        component: element
+        parent: 'view',
+        component: element,
+        position: 'bottom-left'
     }, {
-        type: 'expand',
+        type: 'esri',
+        parent: 'expand',
         path: 'esri/widgets/LayerList',
         position: 'top-right'
-    }, {
-        type: 'loading',
-        path: 'widgets/LoginCookie'
     }]
 };
