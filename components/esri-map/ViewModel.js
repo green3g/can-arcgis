@@ -5,13 +5,21 @@ import esriPromise from 'esri-promise';
 import actions from './util/Actions';
 import createLayers from './util/createLayers';
 
+function serialize (obj) {
+    return obj && obj.serialize ? obj.serialize() : obj;
+}
+
 export default DefineMap.extend('EsriMap', {seal: false}, {
     mapOptions: {
-        type: '*',
+        set (val) {
+            return serialize(val);
+        },
         value: {}
     },
     viewOptions: {
-        type: '*',
+        set (val) {
+            return serialize(val);
+        },
         value: {}
     },
     map: '*',
