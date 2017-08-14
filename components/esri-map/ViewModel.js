@@ -58,7 +58,7 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
 
                     // register custom action callers
                     this.view.popup.on('trigger-action', (event) => {
-                        const selected = event.target.selectedFeature;
+                        const selected = event.detail.widget.selectedFeature;
                         if (typeof event.action.onClick === 'function') {
                             event.action.onClick(selected, event, this);
                         } else {
