@@ -17,6 +17,7 @@ element.style = `background-color: #4CAF50;
                 font-size: 16px;`;
 
 element.onclick = function () {
+    //eslint-disable-next-line
     alert('you clicked me!');
 };
 
@@ -40,11 +41,11 @@ export default {
                     actions: [{
                         title: 'Quick Complete',
                         id: 'complete',
-                        className: 'esri-icon-check-mark',
-                        onClick (event, selected) {
-                            selected.attributes.feature_status = 'Closed';
-                            selected.layer.applyEdits([selected]);
-                        }
+                        className: 'esri-icon-check-mark'
+                        // onClick (event, selected) {
+                        //     selected.attributes.feature_status = 'Closed';
+                        //     selected.layer.applyEdits([selected]);
+                        // }
                     }]
                 }
             }
