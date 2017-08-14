@@ -1,4 +1,13 @@
-# Flexible Esri App
+# steal-esri-map
+
+A configureable mapping app bundled with StealJS. Work in progress. Inspired by [cmv-app](https://github.com/cmv/cmv-app)
+
+## Features
+
+ - Write code using ES6, requirejs, or commonjs format
+ - Generate compact, progressivly loaded bundles with `steal-tools`
+ - Write templates using `stache` (handlebars like) syntax that steal transpiles to javascript
+ - Extend functionality by creating widgets or [extensions](#extensions)
 
 ## Quick Start
 
@@ -77,7 +86,12 @@ Array of widget config objects.
 widgets: [{
 
     // type of widget
-    type: 'view', 
+    // 'esri', 'renderer', or none
+    type: 'esri', 
+    
+    // parent type 
+    // options include 'expand', 'view', or 'invisible'
+    parent: 'view', 
 
     // path to widget class
     path: 'dijit/layout/ContentPane', 
@@ -132,20 +146,21 @@ npm run build
 
 Now you can copy the output `dist` folder and `index.html` to production.
 
-## Application Lifecycle and Extensions
+## Extensions 
+
+Extensions are the core of this app. Extensions may be added or removed via the 
+`app/extensions.js` config file.
+
+Extensions are simple modules that export an object with one or more 
+of the following methods. All methods accept one parameter
+`viewModel` which is the application view model. From this object, `config` may be accessed in addition to any other property necessary.
+
+## Application Lifecycle
 
 The application lifecycle begins when the app is constructed using `new App()`.
 Each method is called in order and the cycle repeats every time the `app.configName` 
 changes. This is to ensure the config is reloaded and the map and widgets are 
 created correctly.
-
-Extensions are the core of this app. Extensions may be added or removed via the 
-`app/extensions.js` config file.
-
-Extensions are simple modules that export an 
-object with one or more of the following methods. All methods accept one parameter
-`viewModel` which is the application view model. From this object, `config` may 
-be accessed in addition to any other property necessary.
 
 ### `init`: 
 
@@ -174,3 +189,12 @@ The final stage to the application loading process. A perfect time
 to initialize widgets on the view, change map layers, or any other 
 runtime stuff.
 
+## FAQ
+
+**Why stealjs?**
+
+Steal provides a minimal effort configuration for your app to get started developing and generate distributable bundles. 
+
+**Are dojo modules bundled?**
+
+At this time, dojo modules are loaded from the Esri CDN. 
