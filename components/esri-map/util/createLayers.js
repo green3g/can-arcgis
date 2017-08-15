@@ -5,7 +5,7 @@ import esriPromise from 'esri-promise';
 const Defaults = DefineMap.extend({
     outFields: {value: ['*']},
     popupTemplate: {
-        Type: DefineMap.extend({
+        Value: DefineMap.extend({
             content: {
                 value () {
                     return defaultContent;
