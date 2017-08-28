@@ -20,7 +20,7 @@ function supportsLocalStorage () {
  */
 function loadCredentials (config, esriId) {
     if (config.credentials) {
-        esriId.initialize(this.credentials);
+        esriId.initialize(config.credentials);
         // console.log('provided credentials were initialized');
         return;
     }
