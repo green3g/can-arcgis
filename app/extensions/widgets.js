@@ -4,8 +4,7 @@ export default {
     postView (scope) {
         createWidgets({
             widgets: scope.config.widgets || [], 
-            view: scope.view, 
-            types: ['view', 'expand']
+            view: scope.view
         });
     }
 };
