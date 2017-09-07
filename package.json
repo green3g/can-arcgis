@@ -12,9 +12,9 @@
   "dependencies": {
     "arcgis-js-api": "github:Esri/arcgis-js-api#4master",
     "can-admin": "git+https://github.com/roemhildtg/can-admin.git",
-    "can-component": "^3.3.3",
-    "can-define": "^1.4.3",
-    "can-route": "^3.2.1",
+    "can-component": "^3.3.4",
+    "can-define": "^1.4.4",
+    "can-route": "^3.2.3",
     "can-stache": "^3.6.2",
     "dgrid": "^1.2.1",
     "esri-loader": "^1.0.0",
