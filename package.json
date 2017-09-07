@@ -12,16 +12,15 @@
   "dependencies": {
     "arcgis-js-api": "github:Esri/arcgis-js-api#4master",
     "can-admin": "git+https://github.com/roemhildtg/can-admin.git",
-    "can-component": "^3.3.0",
-    "can-define": "^1.3.2",
+    "can-component": "^3.3.3",
+    "can-define": "^1.4.3",
     "can-route": "^3.2.1",
-    "can-stache": "^3.3.3",
-    "can-stache-key": "0.0.3",
+    "can-stache": "^3.6.2",
     "dgrid": "^1.2.1",
     "esri-loader": "^1.0.0",
     "esri-promise": "^0.3.0",
     "object-assign": "^4.1.1",
-    "spectre.css": "^0.2.14",
+    "spectre.css": "^0.4.0",
     "sweetalert2": "^6.6.6"
   },
   "devDependencies": {

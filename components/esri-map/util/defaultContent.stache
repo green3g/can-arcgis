@@ -1,1 +1,1 @@
-<property-table {object}="graphic.attributes" />
+<property-table vm:object:from="graphic.attributes" />
