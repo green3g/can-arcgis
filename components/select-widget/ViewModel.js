@@ -2,7 +2,7 @@ import DefineMap from 'can-define/map/map';
 import DefineList from 'can-define/list/list';
 import string from 'can-util/js/string/string';
 import esriPromise from 'esri-promise';
-import getGraphics from '../common/getGraphics';
+import assignGraphics from '../common/assignGraphics';
 
 export default DefineMap.extend('WorkorderCreator', {seal: false}, {
     title: {
@@ -286,7 +286,7 @@ export default DefineMap.extend('WorkorderCreator', {seal: false}, {
     highlightFeatures (features) {
         
         if (features.length) {
-            getGraphics(features).then((updatedFeatures) => {
+            assignGraphics(features).then((updatedFeatures) => {
                 this.graphicsLayer.removeAll();
                 this.graphicsLayer.addMany(updatedFeatures);
             });

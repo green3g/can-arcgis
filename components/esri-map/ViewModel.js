@@ -3,7 +3,7 @@ import assign from 'object-assign';
 import esriPromise from 'esri-promise';
 
 import actions from './util/Actions';
-import createLayers from './util/createLayers';
+import createLayers from '../_common/createLayers';
 
 function serialize (obj) {
     return obj && obj.serialize ? obj.serialize() : obj;
