@@ -1,0 +1,66 @@
+<div class="workorder-picker container" 
+    style="background:#fff;width:300px;padding:10px;">
+    <p class="text-bold">{{title}}</p>
+
+    {{#if selectedFeatures.length}}
+        <p>You've selected {{selectedFeatures.length}} features.
+            <button class="btn" type="button" on:el:click="clearSelected">Cancel</button>
+        </p>
+        <ul class="menu">
+            <!-- menu header text -->
+            <li class="divider" data-content="Actions" />
+            <!-- menu item -->
+            {{#each actions}}
+            <li class="menu-item">
+                <a href="#" on:el:click="onActionClick(.)">
+                    <i class="{{iconClass}}"></i> {{label}}
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+    {{else}}
+
+    <nav-container>
+        <nav-page label="From Layer">
+            <select-field vm:properties:from="layerProperties" vm:value:bind="layer" />
+
+            {{#if layer}}
+
+            <select-field vm:properties:from="queryProperties" vm:value:bind="query" /> 
+
+            {{#if query}}
+            {{#is query 'spatial'}}
+                <div class="btn-group mt-2">
+                    <button class="btn btn-action tooltip {{#singleActive}}active{{/singleActive}}" data-tooltip="Single feature" on:el:click="initSelectSingle">
+                        <i class="fa fa-mouse-pointer"></i></button>
+                    <polygon-tool vm:view:from="view"
+                        vm:graphicsLayer:from="drawLayer"
+                        vm:active:bind="selectActive"></polygon-tool>
+                        {{#if drawLayerLength}}
+                        <button class="btn btn-action tooltip" data-tooltip="Clear Selection" on:el:click="clearSelectMultiple">
+                                                    <i class="esri-icon-erase"></i></button>
+                        <button class="btn btn-primary" on:el:click="searchSelectMultiple">
+                                                    <i class="esri-icon-search"></i> Search</button> 
+                        {{/if}}
+                </div>
+            {{else}}
+                {{debugger}}
+                <form-widget 
+                    vm:isSaving:bind="formIsSaving"
+                    vm:fields:from="selectedQuery.fields" 
+                    vm:formObject:from="queryFormObject" 
+                    on:vm:submit="searchFormSubmit(queryFormObject)" 
+                    on:vm:cancel="reset" />
+            {{/is}}
+            {{/if}}
+            {{/if}}
+        </nav-page>
+
+        <nav-page label="Custom Location">
+            <button on:el:inserted="selectCustom" class="btn btn-action tooltip {{#singleActive}}active{{/singleActive}}" 
+                data-tooltip="Single feature" on:el:click="initSelectSingle">
+                <i class="fa fa-mouse-pointer"></i></button>
+        </nav-page>
+    </nav-container>
+    {{/if}}
+</div>
