@@ -1,7 +1,7 @@
 {
-  "name": "steal-esri",
+  "name": "can-arcgis",
   "version": "1.0.0",
-  "description": "A configureable mapping app built with stealjs",
+  "description": "A configureable mapping app built with canjs",
   "main": "app/app.js",
   "scripts": {
     "build": "node build",
