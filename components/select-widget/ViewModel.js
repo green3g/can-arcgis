@@ -2,7 +2,7 @@ import DefineMap from 'can-define/map/map';
 import DefineList from 'can-define/list/list';
 import string from 'can-util/js/string/string';
 import esriPromise from 'esri-promise';
-import assignGraphics from '../common/assignGraphics';
+import assignGraphics from '../_common/assignGraphics';
 
 export default DefineMap.extend('WorkorderCreator', {seal: false}, {
     title: {
