@@ -35,7 +35,7 @@
                         <i class="fa fa-mouse-pointer"></i></button>
                     <polygon-tool vm:view:from="view"
                         vm:graphicsLayer:from="drawLayer"
-                        vm:active:bind="selectActive"></polygon-tool>
+                        vm:active:bind="multipleActive"></polygon-tool>
                         {{#if drawLayerLength}}
                         <button class="btn btn-action tooltip" data-tooltip="Clear Selection" on:el:click="clearSelectMultiple">
                                                     <i class="esri-icon-erase"></i></button>
