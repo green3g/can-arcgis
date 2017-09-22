@@ -55,6 +55,8 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
                         map: this.map
                     }, this.viewOptions));
 
+                    // default dock options 
+                    this.view.popup.dockOptions.position = 'bottom-right';
 
                     // register custom action callers
                     this.view.popup.on('trigger-action', (event) => {
