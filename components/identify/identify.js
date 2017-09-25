@@ -45,6 +45,9 @@ export default DefineMap.extend({
         this.view.popup.features = [];
         const promises = [];
         this.view.map.layers.forEach((layer) => {
+            if (!layer.visible) {
+                return;
+            }
             if (methods.hasOwnProperty(layer.declaredClass)) {
 
                 // get a promise that should resolve to some identify result
