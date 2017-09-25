@@ -7,7 +7,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <link rel="stylesheet" href="dist/bundles/steal-esri/app/app.css">
+    <link rel="stylesheet" href="dist/bundles/can-arcgis/app/app.css">
 </head>
 
 <body>
@@ -18,12 +18,12 @@
         //let steal know we've already loaded the main css
         steal = {
             instantiated: {
-                "bundles/steal-esri/app/app.css!steal-css@1.2.5#css": null
+                "bundles/can-arcgis/app/app.css!steal-css@1.2.5#css": null
             }
         };
     </script>
-    <script src="dist/steal.production.js" data-main="steal-esri/app/app">
-        steal.import('steal-esri/app/app').then(function(module){
+    <script src="dist/steal.production.js" data-main="can-arcgis/app/app">
+        steal.import('can-arcgis/app/app').then(function(module){
             var AppViewModel = module.default;
             new AppViewModel();
         });

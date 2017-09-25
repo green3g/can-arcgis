@@ -1,4 +1,4 @@
-# steal-esri-map
+# can-arcgis-map
 
 A configureable mapping app bundled with StealJS. Work in progress. Inspired by [cmv-app](https://github.com/cmv/cmv-app)
 

@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "arcgis-js-api": "github:Esri/arcgis-js-api#4master",
-    "can-admin": "git+https://github.com/roemhildtg/can-admin.git",
+    "can-admin": "github:roemhildtg/can-admin",
+    "can-assign": "^1.0.0",
     "can-component": "^3.3.4",
     "can-define": "^1.4.4",
     "can-route": "^3.2.3",
@@ -39,7 +40,7 @@
       "steal-dojo"
     ],
     "bundle": [
-      "steal-esri/config/viewer/viewer"
+      "can-arcgis/config/viewer/viewer"
     ],
     "paths": {}
   }

@@ -19,7 +19,7 @@ export default DefineMap.extend('App',
     //allow extra props to be added to viewmodel from template or other
     {seal: false}, {
         configRoot: {
-            value: 'steal-esri/config',
+            value: 'can-arcgis/config',
             serialize: false
         },
         domNode: {

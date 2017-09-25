@@ -1,5 +1,5 @@
 import DefineMap from 'can-define/map/map';
-import assign from 'object-assign';
+import assign from 'can-assign';
 import esriPromise from 'esri-promise';
 
 import actions from './util/Actions';
@@ -34,43 +34,59 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
                 });
                 return element;
             }
-            esriPromise(['esri/Map', 'esri/views/MapView']).then(([Map, MapView]) => {
 
             // create and add custom layers
-                const layers = this.mapOptions.layers;
-                createLayers(layers).then((l) => {
-            
-                    const mapOptions = assign({
-                        basemap: 'streets-night-vector'
-                    }, this.mapOptions, {
-                        layers: l
+            const layers = this.mapOptions.layers;
+            createLayers(layers).then((l) => {
+                this.mapOptions.layers = l;
+
+                // create custom basemaps
+                const defaultBasemap = this.mapOptions.basemap;
+                if (typeof defaultBasemap === 'object') {
+                    esriPromise(['esri/Basemap']).then(([Basemap]) => {
+                        createLayers(defaultBasemap.baseLayers).then((baseLayers) => {
+                            this.mapOptions.basemap = new Basemap(assign(defaultBasemap, {
+                                baseLayers: baseLayers
+                            }));
+                            this.createMap(element);
+                        });
                     });
-
-                    // create a map
-                    this.map = new Map(mapOptions);
-
-                    // create the view
-                    this.view = new MapView(assign({
-                        container: element,
-                        map: this.map
-                    }, this.viewOptions));
-
-                    // default dock options 
-                    this.view.popup.dockOptions.position = 'bottom-right';
-
-                    // register custom action callers
-                    this.view.popup.on('trigger-action', (event) => {
-                        const selected = event.detail.widget.selectedFeature;
-                        if (typeof event.action.onClick === 'function') {
-                            event.action.onClick(selected, event, this);
-                        } else {
-                            actions.get(event.action.id)(selected, event, this);
-                        }
-                    });
-     
-                });
-            });   
+                } else {
+                    this.createMap(element);
+                }
+            });
             return element;
         }
+    },
+    createMap (element) {
+        
+        esriPromise(['esri/Map', 'esri/views/MapView']).then(([Map, MapView]) => {
+        
+            const mapOptions = assign({
+                basemap: 'streets-night-vector'
+            }, this.mapOptions);
+
+            // create a map
+            this.map = new Map(mapOptions);
+
+            // create the view
+            this.view = new MapView(assign({
+                container: element,
+                map: this.map
+            }, this.viewOptions));
+
+            // default dock options 
+            this.view.popup.dockOptions.position = 'bottom-right';
+
+            // register custom action callers
+            this.view.popup.on('trigger-action', (event) => {
+                const selected = event.detail.widget.selectedFeature;
+                if (typeof event.action.onClick === 'function') {
+                    event.action.onClick(selected, event, this);
+                } else {
+                    actions.get(event.action.id)(selected, event, this);
+                }
+            });
+        });
     }
 });
