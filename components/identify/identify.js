@@ -4,6 +4,7 @@ import dev from 'can-util/js/dev/dev';
 import get from 'can-util/js/get/get';
 import assign from 'can-util/js/assign/assign';
 import stache from 'can-stache';
+import esriPromise from 'esri-promise';
 
 function defaultContent (data) {
     const node = document.createElement('div');
@@ -53,38 +54,56 @@ export default DefineMap.extend({
                 // get a promise that should resolve to some identify result
                 const promise = methods[layer.declaredClass](event, this.view, layer, this.layerInfos);
                 promises.push(promise);
-                promise.then(this.identifyResolved.bind(this, layer.id));
+                promise.then(this.identifyResolved.bind(this, layer.id, event));
             } else {
                 dev.warn(`no identify function registered for type ${layer.declaredClass}`);
             }
         });
+        Promise.all(promises).then(() => {
+            this.view.popup.open({
+                selectedFeatureIndex: 0
+            });
+        });
     },
-    identifyResolved (layerId, result) {
+    identifyResolved (layerId, event, result) {
         if (result.results) { 
 
-            const features = result.results.map((props) => {
+            esriPromise(['esri/geometry/geometryEngine']).then(([GeometryEngine]) => {
+
+                
+                const features = result.results.map((props) => {
 
                 // get a default popup template from popupTemplates.layerId.sublayerId
-                const template = get(this, `popupTemplates.${layerId}.${props.layerId}`) || {};
+                    const template = get(this, `popupTemplates.${layerId}.${props.layerId}`) || {};
 
-                // mixin props
-                props.feature.popupTemplate = assign({
-                    title: props.layerName,
-                    content: defaultContent
-                }, template);
+                    // mixin props
+                    props.feature.popupTemplate = assign({
+                        title: props.layerName,
+                        content: defaultContent
+                    }, template.serialize());
 
-                // return the modified feature
-                return props.feature;
-            });
+                    // return the modified feature
+                    return props.feature;
+                }).sort((a, b) => {
+                    const geoms = [a, b].map((f) => {
+                        return f.geometry.centroid ? f.geometry.centroid : f.geometry;
+                    });
+                    const distances = geoms.map((geom, index) => {
+                        return GeometryEngine.distance(event.mapPoint, geoms[index], 'feet');
+                    });
+                    return distances[0] < distances[1];
+                });
 
-            // add graphics ? doesn't work
-            // getGraphics(features).then((updatedFeatures) => {
-            // });
+                // add graphics ? doesn't work
+                // getGraphics(features).then((updatedFeatures) => {
+                // });
                 
-            // open the features
-            if (features.length) { 
-                this.view.popup.open({features: this.view.popup.features.concat(features), selectedFeatureIndex: 0, updateLocationEnabled: true}); 
-            }
+                // open the features
+                if (features.length) { 
+                    this.view.popup.features = this.view.popup.features.concat(features);
+                }
+            });
         }
+        
     }
 });
