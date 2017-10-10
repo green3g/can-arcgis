@@ -80,18 +80,19 @@ export default DefineMap.extend({
                     props.feature.popupTemplate = assign({
                         title: props.layerName,
                         content: defaultContent
-                    }, template.serialize());
+                    }, template.serialize ? template.serialize() : template);
 
                     // return the modified feature
                     return props.feature;
                 }).sort((a, b) => {
                     const geoms = [a, b].map((f) => {
-                        return f.geometry.centroid ? f.geometry.centroid : f.geometry;
+                        return f.geometry.extent ? f.geometry.extent.center : f.geometry;
                     });
                     const distances = geoms.map((geom, index) => {
                         return GeometryEngine.distance(event.mapPoint, geoms[index], 'feet');
                     });
-                    return distances[0] < distances[1];
+                    const ret = distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
+                    return ret;
                 });
 
                 // add graphics ? doesn't work
