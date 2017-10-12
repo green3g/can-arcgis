@@ -83,36 +83,38 @@ export default DefineMap.extend({
             }
         });
 
+        setTimeout(() => {
         // after all promises resolve, update the popup
-        Promise.all(promises).then((data) => {
+            Promise.all(promises).then((data) => {
 
             // reduce and sort to a plain array of features
-            const identifiedFeatures = data.reduce((a, b) => { 
-                return a.concat(this.assignPopupTemplate(b)); 
-            }, [])
+                const identifiedFeatures = data.reduce((a, b) => { 
+                    return a.concat(this.assignPopupTemplate(b)); 
+                }, [])
             
-            // sort according to distance from map click
-                .sort((a, b) => {
-                    const geoms = [a, b].map((f) => {
-                        return f.geometry.extent ? f.geometry.extent.center : f.geometry;
+                    // sort according to distance from map click
+                    .sort((a, b) => {
+                        const geoms = [a, b].map((f) => {
+                            return f.geometry.extent ? f.geometry.extent.center : f.geometry;
+                        });
+                        const distances = geoms.map((geom, index) => {
+                            return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
+                        });
+                        const ret = distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
+                        return ret;
                     });
-                    const distances = geoms.map((geom, index) => {
-                        return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
-                    });
-                    const ret = distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
-                    return ret;
+
+                // concat with graphics already in the popup
+                const features = this.view.popup.features.concat(identifiedFeatures);
+
+                // open the popup with the given features
+                this.view.popup.open({
+                    selectedFeatureIndex: 0,
+                    features: features,
+                    updateLocationEnabled: true
                 });
-
-            // concat with graphics already in the popup
-            const features = this.view.popup.features.concat(identifiedFeatures);
-
-            // open the popup with the given features
-            this.view.popup.open({
-                selectedFeatureIndex: 0,
-                features: features,
-                updateLocationEnabled: true
             });
-        });
+        }, 500);
     },
     assignPopupTemplate (data) {
         const {layerId, result} = data;

@@ -2,7 +2,7 @@ import esriPromise from 'esri-promise';
 import get from 'can-util/js/get/get';
 
 export default function identify (event, view, layer, layerInfos) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         
         esriPromise([
             'esri/tasks/support/IdentifyParameters', 
@@ -31,7 +31,7 @@ export default function identify (event, view, layer, layerInfos) {
                 return l.id;
             });
 
-            const params = Object.assign(new IdentifyParameters(), {
+            const params = new IdentifyParameters({
                 layerIds: layerIds,
                 layerOption: 'visible',
                 returnGeometry: true,
@@ -48,7 +48,6 @@ export default function identify (event, view, layer, layerInfos) {
             });
 
             task.execute(params).then((result) => {
-                console.log(result);
                 resolve(result);
             });
         });
