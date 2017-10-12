@@ -258,7 +258,7 @@ export default DefineMap.extend('WorkorderCreator', {seal: false}, {
                 'esri/tasks/support/Query'
             ]).then(([QueryTask, Query]) => {
                 const query = Object.assign(new Query(), {
-                    outFields: [idProp],
+                    outFields: ['*'],
                     returnGeometry: true,
                     outSpatialReference: this.view.spatialReference
                 }, queryProps);
