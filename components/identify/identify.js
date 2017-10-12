@@ -1,5 +1,5 @@
 import DefineMap from 'can-define/map/map';
-import mapImage from './util/mapImage';
+import mapImage from './util/identifyMapImage';
 import dev from 'can-util/js/dev/dev';
 import get from 'can-util/js/get/get';
 import assign from 'can-util/js/assign/assign';
