@@ -4,8 +4,64 @@ import string from 'can-util/js/string/string';
 import esriPromise from 'esri-promise';
 import assignGraphics from '../_common/assignGraphics';
 import reflect from 'can-reflect';
+import {graphics, buttons} from './draw/defaults';
 
-export default DefineMap.extend('WorkorderCreator', {seal: false}, {
+export default DefineMap.extend('SelectWidget', {seal: false}, {
+    sketch: '*',
+    sketchHandle: '*',
+    view: {
+        set (view) {
+            if (this.graphicsLayer && this.view) {
+                // clean up
+                this.view.remove(this.graphicsLayer);
+                this.graphicsLayer = null;
+                this.sketch.destroy();
+                this.sketchHandle.remove();
+                this.sketchHandle = null;
+                this.sketch = null;
+            }
+
+            if (view) {
+                esriPromise([
+                    'esri/layers/GraphicsLayer',
+                    'esri/widgets/Sketch/SketchViewModel'
+                ]).then(([GraphicsLayer, SketchViewModel]) => {
+
+                    // create a graphics layer
+                    const gl = new GraphicsLayer();
+                    gl.graphics.on('change', () => {
+                        this.graphicsLength = gl.graphics.length;
+                    });
+                    this.graphicsLayer = gl;
+                    view.map.add(gl);
+
+                    // create a sketch view model
+                    const sketch = new SketchViewModel({
+                        view: view,
+                        pointSymbol: graphics.pointSymbol,
+                        polylineSymbol: graphics.polylineSymbol,
+                        polygonSymbol: graphics.polygonSymbol
+                    });
+                    this.sketchHandle = sketch.on('draw-complete', (evt) => {
+                        this.graphicsLayer.add(evt.graphic);
+                        if (this.continueDraw) {
+                            sketch.create(this.activeButton);
+                        } else {
+                            this.draw(null);
+                        }
+                    });
+                    this.sketch = sketch;
+                });
+            }
+            return view;
+        }
+    },
+    viewHandle: '*',
+    buttons: {
+        value: buttons
+    },
+    activeButton: 'string',
+    continueDraw: 'boolean',
     title: {
         value: 'Select Features'
     },
@@ -107,63 +163,22 @@ export default DefineMap.extend('WorkorderCreator', {seal: false}, {
     formIsSaving: 'boolean',
     selectedFeatures: {Value: DefineList},
     graphicsLayer: '*',
-    drawLayerLength: 'number',
-    drawLayer: {
-        // async getter
-        // eslint-disable-next-line
-        get (val, set) {
-            if (val) {
-                return val;
-            }
-            esriPromise(['esri/layers/GraphicsLayer']).then(([GraphicsLayer]) => {
-                val = new GraphicsLayer();
-                val.graphics.on('change', () => {
-                    this.drawLayerLength = val.graphics.length;
-                });
-                set(val);
-            });
+    graphicsLength: 'number',
+    draw (type) {
+        if (this.activeButton === type) {
+            this.viewHandle.remove();
+            this.viewHandle = null;
+            this.sketch.reset();
+            this.activeButton = null;
+            return;
         }
+        
+        this.viewHandle = this.view.on('click', (evt) => {
+            evt.stopPropagation();
+        });
+        this.sketch.create(type);
+        this.activeButton = type;
     },
-
-    singleClickHandle: '*',
-    singleActive: {
-        type: 'boolean',
-        set (active) {
-            if (active) {
-
-                // cleanup handle 
-                if (this.singleClickHandle) {
-                    this.singleClickHandle.remove();
-                }
-                this.singleClickHandle = this.view.on('click', (event) => {
-                    
-                    // clean up listener
-                    this.singleClickHandle.remove(); 
-                    this.singleClickHandle = null;
-                    this.singleActive = false;
-                    
-                    // prevent the event from bubbling 
-                    event.stopPropagation();
-                    
-                    this.selectFeatures({
-                        geometry: event.mapPoint,
-                        distance: 15,
-                        units: 'feet'
-                    });
-                });
-            }
-        }
-    },
-    multipleActive: {
-        type: 'boolean',
-        set (val) {
-            if (val) {
-                this.singleActive = false;
-            }
-            return val;
-        }
-    },
-    
 
     // set layer to custom when custom tab is displayed
     selectCustom () {
@@ -188,114 +203,77 @@ export default DefineMap.extend('WorkorderCreator', {seal: false}, {
             where: where
         });
     },
-
-    // initializes the single selection mode
-    initSelectSingle () {
-        this.singleActive = !this.singleActive;
-    },
-
-    // initializes the multiple selection mode 
-    initSelectMultiple () {
-        // this.multipleActive = true;
-        // this.selectClickHandle = this.view.on('click', (event) => {
-        //     event.stopPropagation();
-
-        //     this.selectActive = true;
-        // });
-    },
-    searchSelectMultiple () {
-        if (this.drawLayerLength === 1) {
+    searchGraphics () {
+        this.draw(null);
+        if (this.graphicsLength === 1) {
             this.selectFeatures({
-                geometry: this.drawLayer.graphics.getItemAt(0).geometry
+                geometry: this.graphicsLayer.graphics.getItemAt(0).geometry
             });
             this.clearSelectMultiple();
-        } else if (this.drawLayerLength > 1) {
+        } else if (this.graphicsLength > 1) {
 
             // get the geometries
-            const geometries = this.drawLayer.graphics.map((g) => {
+            const geometries = this.graphicsLayer.graphics.map((g) => {
                 return g.geometry;
             }).toArray();
 
             esriPromise(['esri/geometry/geometryEngine']).then(([geometryEngine]) => {
                 const geom = geometryEngine.union(geometries);
             
+                this.clearSelectMultiple();
                 this.selectFeatures({
                     geometry: geom
                 });
             });
-            this.clearSelectMultiple();
         }
         
         
     },
     clearSelectMultiple () {
-        this.drawLayer.graphics.removeAll();
-    },
-    initGraphicsLayer () {
-        return new Promise((resolve) => {
-            if (!this.graphicsLayer) {
-                esriPromise(['esri/layers/GraphicsLayer']).then(([GraphicsLayer]) => {
-                    
-                    this.graphicsLayer = new GraphicsLayer({
-                        visible: true,
-                        title: 'Selected Features',
-                        graphics: []
-                    }); 
-                
-                    this.view.map.add(this.graphicsLayer);
-                    resolve();
-                });
-            } else {
-                resolve();
-            }
-        });
+        this.graphicsLayer.graphics.removeAll();
     },
     
     selectFeatures (queryProps) {
-
-        this.initGraphicsLayer().then(() => {
         
 
-            if (this.selectedLayer === 'custom') {
+        if (this.selectedLayer === 'custom') {
 
-                // higlight and insert fake feature
-                this.highlightFeatures([{
-                    geometry: queryProps.geometry
-                }]);
-                this.selectedFeatures.replace([{
-                    type: 'custom'
-                }]);
-                return;
-            } 
-            const idProp = this.selectedLayer.idProp || 'cid';
-            esriPromise([
-                'esri/tasks/QueryTask', 
-                'esri/tasks/support/Query'
-            ]).then(([QueryTask, Query]) => {
-                const query = Object.assign(new Query(), {
-                    outFields: ['*'],
-                    returnGeometry: true,
-                    outSpatialReference: this.view.spatialReference
-                }, queryProps);
+            // higlight and insert fake feature
+            this.highlightFeatures([{
+                geometry: queryProps.geometry
+            }]);
+            this.selectedFeatures.replace([{
+                type: 'custom'
+            }]);
+            return;
+        } 
+        const idProp = this.selectedLayer.idProp || 'cid';
+        esriPromise([
+            'esri/tasks/QueryTask', 
+            'esri/tasks/support/Query'
+        ]).then(([QueryTask, Query]) => {
+            const query = Object.assign(new Query(), {
+                outFields: ['*'],
+                returnGeometry: true,
+                outSpatialReference: this.view.spatialReference
+            }, queryProps);
 
-                const task = new QueryTask({
-                    url: `${this.selectedLayer.url}/query`
-                });
-
-                task.execute(query).then((result) => {
-                    this.highlightFeatures(result.features);
-                    this.selectedFeatures.replace(result.features.map((f) => {
-                        return f.attributes[idProp];
-                    }));
-
-                    if (!this.selectedFeatures.length) {
-                        this.formIsSaving = false;
-                    } else {
-                        this.view.goTo(result.features);
-                    }
-                });
+            const task = new QueryTask({
+                url: `${this.selectedLayer.url}/query`
             });
-        
+
+            task.execute(query).then((result) => {
+                this.highlightFeatures(result.features);
+                this.selectedFeatures.replace(result.features.map((f) => {
+                    return f.attributes[idProp];
+                }));
+
+                if (!this.selectedFeatures.length) {
+                    this.formIsSaving = false;
+                } else {
+                    this.view.goTo(result.features);
+                }
+            });
         });
     },
     highlightFeatures (features) {
