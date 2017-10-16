@@ -60,11 +60,13 @@
             {{/if}}
         </nav-page>
 
-        <nav-page label="Custom Location">
-            <button on:el:inserted="selectCustom" class="btn btn-action tooltip {{#singleActive}}active{{/singleActive}}" 
-                data-tooltip="Single feature" on:el:click="initSelectSingle">
-                <i class="fa fa-mouse-pointer"></i></button>
-        </nav-page>
+        {{#if allowCustom}}
+            <nav-page label="Custom Location">
+                <button on:el:inserted="selectCustom" class="btn btn-action tooltip {{#singleActive}}active{{/singleActive}}" 
+                    data-tooltip="Single feature" on:el:click="initSelectSingle">
+                    <i class="fa fa-mouse-pointer"></i></button>
+            </nav-page>
+        {{/if}}
     </nav-container>
     {{/if}}
 </div>

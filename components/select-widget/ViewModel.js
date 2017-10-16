@@ -92,6 +92,8 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
             };
         }
     },
+    // allow the user to submit their own geometries to an action
+    allowCustom: 'htmlbool',
 
     // arcgis server layer props
     layers: DefineMap,
