@@ -33,7 +33,7 @@
                 <div class="btn-group mt-2">
                     {{#each buttons}}
                     <button class="btn btn-default tooltip {{#is type activeButton}}active{{/is}}" data-tooltip="{{tooltip}}" 
-                        type="button"><i class="{{iconClass}}" on:el:click="draw(type)"></i></button>
+                        type="button" on:el:click="draw(type)"><i class="{{iconClass}}"></i></button>
                     {{/each}}
                     {{#if graphicsLength}}
                     <button class="btn btn-action tooltip" data-tooltip="Clear Selection" on:el:click="clearSelectMultiple">

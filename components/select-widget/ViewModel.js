@@ -47,7 +47,11 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
                         if (this.continueDraw) {
                             sketch.create(this.activeButton);
                         } else {
-                            this.draw(null);
+
+                            // let the view's click event get stopped first, then deactivate
+                            setTimeout(() => {
+                                this.activeButton = null;
+                            });
                         }
                     });
                     this.sketch = sketch;
@@ -56,11 +60,34 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
             return view;
         }
     },
-    viewHandle: '*',
+    viewHandle: {
+        type: '*',
+        set (handle) {
+            if (this.viewHandle) {
+                this.viewHandle.remove();
+            }
+            return handle;
+        }
+    },
     buttons: {
         value: buttons
     },
-    activeButton: 'string',
+    activeButton: {
+        type: 'string',
+        set (type) {
+            if (!type) {
+                this.viewHandle = null;
+                this.sketch.reset();
+                return type;
+            }
+        
+            this.viewHandle = this.view.on('click', (evt) => {
+                evt.stopPropagation();
+            });
+            this.sketch.create(type);
+            return type;
+        }
+    },
     continueDraw: 'boolean',
     title: {
         value: 'Select Features'
@@ -167,19 +194,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     graphicsLayer: '*',
     graphicsLength: 'number',
     draw (type) {
-        if (this.activeButton === type) {
-            this.viewHandle.remove();
-            this.viewHandle = null;
-            this.sketch.reset();
-            this.activeButton = null;
-            return;
-        }
-        
-        this.viewHandle = this.view.on('click', (evt) => {
-            evt.stopPropagation();
-        });
-        this.sketch.create(type);
-        this.activeButton = type;
+        this.activeButton = type === this.activeButton ? null : type;
     },
 
     // set layer to custom when custom tab is displayed
@@ -206,7 +221,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         });
     },
     searchGraphics () {
-        this.draw(null);
+        this.activeButton = null;
         if (this.graphicsLength === 1) {
             this.selectFeatures({
                 geometry: this.graphicsLayer.graphics.getItemAt(0).geometry
