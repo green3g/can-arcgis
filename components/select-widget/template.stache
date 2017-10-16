@@ -44,7 +44,6 @@
                         {{/if}}
                 </div>
             {{else}}
-                {{debugger}}
                 <form-widget 
                     vm:isSaving:bind="formIsSaving"
                     vm:fields:from="selectedQuery.fields" 

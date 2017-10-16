@@ -3,18 +3,30 @@ import DefineList from 'can-define/list/list';
 import string from 'can-util/js/string/string';
 import esriPromise from 'esri-promise';
 import assignGraphics from '../_common/assignGraphics';
+import reflect from 'can-reflect';
 
 export default DefineMap.extend('WorkorderCreator', {seal: false}, {
     title: {
-        value: 'Create a workorder'
+        value: 'Select Features'
     },
     // select layer dropdown
     layerOptions: {
-        Value: DefineList,
-        Type: DefineList
+        get () {
+            const keys = reflect.getOwnEnumerableKeys(this.layers);
+
+            const options = keys.map((key) => {
+                return {
+                    label: this.layers[key].label || key,
+                    value: key
+                };
+            });
+
+            this.layer = options[0].value;
+            return options;
+        }
     },
     layerAlias: {
-        value: 'Layer to assign workorders'
+        value: 'Layer to select'
     },
     layerProperties: {
         get () {
@@ -58,7 +70,10 @@ export default DefineMap.extend('WorkorderCreator', {seal: false}, {
     actions: DefineList,
 
     // select query dropdown
-    query: 'string',
+    query: {
+        type: 'string',
+        value: 'spatial'
+    },
     queries: {
         get () {
             const props = this.selectedLayer;

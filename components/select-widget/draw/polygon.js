@@ -9,14 +9,14 @@ esriPromise(['esri/symbols/SimpleFillSymbol']).then(([SimpleFillSymbol]) => {
         drawingSymbol: new SimpleFillSymbol({
             color: [102, 0, 255, 0.15],
             outline: {
-                color: "#6600FF",
+                color: '#6600FF',
                 width: 2
             }
         }),
         finishedSymbol: new SimpleFillSymbol({
             color: [102, 0, 255, 0.45],
             outline: {
-                color: "#6600FF",
+                color: '#6600FF',
                 width: 2
             }
         }),
@@ -113,7 +113,7 @@ export const ViewModel = Tool.extend('PolygonTool', {
                 this.clickListener = this.view.on('click', this.onClick.bind(this));
                 this.pointerDownListener = this.view.on('pointer-down', 
                     this.onPointerDown.bind(this));
-                this.pointerMoveListener = this.view.on("pointer-move",
+                this.pointerMoveListener = this.view.on('pointer-move',
                     this.onPointerMove.bind(this));
                 this.doubleClickListener = this.view.on('double-click', 
                     this.onDoubleClick.bind(this));
@@ -133,11 +133,9 @@ export const ViewModel = Tool.extend('PolygonTool', {
     },
     onPointerDown (event) {
         event.stopPropagation();
-        console.log(event);
         this.addVertex(this.createPoint(event));
     },
     onPointerMove (event) {
-        console.log(event);
         this.updateFinalVertex(this.createPoint(event));
     },
     onDoubleClick (event) {
@@ -155,7 +153,6 @@ export const ViewModel = Tool.extend('PolygonTool', {
      * the view is clicked.
      * @param {esri/geometry/Point} point - Adds the given poing to the active
      *   polygon then resets the active polygon.
-     * @return {esri/geometry/Polygon}
      */
     addVertex (point) {
         esriPromise(['esri/geometry/Polygon', 'esri/geometry/geometryEngine']).then(([Polygon]) => {
@@ -189,7 +186,7 @@ export const ViewModel = Tool.extend('PolygonTool', {
         
             if (!geometry && finished) {
                 console.log(
-                    "Cannot finish polygon. It must be a triangle at minimum. Resume drawing..."
+                    'Cannot finish polygon. It must be a triangle at minimum. Resume drawing...'
                 );
                 return;
             }
