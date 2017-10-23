@@ -104,7 +104,6 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
                 };
             });
 
-            this.layer = options[0].value;
             return options;
         }
     },
