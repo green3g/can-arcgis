@@ -2,6 +2,8 @@
 
 A configureable mapping app bundled with StealJS. Work in progress. Inspired by [cmv-app](https://github.com/cmv/cmv-app)
 
+![screenshot](docs/images/zoom.gif)
+
 ## Features
 
  - Write code using ES6, requirejs, or commonjs format
