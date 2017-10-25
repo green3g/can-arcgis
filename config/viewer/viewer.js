@@ -1,27 +1,21 @@
-import getFragNode from '~/util/dom/getFragNode';
 import stache from 'can-stache';
 
+// import a custom alert js library
+import swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+
+// render a can-component in the popup template
 const popupTemplate = stache('<property-table id="stachePropTable" {object}="graphic.attributes" />');
 
-
-// creating a custom dom node to add to the widget ui
-const element = document.createElement('p');
-element.innerHTML = 'Hello!';
-element.style = `background-color: #4CAF50; 
-                border: none;
-                color: white;
-                padding: 15px 32px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;`;
-
-element.onclick = function () {
-    //eslint-disable-next-line
-    alert('you clicked me!');
-};
+// create a simple widget renderer to append to the view
+const widget = stache(`
+    <p style="background:#fff;padding:10px;">Current Zoom: {{round(view.zoom, 0)}}<br />
+    Coordinates: {{round(view.center.longitude,4)}}, {{round(view.center.latitude, 4)}}</p>
+`);
 
 export default {
+    debug: true,
     viewOptions: {
         center: [-93.28697204589844, 44.294471740722656],
         zoom: 12
@@ -52,16 +46,34 @@ export default {
                 popupTemplate: {
                     title: '{task_name} Task - {id}',
                     content (data) {
-                        return getFragNode(popupTemplate(data));
+                        const node = document.createElement('div');
+                        node.appendChild(popupTemplate(data));
+                        return node;
                     },
                     actions: [{
-                        title: 'Quick Complete',
+                        title: 'Delete',
                         id: 'complete',
-                        className: 'esri-icon-check-mark'
-                        // onClick (event, selected) {
-                        //     selected.attributes.feature_status = 'Closed';
-                        //     selected.layer.applyEdits([selected]);
-                        // }
+                        className: 'esri-icon-trash',
+                        onClick (selected, event, componentVM) {
+
+                            // Sweet: es6 template goodness:
+                            swal({
+                                type: 'warning',
+                                title: 'Delete',
+                                text: `Are you sure you want to delete ID: ${selected.attributes.OBJECTID}?`,
+                                showConfirmButton: true,
+                                showCancelButton: true
+                            }).then(() => {
+                                selected.layer.applyEdits({
+                                    deleteFeatures: [selected]
+                                }).then(() => {
+                                    swal('Item Deleted', 'The item was successfully deleted', 'success');
+                                    componentVM.view.popup.close();
+                                });
+                            });
+                            // selected.attributes.feature_status = 'Closed';
+                            // selected.layer.applyEdits([selected]);
+                        }
                     }]
                 }
             }
@@ -79,7 +91,16 @@ export default {
         }
     }, {
         parent: 'view',
-        component: element,
+        type: 'renderer',
+        renderer: widget,
+        options: {
+
+            // pass a rounding function for our widget to use
+            round (value, places) {
+                const mult = Math.pow(10, places);
+                return Math.round(value * mult) / mult;
+            }
+        },
         position: 'bottom-left'
     }, {
         type: 'esri',

@@ -1,5 +1,5 @@
-{{#if configured}}
-    <esri-map {map-options}="config.mapOptions"  {view-options}="config.viewOptions" {^view}="view" />
+{{#if configured}}    
+    <esri-map vm:mapOptions:from="config.mapOptions"  vm:viewOptions:from="config.viewOptions" vm:view:to="view" />
 {{/if}}
 
 {{#unless view}}

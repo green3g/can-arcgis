@@ -15,6 +15,8 @@
     "can-assign": "^1.0.0",
     "can-component": "^3.3.4",
     "can-define": "^1.4.4",
+    "can-observation": "^3.3.5",
+    "can-reflect": "^1.4.5",
     "can-route": "^3.2.3",
     "can-stache": "^3.6.2",
     "dgrid": "^1.2.1",

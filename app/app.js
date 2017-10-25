@@ -2,6 +2,7 @@ import DefineMap from 'can-define/map/map';
 import extensions from './extensions';
 import isPromiseLike from 'can-util/js/is-promise-like/is-promise-like';
 import defaultTemplate from './extensions/layout/defaultTemplate.stache';
+import get from 'can-util/js/get/get';
 
 import '../components/esri-map/esri-map';
 import './styles.less';
@@ -116,7 +117,6 @@ export default DefineMap.extend('App',
          * @property {esri/views/MapView}
          */
         view: {
-            type: '*',
             serialize: false
         },
         /**
@@ -161,5 +161,8 @@ export default DefineMap.extend('App',
             //     this[eventName](this);
             // }
             return Promise.all(promises);
+        },
+        getSubProperty (obj, path) {
+            return get(obj, path);
         }
     });
