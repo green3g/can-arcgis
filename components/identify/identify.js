@@ -108,11 +108,13 @@ export default DefineMap.extend({
                 const features = this.view.popup.features.concat(identifiedFeatures);
 
                 // open the popup with the given features
-                this.view.popup.open({
-                    selectedFeatureIndex: 0,
-                    features: features,
-                    updateLocationEnabled: true
-                });
+                if (features.length) { 
+                    this.view.popup.open({
+                        selectedFeatureIndex: 0,
+                        features: features,
+                        updateLocationEnabled: true
+                    }); 
+                }
             });
         }, 500);
     },
