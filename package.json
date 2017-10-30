@@ -43,7 +43,8 @@
     ],
     "bundle": [
       "can-arcgis/config/viewer/viewer",
-      "can-arcgis/config/poverty/poverty"
+      "can-arcgis/config/poverty/poverty",
+      "can-arcgis/config/scene/scene"
     ],
     "paths": {}
   }
