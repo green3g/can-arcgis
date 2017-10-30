@@ -23,6 +23,15 @@ npm install
 
 ### Customize
 
+Configs are loaded via the config extension. By default, configs are stored in the config folder. Each config should be placed
+in its own folder, and related files can be placed next to that file. Each config gets its own url: `https://roemhildtg.github.io/can-arcgis/index-prod.html#!scene`. For example, you can link to other configs within the app just by specifying its hash: 
+
+```html
+<a href="#!scene">Scene Viewer App</a>
+```
+
+This will navigate the user to the config file in `config/viewer/viewer.js`.
+
 Customize a config file in the config folder. The syntax is a jsonlike 
 structure that gets passed to esri's api constructors. 
 
