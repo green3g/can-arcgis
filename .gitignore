@@ -1,7 +1,6 @@
 # Dependency directory
 node_modules/
 bower_components/
-dist/
 
 #custom apps and modules
 custom/
