@@ -21,7 +21,7 @@
     "can-stache": "3.9.0",
     "dgrid": "^1.2.1",
     "esri-loader": "^1.0.0",
-    "esri-promise": "^0.3.0",
+    "esri-promise": "github:roemhildtg/esri-promise",
     "object-assign": "^4.1.1",
     "spectre.css": "^0.4.0",
     "sweetalert2": "^6.6.6"
@@ -42,7 +42,8 @@
       "steal-dojo"
     ],
     "bundle": [
-      "can-arcgis/config/viewer/viewer"
+      "can-arcgis/config/viewer/viewer",
+      "can-arcgis/config/poverty/poverty"
     ],
     "paths": {}
   }
