@@ -37,7 +37,7 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
             }
 
             // create and add custom layers
-            const layers = this.mapOptions.layers;
+            const layers = this.mapOptions.layers || [];
             createLayers(layers).then((l) => {
                 this.mapOptions.layers = l;
 
@@ -60,15 +60,16 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
         }
     },
     createMap (element) {
-        
-        esriPromise(['esri/Map', 'esri/views/MapView']).then(([Map, MapView]) => {
 
-            const mapOptions = assign({
-                basemap: 'streets-night-vector'
-            }, this.mapOptions);
+        // check for view options and map options types for scene view capability
+        const viewType = this.viewOptions.type || 'MapView';
+        const mapType = this.mapOptions.type || 'Map';
+
+        esriPromise([`esri/${mapType}`, `esri/views/${viewType}`]).then(([Map, MapView]) => {
+
 
             // create a map
-            this.map = decorate(new Map(mapOptions));
+            this.map = decorate(new Map(this.mapOptions));
 
             // create the view
             this.view = decorate(new MapView(assign({
