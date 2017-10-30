@@ -38,7 +38,8 @@ Within this object are the configuration parameters for widgets, layers, and map
 
 #### `mapOptions`
 
-Options passed to the map constructor.
+Options passed to the map constructor. These options are passed via 
+binding in the navigation extension.
 
 ```javascript
 mapOptions: {
@@ -49,7 +50,7 @@ mapOptions: {
 ##### `layers`
 
 A simplified json structure for creating esri layer objects. This should
-be inside the `mapOptions` object.
+be inside the `mapOptions` object. 
 
 ```javascript
     layers: [{
@@ -71,7 +72,8 @@ be inside the `mapOptions` object.
 
 #### `viewOptions` 
 
-Options to be passed to the map view constructor.
+Options to be passed to the map view constructor.These options are passed via 
+binding in the navigation extension.
 
 ```javascript
 viewOptions: {
@@ -82,7 +84,7 @@ viewOptions: {
 
 #### `widgets`
 
-Array of widget config objects.
+Array of widget config objects. Implemented by the widgets extension. 
 
 ```javascript
 widgets: [{
@@ -126,6 +128,51 @@ export default {
     // other config props
     widgets: myWidgets
 };
+```
+
+For options that require esri modules, you'll need to use the esriPromise 
+library along with the `optionsPromise` property. This allows you to resolve
+your options with a promise, rather than passing them in. 
+
+Example: configuring a BasemapToggle widget with `optionsPromise`:
+
+```javascript
+// viewer.js config file
+import esriPromise from 'esri-promise';
+
+export default {
+    // ...
+    // other config properties
+    // ...
+    widgets: [{
+    path: 'esri/widgets/BasemapToggle',
+    parent: 'view',
+    type: 'esri',
+    position: 'top-left',
+    iconClass: 'esri-icon-basemap',
+    optionsPromise: new Promise((resolve) => {
+        esriPromise([
+            'esri/Basemap', 
+            'esri/layers/TileLayer',
+            'esri/layers/MapImageLayer'
+        ]).then(([Basemap, TileLayer, MapImageLayer]) => {
+            const base = new Basemap({
+                thumbnailUrl: 'https://js.arcgis.com/4.5/esri/images/basemap/hybrid.jpg',
+                id: 'aerial',
+                baseLayers: [new TileLayer({
+                    url: `${url}/basemaps/imagery_2016/MapServer`
+                })],
+                referenceLayers: [new MapImageLayer({
+                    url: `${url}/basemaps/gray_labels/MapServer`
+                })]
+            });
+            resolve({
+                nextBasemap: base
+            });
+        });
+    })
+},
+}
 ```
 
 ### Test

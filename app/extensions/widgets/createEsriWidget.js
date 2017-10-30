@@ -1,25 +1,44 @@
-import assign from 'can-util/js/assign/assign';
 import esriPromise from 'esri-promise';
+import assign from 'can-util/js/assign/assign';
+function constructWidget (WidgetClass, widgetConfig, options, callback, resolve) {
+    
+    const node = widgetConfig.node || document.createElement('div');
+    
+    const component = new WidgetClass(options, node);
+
+    // create a widget component structure
+    const widget = Object.assign({}, {
+        component: component
+    }, widgetConfig);
+
+    // call the appropriate addWidget function
+    callback(options.view, widget);
+            
+    resolve(widget);
+}
 
 export default function createEsriWidget (view, widgetConfig, callback) {
     return new Promise((resolve) => {
 
         esriPromise([widgetConfig.path]).then(([WidgetClass]) => {
 
-            // create the widget class
-            const component = new WidgetClass(assign((widgetConfig.options || {}), {
+            // if optionsPromise, wait for options, then construct widget
+            if (widgetConfig.optionsPromise) {
+                widgetConfig.optionsPromise.then((options) => {
+                    options = assign(options, {
+                        view: view
+                    });
+                    constructWidget(WidgetClass, widgetConfig, options, callback, resolve);
+                });
+                return;
+            } 
+
+            // othherwisise construct the widget class
+            const options = assign((widgetConfig.options || {}), {
                 view: view
-            }), widgetConfig.node || document.createElement('div'));
+            });
+            constructWidget(WidgetClass, widgetConfig, options, callback, resolve);
 
-                // create a widget component structure
-            const widget = assign({
-                component: component
-            }, widgetConfig);
-
-                // call the appropriate addWidget function
-            callback(view, widget);
-
-            resolve(widget);
         });
     });
 }
