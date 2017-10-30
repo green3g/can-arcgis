@@ -4,6 +4,8 @@ import stache from 'can-stache';
 import swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
+import route from 'can-route';
+
 
 // render a can-component in the popup template
 const popupTemplate = stache('<property-table id="stachePropTable" {object}="graphic.attributes" />');
@@ -81,13 +83,15 @@ export default {
     },
     widgets: [{
         type: 'esri',
-        parent: 'expand', 
+        parent: 'view', 
         path: 'dijit/layout/ContentPane', 
         position: 'top-right',
         iconClass: 'esri-icon-description',
         options: {
-            style: 'background-color: #ff8040',
-            content: 'Hello!'
+            style: 'background-color: #ff8040;padding:15px;',
+            content: route.link('Switch Apps', {
+                configName: 'poverty'
+            })
         }
     }, {
         parent: 'view',
