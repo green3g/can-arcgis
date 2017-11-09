@@ -4,7 +4,7 @@
   "description": "A configureable mapping app built with canjs",
   "main": "app/app.js",
   "scripts": {
-    "build": "git rm -rf dist && node build",
+    "build": "node build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
