@@ -39,13 +39,17 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
             // create and add custom layers
             const layers = this.mapOptions.layers || [];
             createLayers(layers).then((l) => {
-                this.mapOptions.layers = l;
-
+                this.mapOptions.layers = l.map((l) => {
+                    return l.layer;
+                });
                 // create custom basemaps
                 const defaultBasemap = this.mapOptions.basemap;
-                if (typeof defaultBasemap === 'object') {
+                if (defaultBasemap && typeof defaultBasemap === 'object') {
                     esriPromise(['esri/Basemap']).then(([Basemap]) => {
                         createLayers(defaultBasemap.baseLayers).then((baseLayers) => {
+                            baseLayers = baseLayers.map((bl) => {
+                                return bl.layer;
+                            });
                             this.mapOptions.basemap = new Basemap(assign(defaultBasemap, {
                                 baseLayers: baseLayers
                             }));

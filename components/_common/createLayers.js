@@ -1,41 +1,44 @@
 import defaultContent from './defaultContent';
-import DefineMap from 'can-define/map/map';
 import esriPromise from 'esri-promise';
+import deepAssign from 'can-util/js/deep-assign/deep-assign';
+import assign from 'can-assign';
 
-const Defaults = DefineMap.extend({
-    outFields: {value: ['*']},
+const Defaults = {
+    outFields: ['*'],
     popupTemplate: {
-        Value: DefineMap.extend({
-            content: {
-                value () {
-                    return defaultContent;
-                }
-            }
-        })
+        content: defaultContent
     }
+};
+
+const promise = new Promise((resolve) => {
+    resolve(promise);
 });
 
 export default function createLayers (layers) {
-    const requiresMap = {};
-    const requiresArray = [];
-    layers.reverse().forEach((layer) => {
-        if (!requiresMap[layer.path]) {
-            requiresArray.push(layer.path);
-            requiresMap[layer.path] = requiresArray.length - 1;
-        }
-    });
-    return new Promise((resolve) => {
-        esriPromise(requiresArray).then(function (modules) {
-            if (layers.serialize) {
-                layers = layers.serialize();
-            }
-            layers = layers.map((layer) => {
-                layer.options = new Defaults(layer.options).serialize();
-                const index = requiresMap[layer.path];
-                const LayerClass = modules[index];
-                return new LayerClass(layer.options);
+    const layerPromises = layers.reverse().map((layer) => {
+        return new Promise((resolve) => {
+            esriPromise([layer.path]).then(([LayerClass]) => {
+
+                const layerOptions = assign({}, Defaults);
+                deepAssign(layerOptions, layer.options);
+
+                // handle group layers
+                if (layer.path === 'esri/layers/GroupLayer') {
+                    const groupPromise = createLayers(layerOptions.layers || []);
+                    groupPromise.then((newLayers) => {
+                        layerOptions.layers = newLayers.map((l) => {
+                            return l.layer; 
+                        });
+                        resolve({layer: new LayerClass(layerOptions)});
+                    });
+                
+                } else { 
+                    const l = new LayerClass(layerOptions);
+                    resolve({layer: l}); 
+                }
             });
-            resolve(layers);
         });
     });
+
+    return Promise.all(layerPromises);
 }
