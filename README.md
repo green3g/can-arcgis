@@ -15,10 +15,10 @@ A configureable mapping app bundled with StealJS. Work in progress. Inspired by 
     ES6, commonjs format and `stache` (mustache like) templating language
 
 ## Demos 
- - [Custom popup and actions](https://cdn.rawgit.com/roemhildtg/can-arcgis/15c69e1d/index-prod.html#!viewer) | [viewer.js](./config/viewer/viewer.js)
- - [Using Esri and CanJS widgets](https://cdn.rawgit.com/roemhildtg/can-arcgis/15c69e1d/index-prod.html#!widgets) | [widgets.js](./config/widgets/widgets.js)
- - [Using 3d Webmap](https://cdn.rawgit.com/roemhildtg/can-arcgis/15c69e1d/index-prod.html#!scene) | [scene.js](./config/scene/scene.js)
- - [Using custom basemap](https://cdn.rawgit.com/roemhildtg/can-arcgis/15c69e1d/index-prod.html#!basemap) | [basemap.js](./config/basemap/basemap.js)
+ - [Custom popup and actions](https://cdn.rawgit.com/roemhildtg/can-arcgis/59897443/index-prod.html#!viewer) | [viewer.js](./config/viewer/viewer.js)
+ - [Using Esri and CanJS widgets](https://cdn.rawgit.com/roemhildtg/can-arcgis/59897443/index-prod.html#!widgets) | [widgets.js](./config/widgets/widgets.js)
+ - [Using 3d Webmap](https://cdn.rawgit.com/roemhildtg/can-arcgis/59897443/index-prod.html#!scene) | [scene.js](./config/scene/scene.js)
+ - [Using custom basemap](https://cdn.rawgit.com/roemhildtg/can-arcgis/59897443/index-prod.html#!basemap) | [basemap.js](./config/basemap/basemap.js)
 
 ## Quick Start
 
