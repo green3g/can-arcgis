@@ -59,6 +59,11 @@ export default function createWidgets (options) {
             createRendererWidget(options.view, widgetConfig, addWidget);
             break;
 
+        // component is a ui component to add directly to the ui 
+        case 'component': 
+            addWidget(options.view, widgetConfig);
+            break;
+
         // default is an object is constructed with the view parameter
         // eslint-disable-next-line
         default:

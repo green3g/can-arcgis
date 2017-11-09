@@ -7,14 +7,15 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 // use can-route to switch between configs
 import route from 'can-route';
 
-// render a can-component in the popup template
-const popupTemplate = stache('<property-table id="stachePropTable" {object}="graphic.attributes" />');
-
-// create a simple widget renderer to append to the view
+// create a simple canjs widget renderer to append to the view
 const widget = stache(`
     <p style="background:#fff;padding:10px;">Current Zoom: {{round(view.zoom, 0)}}<br />
     Coordinates: {{round(view.center.longitude,4)}}, {{round(view.center.latitude, 4)}}</p>
 `);
+
+const element = document.createElement('div');
+element.style = 'background: #fff;display:block; padding:10px;';
+element.innerHTML = route.link('Back to Viewer', {configName: 'viewer'});
 
 export default {
     debug: true,
@@ -78,17 +79,10 @@ export default {
         }]
     },
     widgets: [{
-        type: 'esri',
         parent: 'view', 
-        path: 'dijit/layout/ContentPane', 
         position: 'top-right',
-        iconClass: 'esri-icon-description',
-        options: {
-            style: 'background-color: #ff8040;padding:15px;',
-            content: route.link('Switch Apps', {
-                configName: 'viewer'
-            })
-        }
+        type: 'component',
+        component: element
     }, {
         parent: 'view',
         type: 'renderer',
@@ -107,5 +101,21 @@ export default {
         parent: 'view',
         path: 'esri/widgets/Legend',
         position: 'bottom-right'
+    }, {
+        type: 'esri',
+        parent: 'expand',
+        path: 'esri/widgets/LayerList',
+        iconClass: 'esri-icon-layers',
+        position: 'top-right'
+    }, {
+        type: 'esri',
+        parent: 'view',
+        path: 'esri/widgets/Home',
+        position: 'top-left'
+    }, {
+        type: 'esri',
+        parent: 'expand',
+        iconClass: 'esri-icon-basemap',
+        path: 'esri/widgets/BasemapGallery'
     }]
 };
