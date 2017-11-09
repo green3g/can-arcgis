@@ -19,8 +19,7 @@ export default function createLayers (layers) {
         return new Promise((resolve) => {
             esriPromise([layer.path]).then(([LayerClass]) => {
 
-                const layerOptions = assign({}, Defaults);
-                deepAssign(layerOptions, layer.options);
+                const layerOptions = deepAssign({}, layer.options, Defaults);
 
                 // handle group layers
                 if (layer.path === 'esri/layers/GroupLayer') {
