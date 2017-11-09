@@ -1,15 +1,16 @@
 # can-arcgis-map
 
-A configureable mapping app bundled with StealJS. Work in progress. Inspired by [cmv-app](https://github.com/cmv/cmv-app)
+A configureable mapping app built on ArcGIS and CanJS, bundled with StealJS.  Inspired by [cmv-app](https://github.com/cmv/cmv-app) Work in progress.
 
 ![screenshot](docs/images/zoom.gif)
 
 ## Features
 
- - Write code using ES6, requirejs, or commonjs format
+ - Configure multiple apps using a simple JSON like syntax 
+ - Utilize existing Esri API widgets, layers, and map views
  - Generate compact, progressivly loaded bundles with `steal-tools`
- - Write templates using `stache` (handlebars like) syntax that steal transpiles to javascript
- - Extend functionality by creating widgets or [extensions](#extensions)
+ - Extend functionality by creating widgets or [extensions](#extensions) in 
+    ES6, commonjs format and `stache` (mustache like) templating language
 
 ## Quick Start
 
@@ -195,6 +196,13 @@ live-server
  will start up a development server. 
 
 ### Build 
+
+Before building, make sure you have added all of your config files as bundles to the `package.json` file. Specify your bundles in the `steal.bundles` array
+like `"can-arcgis/config/viewer/viewer"`.
+
+Each bundle will be scanned for dependencies using `steal-tools` and 
+steal will automatically optimize the files into progressivly 
+loaded bundles.
 
 To build the application use the npm script `build`. 
 
