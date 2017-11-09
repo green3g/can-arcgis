@@ -28,7 +28,10 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
                 ]).then(([GraphicsLayer, SketchViewModel]) => {
 
                     // create a graphics layer
-                    const gl = new GraphicsLayer();
+                    const gl = new GraphicsLayer({
+                        title: 'Selection Graphics',
+                        listMode: 'hide'
+                    });
                     gl.graphics.on('change', () => {
                         this.graphicsLength = gl.graphics.length;
                     });
