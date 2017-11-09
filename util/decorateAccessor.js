@@ -45,7 +45,7 @@ export default function decorate (obj, parent = null, path = null) {
         return obj;
     }
         
-    const handlers = {
+    const handlers = obj.canjs = {
     };
     obj[canSymbol.for('can.isMapLike')] = true;
 
@@ -82,13 +82,25 @@ export default function decorate (obj, parent = null, path = null) {
         // register one single watcher
         if (!handlers[key].watch) {
             const watchProp = path ? `${path}.${key}` : key;
-            handlers[key].watch = (parent || obj).watch(watchProp, (newValue, oldValue, propertyName, target) => {
-                canBatch.start();
-                handlers[key].handlers.forEach((handle) => {
-                    handle.call(newValue, oldValue);
+            if (key === 'length') {
+                handlers[key].oldLength = obj.length;
+                handlers[key].watch = obj.on('change', (event) => {
+                    canBatch.start();
+                    handlers[key].handlers.forEach((handle) => {
+                        handle(obj.length, handlers[key].oldLength);
+                    });
+                    handlers[key].oldLength = obj.length;
+                    canBatch.stop();
                 });
-                canBatch.stop();
-            });
+            } else { 
+                handlers[key].watch = (parent || obj).watch(watchProp, (newValue, oldValue, propertyName, target) => {
+                    canBatch.start();
+                    handlers[key].handlers.forEach((handle) => {
+                        handle(newValue, oldValue);
+                    });
+                    canBatch.stop();
+                }); 
+            }
         }
             
         // push the handler into the stack
@@ -107,6 +119,13 @@ export default function decorate (obj, parent = null, path = null) {
         const fullPath = path ? `${path}.${key}` : key;
         decorate(obj[key], (parent || obj), fullPath);
     }); 
+
+    // handle collections
+    // if (obj.items) {
+    //     obj[canSymbol.iterator] = function () {
+            
+    //     };
+    // }
         
     return obj;
 }
