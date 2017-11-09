@@ -1,6 +1,8 @@
 # can-arcgis-map
 
-A configureable mapping app built on ArcGIS and CanJS, bundled with StealJS.  Inspired by [cmv-app](https://github.com/cmv/cmv-app) Work in progress.
+[![Join the chat at https://gitter.im/can-arcgis/Lobby](https://badges.gitter.im/can-arcgis/Lobby.svg)](https://gitter.im/can-arcgis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+A configureable mapping app bundled with StealJS. Work in progress. Inspired by [cmv-app](https://github.com/cmv/cmv-app)
 
 ![screenshot](docs/images/zoom.gif)
 
