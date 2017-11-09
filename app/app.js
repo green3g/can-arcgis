@@ -82,7 +82,7 @@ export default DefineMap.extend('App',
             get (val, set) {
                 
                 // reset initialization flags 
-                this.set({
+                this.assign({
                     configured: false,
                     started: false
                 });
@@ -96,11 +96,11 @@ export default DefineMap.extend('App',
                     
                     // event after config loads but before startup is called
                     this.handleEvent('postConfig').then(() => {
-                        this.set('configured', true);
+                        this.configured = true;
 
                         // event to start layout
                         this.handleEvent('startup');
-                        this.set('started', true);
+                        this.started = true;
                     });
                 });
             }
