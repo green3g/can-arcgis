@@ -15,8 +15,8 @@ function supportsLocalStorage () {
 
 /**
  * initialize the esri identity manager with credentials if they were stored
- * @param {esri/identity/IdentityManager} esriId the esri identity manager 
  * @param {Object} config the loaded config
+ * @param {esri/identity/IdentityManager} esriId the esri identity manager 
  */
 function loadCredentials (config, esriId) {
     if (config.credentials) {
