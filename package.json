@@ -43,10 +43,10 @@
     ],
     "bundle": [
       "can-arcgis/config/viewer/viewer",
-      "can-arcgis/config/poverty/basemap",
+      "can-arcgis/config/basemap/basemap",
       "can-arcgis/config/scene/scene",
       "can-arcgis/config/group/group",
-      "can-arcgis/config/group/widgets"
+      "can-arcgis/config/widgets/widgets"
     ],
     "paths": {}
   }
