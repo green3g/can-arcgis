@@ -129,7 +129,7 @@ export default DefineMap.extend('App',
             // i.e. routing
             this.handleEvent('init');
 
-            this.on('view', () => {
+            this.on('view', (newView, oldView) => {
                 
                 // "postView" occurs after view is intialized and 
                 // app is ready for widgets etc
