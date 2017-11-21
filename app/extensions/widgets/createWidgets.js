@@ -13,13 +13,13 @@ function addWidget (view, widget) {
         // expand type widget. places a widget inside a expand wrapper that is toggle able and mobile friendly
         // https://developers.arcgis.com/javascript/latest/sample-code/widgets-expand/index.html
         esriPromise(['esri/widgets/Expand']).then(([Expand]) => {
-            const expand = new Expand({
+            const expand = new Expand(assign({
 
                 // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
                 expandIconClass: widget.iconClass || DEFAULT_ICON,
                 view: view,
                 content: widget.component
-            });
+            }, widget.parentOptions || {}));
                     
             view.ui.add({
                 component: expand,
