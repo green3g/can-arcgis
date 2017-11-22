@@ -8,7 +8,8 @@ export default {
     mapOptions: {
         basemap: 'gray',
         layers: [{
-            path: 'esri/layers/GroupLayer',
+            type: 'group',
+            //path: 'esri/layers/GroupLayer',
             options: {
                 title: 'US Demographics',
                 visible: true,

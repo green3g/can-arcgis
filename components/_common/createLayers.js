@@ -8,7 +8,7 @@ const TYPES = {
     feature: 'esri/layers/FeatureLayer',
     rss: 'esri/layers/GeoRSSLayer',
     graphics: 'esri/layers/GraphicsLayer',
-    group: 'esri/layers/Group',
+    group: 'esri/layers/GroupLayer',
     imagery: 'esri/layers/ImageryLayer',
     mesh: 'esri/layers/IntegratedMeshLayer',
     kml: 'esri/layers/KMLLayer',
