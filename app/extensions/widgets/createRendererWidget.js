@@ -1,7 +1,7 @@
-import getFragNode from '../../../util/dom/getFragNode';
 import assign from 'can-util/js/assign/assign';
 import stache from 'can-stache';
 import DefineMap from 'can-define/map/map';
+import dev from 'can-util/js/dev/dev';
 
 export default function createRendererWidget (view, widgetConfig, callback) {
 
@@ -9,7 +9,7 @@ export default function createRendererWidget (view, widgetConfig, callback) {
         view: view
     }, widgetConfig.options));
 
-    if (!widgetConfig.renderer || widgetConfig.template) { 
+    if (!widgetConfig.renderer && !widgetConfig.template) { 
         dev.warn('renderer widget needs either a renderer function or a template property'); 
         return;
     }

@@ -37,7 +37,16 @@ function addWidget (view, widget) {
         view.ui.add(widget); 
         break;
     default:
-        dev.warn('createWidget::parent was not found');
+        if (typeof widget.parent === 'string') {
+            widget.parent = document.getElementById(widget.parent);
+        }
+
+        if (!widget.parent) { 
+            dev.warn('createWidget::parent was not found'); 
+            return;
+        }
+
+        widget.parent.appendChild(widget.component);
     }
 }
 
