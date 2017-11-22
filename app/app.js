@@ -8,6 +8,7 @@ import '../components/esri-map/esri-map';
 import './styles.less';
 import 'arcgis-js-api/themes/light/main.css';
 import 'arcgis-js-api/themes/light/view.css';
+import 'spectre.css';
 import 'can-stache-bindings';
 import route from 'can-route';
 import dev from 'can-util/js/dev/dev';
