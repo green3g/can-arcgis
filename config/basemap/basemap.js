@@ -1,4 +1,7 @@
-// custom basemap
+/**
+ * custom basemap example 
+ * basemap, like mapOptions.layers use a simplified layer syntax
+ */
 
 export default {
     mapOptions: {

@@ -1,3 +1,8 @@
+/**
+ * a sample using group layers
+ * Layer syntax is the same as mapOptions.layers - simplified
+ */
+
 export default {
     debug: true,
     mapOptions: {
@@ -17,6 +22,8 @@ export default {
                     }
                 }, {
                     path: 'esri/layers/MapImageLayer',
+                    // we could also specify the type instead of path
+                    // type: 'dynamic'
                     options: {
                         url: 'https://server.arcgisonline.com/arcgis/rest/services/Demographics/USA_Median_Household_Income/MapServer',
                         title: 'US Median Household Income'
