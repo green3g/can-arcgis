@@ -1,5 +1,6 @@
 /**
  * a full featured attribute editing experience
+ * configuration not yet available, but planned
  * geometry updates not yet functional but are planned
  */
 
@@ -32,12 +33,14 @@ export default {
                 id: 'workorders',
                 outFields: ['*'],
                 popupTemplate: {
+
+                    // add a custom publish call, which calls the edit-widget topic that 
+                    // its subscribed to!
                     actions: [{
                         className: 'esri-icon-edit',
                         title: 'Edit',
                         id: 'edit',
                         onClick (selected) {
-                            console.log(selected);
                             pubsub.publish('editGraphic', selected);
                         }
                     }]
@@ -48,7 +51,7 @@ export default {
     widgets: [{
         parent: document.body,
         type: 'renderer',
-        renderer: stache('<edit-widget view:from="view" />'),
+        renderer: stache('<edit-widget />'),
         options: {}
     }]
 };

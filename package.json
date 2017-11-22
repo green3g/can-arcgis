@@ -46,7 +46,8 @@
       "can-arcgis/config/basemap/basemap",
       "can-arcgis/config/scene/scene",
       "can-arcgis/config/group/group",
-      "can-arcgis/config/widgets/widgets"
+      "can-arcgis/config/widgets/widgets",
+      "can-arcgis/config/edit/edit"
     ],
     "paths": {}
   }

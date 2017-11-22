@@ -97,20 +97,20 @@ export default DefineMap.extend('EditWidget', {
 
 
             // get editable layers
-            const layerPromises = view.map.layers.map((l) => {
-                return new Promise((resolve) => {
-                    l.then((l) => {
-                        resolve({layer: l});
-                    });
-                });
-            }).toArray();
-            Promise.all(layerPromises).then((layers) => {
-                this.layers = layers.map((l) => {
-                    return l.layer; 
-                }).filter((l) => {
-                    return get(l, 'capabilities.operations.supportsEditing') && get(l, 'capabilities.operations.supportsUpdate');
-                });
-            });
+            // const layerPromises = view.map.layers.map((l) => {
+            //     return new Promise((resolve) => {
+            //         l.then((l) => {
+            //             resolve({layer: l});
+            //         });
+            //     });
+            // }).toArray();
+            // Promise.all(layerPromises).then((layers) => {
+            //     this.layers = layers.map((l) => {
+            //         return l.layer; 
+            //     }).filter((l) => {
+            //         return get(l, 'capabilities.operations.supportsEditing') && get(l, 'capabilities.operations.supportsUpdate');
+            //     });
+            // });
         
             return view;
         }
