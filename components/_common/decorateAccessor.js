@@ -21,7 +21,7 @@ function get (obj, name) {
 
     // Walk current to the 2nd to last object or until there
     // is not a container.
-    for (i = 0; i < length && isContainer(current); i++) {
+    for (i = 0; i < length && current && isContainer(current); i++) {
         container = current;
         const key = parts[i];
         observation.add(obj, key);
@@ -41,7 +41,7 @@ function get (obj, name) {
 export default function decorate (obj, parent = null, path = null) {
     
     // make sure object exists and isn't already decorated through circular references
-    if (!obj || !obj.__accessor__ || obj[canSymbol.for('can.onKeyValue')]) {
+    if (!obj || Object.isSealed(obj) || !obj.__accessor__ || obj.canjs) {
         return obj;
     }
         
