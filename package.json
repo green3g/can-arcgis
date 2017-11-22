@@ -22,7 +22,10 @@
     "dgrid": "^1.2.1",
     "esri-loader": "^1.0.0",
     "esri-promise": "github:roemhildtg/esri-promise",
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
     "object-assign": "^4.1.1",
+    "pubsub-js": "^1.5.7",
     "spectre.css": "^0.4.0",
     "sweetalert2": "^6.6.6"
   },

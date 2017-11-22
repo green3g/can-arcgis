@@ -51,7 +51,7 @@ export default {
     widgets: [{
         parent: document.body,
         type: 'renderer',
-        renderer: stache('<edit-widget />'),
+        renderer: stache('<edit-widget view:from="view" />'),
         options: {}
     }]
 };
