@@ -50,7 +50,8 @@
       "can-arcgis/config/scene/scene",
       "can-arcgis/config/group/group",
       "can-arcgis/config/widgets/widgets",
-      "can-arcgis/config/edit/edit"
+      "can-arcgis/config/edit/edit",
+      "can-arcgis/config/select/select"
     ],
     "paths": {}
   }

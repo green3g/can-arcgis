@@ -1,4 +1,4 @@
-modal-dialog .modal-dialog-no-backdrop{display:none;-webkit-animation:slide-down .2s;animation:slide-down .2s;max-width:64rem}modal-dialog .modal-dialog-no-backdrop.active{display:block;position:absolute;left:10%;top:10%}form-widget file-field:not(:last-child) .form-group,form-widget json-field:not(:last-child) .form-group,form-widget select-field:not(:last-child) .form-group,form-widget text-field:not(:last-child) .form-group{margin-bottom:1rem}/*!
+modal-dialog .modal-dialog-no-backdrop{display:none;-webkit-animation:slide-down .2s;animation:slide-down .2s;max-width:64rem}modal-dialog .modal-dialog-no-backdrop.active{display:block;position:absolute;left:10%;top:10%}/*!
  * jQuery UI CSS Framework 1.12.1
  * http://jqueryui.com
  *

@@ -21,6 +21,7 @@ A configureable mapping app bundled with StealJS. Work in progress. Inspired by 
  - [Using custom basemap](https://roemhildtg.github.io/can-arcgis/index-prod.html#!basemap) | [basemap.js](./config/basemap/basemap.js)
  - [Using group layers](https://roemhildtg.github.io/can-arcgis/index-prod.html#!group) | [group.js](./config/group/group.js)
  - [Editing attributes (editor widget)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!edit) | [edit.js](./config/edit/edit.js)
+ - [Selecting features (select/query widget)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!select) | [select.js](./config/select/select.js)
 
 ## Quick Start
 
