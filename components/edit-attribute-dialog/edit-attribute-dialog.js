@@ -18,7 +18,12 @@ import 'jquery-ui/themes/base/theme.css';
 import 'jquery-ui/themes/base/datepicker.css';
 
 export default Component.extend({
-    tag: 'edit-widget',
+    tag: 'edit-attribute-dialog',
     ViewModel: ViewModel,
-    view: template
+    view: template,
+    events: {
+        removed () {
+            this.viewModel.deinit();
+        }
+    }
 });

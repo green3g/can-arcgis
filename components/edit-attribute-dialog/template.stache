@@ -1,3 +1,3 @@
-<modal-dialog active:bind="modalVisible" title="Edit {{editGraphic.layer.title}}">
+<modal-dialog active:bind="modalVisible" title="Edit {{editGraphic.layer.title}}" on:el:inserted="setModal(scope.element)" on:el:beforeremove="setModal()">
     <form-widget isSaving:bind="isSaving" formObject:from="editGraphic.attributes" on:submit="submitForm" on:cancel="cancelForm" fields:from="editFields" />
 </modal-dialog>
