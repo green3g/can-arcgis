@@ -1,7 +1,5 @@
-import defaultContent from './defaultContent';
 import esriPromise from 'esri-promise';
-import deepAssign from 'can-util/js/deep-assign/deep-assign';
-
+import dev from 'can-util/js/dev/dev';
 const TYPES = {
     csv: 'esri/layers/CSVLayer',
     elevation: 'esri/layers/ElevationLayer',
@@ -25,16 +23,24 @@ const TYPES = {
     wmts: 'esri/layers/WMTSLayer'
 };
 
-const Defaults = {
-    outFields: ['*'],
-    popupTemplate: {
-        content: defaultContent
+function initLayerDefaults (layer) {
+    if (! layer.popupTemplate) { 
+        layer.popupTemplate = {}; 
     }
-};
-
-const promise = new Promise((resolve) => {
-    resolve(promise);
-});
+    Object.assign(layer.popupTemplate, {
+        title: layer.popupTemplate.title || layer.title || layer.name,
+        content: layer.popupTemplate.content || [{
+            type: 'fields',
+            fieldInfos: layer.fields ? layer.fields.map((field) => {
+                return {
+                    fieldName: field.name,
+                    label: field.alias,
+                    visible: true
+                };
+            }) : undefined
+        }]
+    });
+}
 
 export default function createLayers (layers) {
     const layerPromises = layers.reverse().map((layer) => {
@@ -44,7 +50,9 @@ export default function createLayers (layers) {
         return new Promise((resolve) => {
             esriPromise([path]).then(([LayerClass]) => {
 
-                const layerOptions = deepAssign({}, layer.options, Defaults);
+                const layerOptions = Object.assign({}, layer.options, {
+                    outFields: ['*']
+                });
 
                 // handle group layers
                 if (path === 'esri/layers/GroupLayer') {
@@ -53,12 +61,23 @@ export default function createLayers (layers) {
                         layerOptions.layers = newLayers.map((l) => {
                             return l.layer; 
                         });
-                        resolve({layer: new LayerClass(layerOptions)});
+                        const l = new LayerClass(layerOptions);
+                        l.then((readyLayer) => {
+                            initLayerDefaults(readyLayer);
+                        }).otherwise((error) => {
+                            dev.warn(`layer failed to initialize: ${l.id}`, error);
+                        });
+                        resolve({layer: l});
                     });
                 
                 } else { 
                     const l = new LayerClass(layerOptions);
-                    resolve({layer: l}); 
+                    l.then((readyLayer) => {
+                        initLayerDefaults(readyLayer);
+                    }).otherwise((error) => {
+                        dev.warn(`layer failed to initialize: ${l.id}`, error);
+                    });
+                    resolve({layer: l});
                 }
             });
         });
