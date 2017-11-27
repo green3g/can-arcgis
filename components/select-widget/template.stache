@@ -20,53 +20,41 @@
         </ul>
     {{else}}
 
-    <nav-container>
-        <nav-page label="From Layer">
-            <select-field vm:properties:from="layerProperties" vm:value:bind="layer" />
+        <select-field vm:properties:from="layerProperties" vm:value:bind="layer" />
 
-            {{#if layer}}
+        {{#if layer}}
 
             <select-field vm:properties:from="queryProperties" vm:value:bind="query" /> 
 
             {{#if query}}
-            {{#is query 'spatial'}}
-                <div class="btn-group mt-2">
-                    {{#each buttons}}
-                    <button class="btn btn-default tooltip {{#is type activeButton}}active{{/is}}" data-tooltip="{{tooltip}}" 
-                        type="button" on:el:click="draw(type)"><i class="{{iconClass}}"></i></button>
-                    {{/each}}
-                    {{#if graphicsLength}}
-                    <button class="btn btn-action tooltip" data-tooltip="Clear Selection" on:el:click="clearSelectMultiple">
-                                                <i class="fa fa-trash"></i></button>
-                    <button class="btn btn-primary" on:el:click="searchGraphics">
-                                                <i class="esri-icon-search"></i> Search</button> 
-                    {{/if}}
-                </div>
-                <div class="form-group">
-                    <label class="form-switch">
-                        <input type="checkbox" el:checked:bind="continueDraw">
-                        <i class="form-icon"></i> Enable continuous drawing
-                    </label>
-                </div>
-            {{else}}
-                <form-widget 
-                    vm:isSaving:bind="formIsSaving"
-                    vm:fields:from="selectedQuery.fields" 
-                    vm:formObject:from="queryFormObject" 
-                    on:vm:submit="searchFormSubmit(queryFormObject)" 
-                    on:vm:cancel="reset" />
-            {{/is}}
+                {{#is query 'spatial'}}
+                    <div class="btn-group mt-2">
+                        {{#each buttons}}
+                        <button class="btn btn-default tooltip {{#is type activeButton}}active{{/is}}" data-tooltip="{{tooltip}}" 
+                            type="button" on:el:click="draw(type)"><i class="{{iconClass}}"></i></button>
+                        {{/each}}
+                        {{#if graphicsLength}}
+                        <button class="btn btn-action tooltip" data-tooltip="Clear Selection" on:el:click="clearSelectMultiple">
+                                                    <i class="esri-icon-trash"></i></button>
+                        <button class="btn btn-primary" on:el:click="searchGraphics">
+                                                    <i class="esri-icon-search"></i> Search</button> 
+                        {{/if}}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-switch">
+                            <input type="checkbox" el:checked:bind="continueDraw">
+                            <i class="form-icon"></i> Enable continuous drawing
+                        </label>
+                    </div>
+                {{else}}
+                    <form-widget 
+                        vm:isSaving:bind="formIsSaving"
+                        vm:fields:from="selectedQuery.fields" 
+                        vm:formObject:from="queryFormObject" 
+                        on:vm:submit="searchFormSubmit(queryFormObject)" 
+                        on:vm:cancel="reset" />
+                {{/is}}
             {{/if}}
-            {{/if}}
-        </nav-page>
-
-        {{#if allowCustom}}
-            <nav-page label="Custom Location">
-                <button on:el:inserted="selectCustom" class="btn btn-action tooltip {{#singleActive}}active{{/singleActive}}" 
-                    data-tooltip="Single feature" on:el:click="initSelectSingle">
-                    <i class="fa fa-mouse-pointer"></i></button>
-            </nav-page>
         {{/if}}
-    </nav-container>
     {{/if}}
 </div>

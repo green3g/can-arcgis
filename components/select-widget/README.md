@@ -6,22 +6,42 @@ Each layer provided to the widget may be queried spatially (by default), or by b
 
 ## Usage
 
+stache renderer:
+```html
+<select-widget 
+    view:from="view" 
+    layers:from="layers" 
+    actions:from="actions" />
+```
+
+widget options: 
+
 ```javascript
-var layers = {
-    'san_pipe': {
+options: {
+    layers: {
+        'san_pipe': {
 
-        // url to a feature layer
-        url: `${assets}/8`,
+            // url to a feature layer
+            url: `${assets}/8`,
 
-        // an array of query objects
-        queries: [{
-            value: 'work_zone',
-            label: 'Work Zone',
-            fields: ['work_zone_number'],
-            queryTemplate: `san_zone = 'SECTION {work_zone_number}'`
-        }]
+            // an array of query objects
+            queries: [{
+                value: 'work_zone',
+                label: 'Work Zone',
+                fields: ['work_zone_number'],
+                queryTemplate: `san_zone = 'SECTION {work_zone_number}'`
+            }]
+        },
     },
-};
+    actions: [{
+        label: 'Log Selected Features',
+        iconClass: 'fa fa-announcement',
+        onClick(selectViewModel){
+            const features = vm.graphicsLayer.graphics;
+            console.log(features);
+        }
+    }]
+    //...
 ```
 
 A query object consists of 4 properties. 

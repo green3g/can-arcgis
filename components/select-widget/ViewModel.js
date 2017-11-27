@@ -53,7 +53,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
 
                             // let the view's click event get stopped first, then deactivate
                             setTimeout(() => {
-                                this.activeButton = null;
+                                this.activeButton = null; 
                             });
                         }
                     });
@@ -253,20 +253,6 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     
     selectFeatures (queryProps) {
-        
-
-        if (this.selectedLayer === 'custom') {
-
-            // higlight and insert fake feature
-            this.highlightFeatures([{
-                geometry: queryProps.geometry
-            }]);
-            this.selectedFeatures.replace([{
-                type: 'custom'
-            }]);
-            return;
-        } 
-        const idProp = this.selectedLayer.idProp || 'cid';
         esriPromise([
             'esri/tasks/QueryTask', 
             'esri/tasks/support/Query'
@@ -284,14 +270,16 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
             task.execute(query).then((result) => {
                 this.highlightFeatures(result.features);
                 this.selectedFeatures.replace(result.features.map((f) => {
-                    return f.attributes[idProp];
+                    return f.attributes;
                 }));
 
-                if (!this.selectedFeatures.length) {
-                    this.formIsSaving = false;
-                } else {
+                if (this.selectedFeatures.length) {
                     this.view.goTo(result.features);
                 }
+
+                this.formIsSaving = false;
+            }).otherwise((error) => {
+                console.log(error);
             });
         });
     },

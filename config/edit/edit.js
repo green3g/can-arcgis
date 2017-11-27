@@ -1,10 +1,8 @@
 /**
- * a full featured attribute editing experience
- * configuration not yet available, but planned
- * geometry updates not yet functional but are planned
+ * a full featured attribute editing experience using can-admin form-widget
  */
 
-import '../../components/edit-widget/edit-widget';
+import '../../components/edit-attribute-dialog/edit-attribute-dialog';
 import stache from 'can-stache';
 import pubsub from 'pubsub-js';
 export default {
@@ -34,14 +32,15 @@ export default {
                 outFields: ['*'],
                 popupTemplate: {
 
-                    // add a custom publish call, which calls the edit-widget topic that 
+                    // add a custom publish call, which calls the edit-attribute-dialog topic that 
                     // its subscribed to!
                     actions: [{
                         className: 'esri-icon-edit',
                         title: 'Edit',
                         id: 'edit',
-                        onClick (selected) {
+                        onClick (selected, event, vm) {
                             pubsub.publish('editGraphic', selected);
+                            vm.view.popup.close();
                         }
                     }]
                 }
@@ -51,7 +50,7 @@ export default {
     widgets: [{
         parent: document.body,
         type: 'renderer',
-        renderer: stache('<edit-widget view:from="view" />'),
+        renderer: stache('<edit-attribute-dialog pubsubTopic="editGraphic" />'),
         options: {}
     }]
 };
