@@ -81,7 +81,6 @@ export default DefineMap.extend('EditWidget', {
         });
     },
     setModal (element) {
-        console.log(element);
         this.modal = element;
     }
     
