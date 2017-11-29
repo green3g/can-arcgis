@@ -37,12 +37,7 @@ export default DefineMap.extend('EditWidget', {
             }
 
             if (topic) { 
-                this.pubsubToken = pubsub.subscribe(topic, (tpc, graphic) => {
-                    this.assign({
-                        editGraphic: graphic,
-                        modalVisible: true
-                    });
-                }); 
+                this.pubsubToken = pubsub.subscribe(topic, this.openDialog.bind(this)); 
             } 
             return topic;
         }
@@ -61,6 +56,17 @@ export default DefineMap.extend('EditWidget', {
         }
     },
     isSaving: 'boolean',
+    /**
+     * Opens the edit dialog with a graphics attributes and fields
+     * @param {String} tpc topic name (not used but passed from pubsubjs)
+     * @param {esri/Graphic} graphic the graphic or feature to start editing. The graphic must have a layer property and an attributes property
+     */
+    openDialog (tpc, graphic) {
+        this.assign({
+            editGraphic: graphic,
+            modalVisible: true
+        });
+    },
     submitForm (vm, element, event, attributes) {
         Object.assign(this.editGraphic.attributes, attributes);
         this.editGraphic.layer.applyEdits({

@@ -80,7 +80,8 @@ export default function createWidgets (options) {
                 dev.warn('createWidget::widget needs Constructor option if no type is provided');
                 return;
             }
-            const opts = widgetConfig.options.serialize ? widgetConfig.options.serialize() : assign({}, widgetConfig.options);
+
+            const opts = assign({}, widgetConfig.options);
             const widget = new widgetConfig.Constructor(assign(opts, {
                 view: options.view
             }));
