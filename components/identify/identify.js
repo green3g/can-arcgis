@@ -77,6 +77,9 @@ export default DefineMap.extend({
             }
         });
 
+        // TODO: Remove this settimeout when the popup api bug gets fixed
+        // where there is a race condition between opening the popup on features
+        // and the graphics that are clicked
         setTimeout(() => {
         // after all promises resolve, update the popup
             Promise.all(promises).then((data) => {
@@ -110,7 +113,7 @@ export default DefineMap.extend({
                     }); 
                 }
             });
-        });
+        }, 400);
     },
     assignPopupTemplate (data) {
         const {layerId, result} = data;
