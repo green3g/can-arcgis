@@ -3,14 +3,8 @@ import mapImage from './util/identifyMapImage';
 import dev from 'can-util/js/dev/dev';
 import get from 'can-util/js/get/get';
 import assign from 'can-util/js/assign/assign';
-import stache from 'can-stache';
 import esriPromise from 'esri-promise';
-
-function defaultContent (data) {
-    const node = document.createElement('div');
-    node.appendChild(stache('<property-table vm:object:from="graphic.attributes" />')(data));
-    return node;
-}
+import {makeSentenceCase} from 'can-admin/util/string/string';
 
 const methods = {
     'esri.layers.MapImageLayer': mapImage
@@ -116,7 +110,7 @@ export default DefineMap.extend({
                     }); 
                 }
             });
-        }, 500);
+        });
     },
     assignPopupTemplate (data) {
         const {layerId, result} = data;
@@ -128,7 +122,16 @@ export default DefineMap.extend({
             // mixin props
             props.feature.popupTemplate = assign({
                 title: props.layerName,
-                content: defaultContent
+                content: [{
+                    type: 'fields',
+                    fieldInfos: Object.keys(props.feature.attributes).map((f) => {
+                        return {
+                            fieldName: f,
+                            label: makeSentenceCase(f),
+                            visible: true
+                        };
+                    })
+                }]
             }, template.serialize ? template.serialize() : template);
 
             // return the modified feature
