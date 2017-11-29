@@ -1,7 +1,11 @@
 /**
  * a sample using group layers
  * Layer syntax is the same as mapOptions.layers - simplified
+ * 
+ * This example also demonstrates the use of identifying map image layers
+ * inside of group layers. It works the same as regular layers.
  */
+import Identify from 'can-arcgis/components/identify/identify';
 
 export default {
     debug: true,
@@ -38,5 +42,7 @@ export default {
         type: 'esri',
         parent: 'view',
         position: 'bottom-left'
+    }, {
+        Constructor: Identify
     }]
 };

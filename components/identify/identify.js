@@ -6,7 +6,7 @@ import assign from 'can-util/js/assign/assign';
 import esriPromise from 'esri-promise';
 import {makeSentenceCase} from 'can-admin/util/string/string';
 
-const methods = {
+export const IDENTIFY_METHODS = {
     'esri.layers.MapImageLayer': mapImage
 };
 
@@ -54,14 +54,14 @@ export default DefineMap.extend({
         });
 
         // for each layer, idenitify it, and push a promise
-        this.view.map.layers.forEach((layer) => {
+        this.view.map.allLayers.forEach((layer) => {
             if (!layer.visible) {
                 return;
             }
-            if (methods.hasOwnProperty(layer.declaredClass)) {
+            if (IDENTIFY_METHODS.hasOwnProperty(layer.declaredClass)) {
 
                 // get a promise that should resolve to some identify result
-                const _promise = methods[layer.declaredClass](event, this.view, layer, this.layerInfos);
+                const _promise = IDENTIFY_METHODS[layer.declaredClass](event, this.view, layer, this.layerInfos);
 
                 const promise = new Promise((resolve) => {
                     _promise.then((result) => {
