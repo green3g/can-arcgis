@@ -57,16 +57,21 @@ export default DefineMap.extend('EditWidget', {
     },
     isSaving: 'boolean',
     /**
-     * Opens the edit dialog with a graphics attributes and fields
+     * Opens the edit dialog with the ViewModel properties passed
      * @param {String} tpc topic name (not used but passed from pubsubjs)
-     * @param {esri/Graphic} graphic the graphic or feature to start editing. The graphic must have a layer property and an attributes property
+     * @param {Object} props the attributes to assign to the view model
      */
-    openDialog (tpc, graphic) {
-        this.assign({
-            editGraphic: graphic,
-            modalVisible: true
-        });
+    openDialog (tpc, props) {
+        props.modalVisible = true;
+        this.assign(props);
     },
+    /**
+     * 
+     * @param {FormViewModel} vm the form viewmodel
+     * @param {Element} element form element
+     * @param {Event} event The submit event
+     * @param {Object} attributes The attributes that have been modified
+     */
     submitForm (vm, element, event, attributes) {
         Object.assign(this.editGraphic.attributes, attributes);
         this.editGraphic.layer.applyEdits({

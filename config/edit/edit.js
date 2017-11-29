@@ -39,7 +39,7 @@ export default {
                         title: 'Edit',
                         id: 'edit',
                         onClick (selected, event, vm) {
-                            pubsub.publish('editGraphic', selected);
+                            pubsub.publish('editGraphic', {editGraphic: selected});
                             vm.view.popup.close();
                         }
                     }]
