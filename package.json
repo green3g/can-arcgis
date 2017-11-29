@@ -51,7 +51,8 @@
       "can-arcgis/config/group/group",
       "can-arcgis/config/widgets/widgets",
       "can-arcgis/config/edit/edit",
-      "can-arcgis/config/select/select"
+      "can-arcgis/config/select/select",
+      "can-arcgis/config/map-image/map-image"
     ],
     "paths": {}
   }
