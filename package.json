@@ -18,7 +18,7 @@
     "can-observation": "3.3.6",
     "can-reflect": "1.7.3",
     "can-route": "3.2.4",
-    "can-stache": "3.13.2",
+    "can-stache": "^3.14.2",
     "dgrid": "^1.2.1",
     "esri-loader": "^1.0.0",
     "esri-promise": "github:roemhildtg/esri-promise",
