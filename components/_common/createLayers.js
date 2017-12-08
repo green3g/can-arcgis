@@ -1,5 +1,6 @@
 import esriPromise from 'esri-promise';
 import dev from 'can-util/js/dev/dev';
+
 const TYPES = {
     csv: 'esri/layers/CSVLayer',
     elevation: 'esri/layers/ElevationLayer',
@@ -23,23 +24,37 @@ const TYPES = {
     wmts: 'esri/layers/WMTSLayer'
 };
 
-function initLayerDefaults (layer) {
+export function getDefaultFieldInfos (layer) {
+    return layer.fields ? [{
+        type: 'fields',
+        fieldInfos: layer.fields.map((field) => {
+            return {
+                fieldName: field.name,
+                label: field.alias,
+                visible: true
+            };
+        })
+    }] : undefined;
+}
+
+export function getDefaultPopupTemplate (layer) {
     if (! layer.popupTemplate) { 
         layer.popupTemplate = {}; 
     }
-    Object.assign(layer.popupTemplate, {
+    return {
         title: layer.popupTemplate.title || layer.title || layer.name,
-        content: layer.popupTemplate.content || [{
-            type: 'fields',
-            fieldInfos: layer.fields ? layer.fields.map((field) => {
-                return {
-                    fieldName: field.name,
-                    label: field.alias,
-                    visible: true
-                };
-            }) : undefined
-        }]
-    });
+        content: layer.popupTemplate.content || getDefaultFieldInfos(layer)
+    };
+}
+
+export function assignDefaultPopupTemplate (layer) {
+    if (!layer.popupTemplate) {
+        layer.popupTemplate = {};
+    }
+
+    const template = getDefaultPopupTemplate(layer);
+    
+    Object.assign(layer.popupTemplate, template);
 }
 
 export default function createLayers (layers) {
@@ -63,7 +78,7 @@ export default function createLayers (layers) {
                         });
                         const l = new LayerClass(layerOptions);
                         l.then((readyLayer) => {
-                            initLayerDefaults(readyLayer);
+                            assignDefaultPopupTemplate(readyLayer);
                         }).otherwise((error) => {
                             dev.warn(`layer failed to initialize: ${l.id}`, error);
                         });
@@ -73,7 +88,7 @@ export default function createLayers (layers) {
                 } else { 
                     const l = new LayerClass(layerOptions);
                     l.then((readyLayer) => {
-                        initLayerDefaults(readyLayer);
+                        assignDefaultPopupTemplate(readyLayer);
                     }).otherwise((error) => {
                         dev.warn(`layer failed to initialize: ${l.id}`, error);
                     });
