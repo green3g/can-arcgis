@@ -5,13 +5,22 @@ import decorateAccessor from '../_common/decorateAccessor';
 import pubsub from 'pubsub-js';
 import dev from 'can-util/js/dev/dev';
 
+const editProps = {
+    'update': 'updateFeatures',
+    'add': 'addFeatures'
+};
 
 export default DefineMap.extend('EditWidget', {
     layerInfos: DefineMap,
     modal: '*',
+    editLayer: {},
+    editMode: {value: 'update', type: 'string'},
     editGraphic: {
         set (graphic) {
             decorateAccessor(graphic);
+            if (graphic.layer) {
+                this.editLayer = graphic.layer;
+            }
             return graphic;
         }
     },
@@ -21,8 +30,8 @@ export default DefineMap.extend('EditWidget', {
             if (fields && fields.length) {
                 return fields;
             }
-            if (this.editGraphic) {
-                return convertEsriFields(this.editGraphic.layer.fields);
+            if (this.editLayer) {
+                return convertEsriFields(this.editLayer.fields);
             }
             return [];
         }
@@ -74,9 +83,10 @@ export default DefineMap.extend('EditWidget', {
      */
     submitForm (vm, element, event, attributes) {
         Object.assign(this.editGraphic.attributes, attributes);
-        this.editGraphic.layer.applyEdits({
-            updateFeatures: [this.editGraphic]
-        }).then(() => {
+        const propName = editProps[this.editMode];
+        const params = {};
+        params[propName] = [this.editGraphic];
+        this.editLayer.applyEdits(params).then(() => {
             this.assign({
                 isSaving: false,
                 modalVisible: false
