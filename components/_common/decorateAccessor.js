@@ -31,6 +31,8 @@ function get (obj, name) {
     return current;
 }
 
+export const CANJS_KEY = '__canjs__';
+
 /**
  * Decorate esri's observable type with canjs methods
  * @param {esri/core/Accessor} obj the current object being accessed
@@ -41,29 +43,34 @@ function get (obj, name) {
 export default function decorate (obj, parent = null, path = null) {
     
     // make sure object exists and isn't already decorated through circular references
-    if (!obj || Object.isSealed(obj) || !obj.__accessor__ || obj.canjs) {
+    if (!obj || Object.isSealed(obj) || !obj.__accessor__ || obj[CANJS_KEY]) {
         return obj;
     }
         
-    const handlers = obj.canjs = {
+    const handlers = obj[CANJS_KEY] = {
     };
     obj[canSymbol.for('can.isMapLike')] = true;
 
     // when a value gets unbound, remove its watch handle and the handler
     obj[canSymbol.for('can.offKeyValue')] = function (key, handle) {
+        // console.log('offkeyvalue', key, obj, parent, path);
         if (!handlers[key]) {
-            handlers[key] = [];
+            handlers[key] = {
+                key: key,
+                watch: null,
+                handlers: []
+            };
         }
     
         const handler = handlers[key];
-        if (handler) {
+        if (handler && handler.handlers.length) {
             // remove the handler
             const index = handler.handlers.indexOf(handle);
             handler.handlers.splice(index, 1);
         }
 
         // clean up the watch handle if no handlers
-        if (!handler.handlers.length) {
+        if (!handler.handlers.length && handler.watch) {
             handler.watch.remove();
             handler.watch = null;
         }
@@ -71,20 +78,29 @@ export default function decorate (obj, parent = null, path = null) {
 
     // when a value gets bound, register its handler using `watch`
     obj[canSymbol.for('can.onKeyValue')] = function (key, handler) {
+        // console.log('onkeyvalue', key, obj, parent, path);
+        // console.log(key);
         
         if (!handlers[key]) {
             handlers[key] = {
+                key: key,
                 watch: null,
-                handlers: []
+                handlers: [{
+                    type: 'feature',
+                    options: {
+                        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/6' 
+                    }
+                }]
             };
         }
 
         // register one single watcher
         if (!handlers[key].watch) {
             const watchProp = path ? `${path}.${key}` : key;
-            if (key === 'length') {
+            if (key === 'items') {
                 handlers[key].oldLength = obj.length;
                 handlers[key].watch = obj.on('change', (event) => {
+                    // console.log('--onchange------', event);
                     canBatch.start();
                     handlers[key].handlers.forEach((handle) => {
                         handle(obj.length, handlers[key].oldLength);
@@ -126,6 +142,11 @@ export default function decorate (obj, parent = null, path = null) {
             
     //     };
     // }
+    if (obj.items) {
+        obj.items.forEach((item) => {
+            decorate(item);
+        }); 
+    }
         
     return obj;
 }
