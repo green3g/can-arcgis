@@ -4,8 +4,40 @@ import decorate from '../_common/decorateAccessor';
 import esriPromise from 'esri-promise';
 
 export default DefineMap.extend('DrawWidget', {
-    sketch: '*',
-    sketchHandle: '*',
+    sketch: {
+        type: '*',
+        set (sketch) {
+            if (this.sketch) {
+                this.sketch.destroy();
+            }
+
+            if (sketch) { 
+                this.sketchHandle = sketch.on('draw-complete', (evt) => {
+                    this.graphicsLayer.add(evt.graphic);
+                    if (this.continueDraw) {
+                        sketch.create(this.active);
+                    } else {
+
+                    // let the view's click event get stopped first, then deactivate
+                        setTimeout(() => {
+                            this.active = null; 
+                        });
+                    }
+                }); 
+            }
+
+            return sketch;
+        }
+    },
+    sketchHandle: {
+        type: '*',
+        set (handle) {
+            if (this.sketchHandle) { 
+                this.sketchHandle.remove(); 
+            }
+            return handle;
+        }
+    },
     graphicsLayer: {},
     active: {
         type: 'string',
@@ -41,12 +73,11 @@ export default DefineMap.extend('DrawWidget', {
         set (view) {
             if (this.graphicsLayer && this.view) {
                 // clean up
-                this.view.remove(this.graphicsLayer);
-                this.sketch.destroy();
-                this.sketchHandle.remove();
-                this.sketchHandle = null;
-                this.sketch = null;
+                this.view.map.remove(this.graphicsLayer);
             }
+            this.sketchHandle = null;
+            this.sketch = null;
+            this.viewHandle = null;
 
             if (view) {
                 esriPromise([
@@ -68,18 +99,6 @@ export default DefineMap.extend('DrawWidget', {
                         pointSymbol: graphics.pointSymbol,
                         polylineSymbol: graphics.polylineSymbol,
                         polygonSymbol: graphics.polygonSymbol
-                    });
-                    this.sketchHandle = sketch.on('draw-complete', (evt) => {
-                        this.graphicsLayer.add(evt.graphic);
-                        if (this.continueDraw) {
-                            sketch.create(this.active);
-                        } else {
-
-                            // let the view's click event get stopped first, then deactivate
-                            setTimeout(() => {
-                                this.active = null; 
-                            });
-                        }
                     });
                     this.sketch = sketch;
                 });

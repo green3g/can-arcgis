@@ -12,20 +12,18 @@
     <p class="text-bold">Create {{editLayer.title}}:</p>
 
     
-    {{#if graphicsLayer.graphics.items.length}}
-
-    <form-widget 
-        isSaving:bind="isSaving" 
-        on:submit="submitForm" 
-        on:cancel="cancelForm" 
-        fields:from="editFields"
-        formObject:from="editGraphic" />
+    {{#if(graphicsLayer.graphics.items.length)}}
+        <form-widget 
+            isSaving:bind="isSaving" 
+            on:submit="submitForm" 
+            on:cancel="cancelForm" 
+            fields:from="editFields"
+            formObject:from="editGraphic" />
     {{else}}
         <draw-widget geometries:from="editLayer.geometryType" 
             view:from="view"
             graphicsLayer:bind="graphicsLayer"
             allowContinuous:from="false" />
-
     {{/if}}
 
 {{else}}

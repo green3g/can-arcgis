@@ -2,39 +2,41 @@
     style="background:#fff;width:300px;padding:10px;">
     <p class="text-bold">{{title}}</p>
 
-    {{#if selectedFeatures.length}}
+    {{#if(selectedFeatures.length)}}
         <p>You've selected {{selectedFeatures.length}} features.
-            <button class="btn" type="button" on:el:click="clearGraphics()">Cancel</button>
+            <button class="btn" type="button" on:el:click="clearSelected()">Cancel</button>
         </p>
         <ul class="menu">
             <!-- menu header text -->
             <li class="divider" data-content="Actions" />
             <!-- menu item -->
-            {{#each actions}}
-            <li class="menu-item">
-                <a href="#" on:el:click="onActionClick(.)">
-                    <i class="{{iconClass}}"></i> {{label}}
-                </a>
-            </li>
+            {{#each(actions)}}
+                <li class="menu-item">
+                    <a href="#" on:el:click="onActionClick(.)">
+                        <i class="{{iconClass}}"></i> {{label}}
+                    </a>
+                </li>
             {{/each}}
         </ul>
     {{else}}
 
         <select-field vm:properties:from="layerProperties" vm:value:bind="layer" />
 
-        {{#if layer}}
+        {{#if(layer)}}
 
-            <select-field vm:properties:from="queryProperties" vm:value:bind="query" /> 
+            <select-field 
+                vm:properties:from="queryProperties" 
+                vm:value:bind="query" /> 
 
-            {{#if query}}
-                {{#is query 'spatial'}}
+            {{#if(query)}}
+                {{#eq(query, 'spatial')}}
                     <draw-widget 
                         view:from="view" 
                         graphicsLayer:bind="graphicsLayer" />
                     
-                    {{#if graphicsLayer.graphics.items.length}}
-                    <button class="btn btn-primary" on:el:click="searchGraphics">
-                                                <i class="esri-icon-search"></i> Search</button> 
+                    {{#if(graphicsLayer.graphics.items.length)}}
+                        <button class="btn btn-primary" on:el:click="searchGraphics">
+                            <i class="esri-icon-search"></i> Search</button> 
                     {{/if}}
                 {{else}}
                     <form-widget 
@@ -43,7 +45,7 @@
                         vm:formObject:from="queryFormObject" 
                         on:vm:submit="searchFormSubmit(queryFormObject)" 
                         on:vm:cancel="reset" />
-                {{/is}}
+                {{/eq}}
             {{/if}}
         {{/if}}
     {{/if}}

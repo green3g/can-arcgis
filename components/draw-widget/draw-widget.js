@@ -5,5 +5,10 @@ import ViewModel from './ViewModel';
 export default Component.extend({
     tag: 'draw-widget',
     ViewModel: ViewModel,
-    view: template
+    view: template,
+    events: {
+        removed () {
+            this.viewModel.view = null;
+        }
+    }
 });
