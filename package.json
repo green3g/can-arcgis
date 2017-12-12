@@ -20,7 +20,6 @@
     "can-route": "3.2.4",
     "can-stache": "^3.14.2",
     "dgrid": "^1.2.1",
-    "esri-loader": "^1.0.0",
     "esri-promise": "github:roemhildtg/esri-promise",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
