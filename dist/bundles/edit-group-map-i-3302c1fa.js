@@ -1,2 +1,0 @@
-define("can-admin@0.2.0#util/string/string",["exports","can-util/js/string/string"],function(e,t){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.makeSentenceCase=function(e){return e=String(e),n.default.capitalize(String.prototype.trim.call(e.split("_").join(" ").toLowerCase().replace(/ +/g," ")))};var n=function(e){return e&&e.__esModule?e:{default:e}}(t)});
-//# sourceMappingURL=edit-group-map-i-3302c1fa.js.map
