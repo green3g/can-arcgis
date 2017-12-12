@@ -80,19 +80,24 @@ export default DefineMap.extend('EditWidget', {
      * @param {Element} element form element
      * @param {Event} event The submit event
      * @param {Object} attributes The attributes that have been modified
+     * @returns {Promise} a promise object when the apply edits function resolves
      */
     submitForm (vm, element, event, attributes) {
         Object.assign(this.editGraphic.attributes, attributes);
         const propName = editProps[this.editMode];
         const params = {};
         params[propName] = [this.editGraphic];
-        this.editLayer.applyEdits(params).then(() => {
-            this.assign({
-                isSaving: false,
-                modalVisible: false
+        return new Promise((resolve, reject) => {
+            this.editLayer.applyEdits(params).then(() => {
+                this.assign({
+                    isSaving: false,
+                    modalVisible: false
+                });
+                resolve();
+            }).otherwise((response) => {
+                dev.warn(response);
+                reject(response);
             });
-        }).otherwise((response) => {
-            dev.warn(response);
         });
     },
     cancelForm () {

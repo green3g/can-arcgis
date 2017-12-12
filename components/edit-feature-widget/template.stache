@@ -1,0 +1,56 @@
+{{#if editLayer}}
+
+    <ul class="menu">
+        <li class="menu-item">
+            <a on:click="deactivate()">
+                <i class="esri-icon-left"></i> Back
+            </a>
+        </li>
+    </ul>
+    <br />
+        
+    <p class="text-bold">Create {{editLayer.title}}:</p>
+
+    
+    {{#if graphicsLayer.graphics.items.length}}
+
+    <form-widget 
+        isSaving:bind="isSaving" 
+        on:submit="submitForm" 
+        on:cancel="cancelForm" 
+        fields:from="editFields"
+        formObject:from="editGraphic" />
+    {{else}}
+        <draw-widget geometries:from="editLayer.geometryType" 
+            view:from="view"
+            graphicsLayer:bind="graphicsLayer"
+            allowContinuous:from="false" />
+
+    {{/if}}
+
+{{else}}
+    <ul class="menu">
+        {{#each(view.map.layers.items, layer=value)}}
+            {{#if layer.capabilities.editing.supportsGeometryUpdate}}
+            <li class="menu-item" on:click="activate(layer)">
+                <div class="tile tile-centered">
+                <div class="tile-icon">
+                    <div class="example-tile-icon">
+                    <i class="icon icon-file centered"></i>
+                    </div>
+                </div>
+                <div class="tile-content">
+                    <div class="tile-title">{{layer.title}}</div>
+                    <div class="tile-subtitle text-gray">Type: {{layer.geometryType}}</div>
+                </div>
+                <div class="tile-action">
+                    <button class="btn btn-link">
+                    <i class="esri-icon-right"></i>
+                    </button>
+                </div>
+                </div>
+            </li>
+            {{/if}}
+        {{/each}}
+    </ul>
+{{/if}}
