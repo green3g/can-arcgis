@@ -48,6 +48,10 @@ function addWidget (view, widget) {
 
         widget.parent.appendChild(widget.component);
     }
+
+    if (typeof widget.onCreate === 'function') {
+        widget.onCreate(widget.component);
+    }
 }
 
 export default function createWidgets (options) {
