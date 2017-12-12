@@ -2,6 +2,7 @@ import Component from 'can-component';
 import template from './template.stache';
 import ViewModel from './ViewModel';
 
+import '../draw-widget/draw-widget';
 import 'can-admin/components/form-widget/form-widget';
 import 'can-admin/components/form-widget/field-components/select-field/select-field';
 

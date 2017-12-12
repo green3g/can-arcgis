@@ -4,93 +4,9 @@ import string from 'can-util/js/string/string';
 import esriPromise from 'esri-promise';
 import assignGraphics from '../_common/assignGraphics';
 import reflect from 'can-reflect';
-import {graphics, buttons} from './draw/defaults';
 
 export default DefineMap.extend('SelectWidget', {seal: false}, {
-    sketch: '*',
-    sketchHandle: '*',
-    view: {
-        set (view) {
-            if (this.graphicsLayer && this.view) {
-                // clean up
-                this.view.remove(this.graphicsLayer);
-                this.graphicsLayer = null;
-                this.sketch.destroy();
-                this.sketchHandle.remove();
-                this.sketchHandle = null;
-                this.sketch = null;
-            }
-
-            if (view) {
-                esriPromise([
-                    'esri/layers/GraphicsLayer',
-                    'esri/widgets/Sketch/SketchViewModel'
-                ]).then(([GraphicsLayer, SketchViewModel]) => {
-
-                    // create a graphics layer
-                    const gl = new GraphicsLayer({
-                        title: 'Selection Graphics',
-                        listMode: 'hide'
-                    });
-                    gl.graphics.on('change', () => {
-                        this.graphicsLength = gl.graphics.length;
-                    });
-                    this.graphicsLayer = gl;
-                    view.map.add(gl);
-
-                    // create a sketch view model
-                    const sketch = new SketchViewModel({
-                        view: view,
-                        pointSymbol: graphics.pointSymbol,
-                        polylineSymbol: graphics.polylineSymbol,
-                        polygonSymbol: graphics.polygonSymbol
-                    });
-                    this.sketchHandle = sketch.on('draw-complete', (evt) => {
-                        this.graphicsLayer.add(evt.graphic);
-                        if (this.continueDraw) {
-                            sketch.create(this.activeButton);
-                        } else {
-
-                            // let the view's click event get stopped first, then deactivate
-                            setTimeout(() => {
-                                this.activeButton = null; 
-                            });
-                        }
-                    });
-                    this.sketch = sketch;
-                });
-            }
-            return view;
-        }
-    },
-    viewHandle: {
-        type: '*',
-        set (handle) {
-            if (this.viewHandle) {
-                this.viewHandle.remove();
-            }
-            return handle;
-        }
-    },
-    buttons: {
-        value: buttons
-    },
-    activeButton: {
-        type: 'string',
-        set (type) {
-            if (!type) {
-                this.viewHandle = null;
-                this.sketch.reset();
-                return type;
-            }
-        
-            this.viewHandle = this.view.on('click', (evt) => {
-                evt.stopPropagation();
-            });
-            this.sketch.create(type);
-            return type;
-        }
-    },
+    view: { },
     continueDraw: 'boolean',
     title: {
         value: 'Select Features'
@@ -121,8 +37,6 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
             };
         }
     },
-    // allow the user to submit their own geometries to an action
-    allowCustom: 'htmlbool',
 
     // arcgis server layer props
     layers: DefineMap,
@@ -193,27 +107,8 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     formIsSaving: 'boolean',
     selectedFeatures: {Value: DefineList},
-    graphicsLayer: '*',
-    graphicsLength: 'number',
-    draw (type) {
-        this.activeButton = type === this.activeButton ? null : type;
-    },
-
-    // set layer to custom when custom tab is displayed
-    selectCustom () {
-        this.layer = 'custom';
-    },
+    graphicsLayer: {},
     
-    reset () {
-        if (this.graphicsLayer) {
-            this.graphicsLayer.graphics = [];
-        }
-    },
-    clearSelected () {
-        this.selectedFeatures.replace([]);
-        this.graphicsLayer.graphics.removeAll();
-        this.formIsSaving = false;
-    },
 
     // form query submit
     searchFormSubmit (obj) {
@@ -224,13 +119,16 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     searchGraphics () {
         this.activeButton = null;
-        if (this.graphicsLength === 1) {
+
+        if (this.graphicsLayer.graphics.items.length === 1) {
             this.selectFeatures({
                 geometry: this.graphicsLayer.graphics.getItemAt(0).geometry
             });
-            this.clearSelectMultiple();
-        } else if (this.graphicsLength > 1) {
+            this.clearGraphics();
 
+        } else if (this.graphicsLayer.graphics.items.length > 1) {
+            
+            // if graphics is more than one, we need to union them
             // get the geometries
             const geometries = this.graphicsLayer.graphics.map((g) => {
                 return g.geometry;
@@ -239,7 +137,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
             esriPromise(['esri/geometry/geometryEngine']).then(([geometryEngine]) => {
                 const geom = geometryEngine.union(geometries);
             
-                this.clearSelectMultiple();
+                this.clearGraphics();
                 this.selectFeatures({
                     geometry: geom
                 });
@@ -248,8 +146,14 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         
         
     },
-    clearSelectMultiple () {
+    clearGraphics () {
         this.graphicsLayer.graphics.removeAll();
+    },
+    
+    clearSelected () {
+        this.selectedFeatures.replace([]);
+        this.graphicsLayer.graphics.removeAll();
+        this.formIsSaving = false;
     },
     
     selectFeatures (queryProps) {

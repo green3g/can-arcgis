@@ -1,0 +1,20 @@
+<div class="btn-group mt-2">                        
+    {{#each(geometries, type=value)}}
+        {{#with(button=../buttons[type])}}
+        <button class="btn btn-default tooltip {{#is type ../../active}}active{{/is}}" data-tooltip="{{button.tooltip}}" 
+            type="button" on:el:click="draw(type)"><i class="{{button.iconClass}}"></i></button>
+        {{/with}}
+    {{/each}}
+    {{#if(graphicsLayer.graphics.items.length)}}
+        <button class="btn btn-action tooltip" data-tooltip="Clear Selection" on:el:click="clearGraphics()">
+        <i class="esri-icon-trash"></i></button>
+    {{/if}}
+</div>
+{{#if allowContinuous}}
+    <div class="form-group">
+        <label class="form-switch">
+            <input type="checkbox" el:checked:bind="continueDraw">
+            <i class="form-icon"></i> Enable continuous drawing
+        </label>
+    </div>
+{{/if}}

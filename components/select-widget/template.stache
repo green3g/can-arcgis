@@ -4,7 +4,7 @@
 
     {{#if selectedFeatures.length}}
         <p>You've selected {{selectedFeatures.length}} features.
-            <button class="btn" type="button" on:el:click="clearSelected">Cancel</button>
+            <button class="btn" type="button" on:el:click="clearGraphics()">Cancel</button>
         </p>
         <ul class="menu">
             <!-- menu header text -->
@@ -28,24 +28,14 @@
 
             {{#if query}}
                 {{#is query 'spatial'}}
-                    <div class="btn-group mt-2">
-                        {{#each buttons}}
-                        <button class="btn btn-default tooltip {{#is type activeButton}}active{{/is}}" data-tooltip="{{tooltip}}" 
-                            type="button" on:el:click="draw(type)"><i class="{{iconClass}}"></i></button>
-                        {{/each}}
-                        {{#if graphicsLength}}
-                        <button class="btn btn-action tooltip" data-tooltip="Clear Selection" on:el:click="clearSelectMultiple">
-                                                    <i class="esri-icon-trash"></i></button>
-                        <button class="btn btn-primary" on:el:click="searchGraphics">
-                                                    <i class="esri-icon-search"></i> Search</button> 
-                        {{/if}}
-                    </div>
-                    <div class="form-group">
-                        <label class="form-switch">
-                            <input type="checkbox" el:checked:bind="continueDraw">
-                            <i class="form-icon"></i> Enable continuous drawing
-                        </label>
-                    </div>
+                    <draw-widget 
+                        view:from="view" 
+                        graphicsLayer:bind="graphicsLayer" />
+                    
+                    {{#if graphicsLayer.graphics.items.length}}
+                    <button class="btn btn-primary" on:el:click="searchGraphics">
+                                                <i class="esri-icon-search"></i> Search</button> 
+                    {{/if}}
                 {{else}}
                     <form-widget 
                         vm:isSaving:bind="formIsSaving"

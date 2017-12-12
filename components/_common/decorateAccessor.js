@@ -85,12 +85,7 @@ export default function decorate (obj, parent = null, path = null) {
             handlers[key] = {
                 key: key,
                 watch: null,
-                handlers: [{
-                    type: 'feature',
-                    options: {
-                        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/6' 
-                    }
-                }]
+                handlers: []
             };
         }
 
@@ -103,7 +98,7 @@ export default function decorate (obj, parent = null, path = null) {
                     // console.log('--onchange------', event);
                     canBatch.start();
                     handlers[key].handlers.forEach((handle) => {
-                        handle(obj.length, handlers[key].oldLength);
+                        handle(obj.length, handlers[key].oldLength); 
                     });
                     handlers[key].oldLength = obj.length;
                     canBatch.stop();
@@ -112,7 +107,7 @@ export default function decorate (obj, parent = null, path = null) {
                 handlers[key].watch = (parent || obj).watch(watchProp, (newValue, oldValue, propertyName, target) => {
                     canBatch.start();
                     handlers[key].handlers.forEach((handle) => {
-                        handle(newValue, oldValue);
+                        handle(newValue, oldValue); 
                     });
                     canBatch.stop();
                 }); 
