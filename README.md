@@ -30,7 +30,7 @@ I've worked with cmv, web app builder, and several other web map templates. Each
  - [Editing attributes (editor widget)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!edit) | [edit.js](./config/edit/edit.js)
  - [Selecting features (select/query widget)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!select) | [select.js](./config/select/select.js)
  - [Identify other layers (Identify widget - map image layers)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!map-image) | [map-imageselect.js](./config/map-image/map-image.js)
- - [Access Widgets using onCreate (LayerList - item actions)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!layerlist-actions) | [map-imageselect.js](./config/layerlist-actions.js)
+ - [Access Widgets using onCreate (LayerList - item actions)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!layerlist-actions) | [layerlist-actions.js](./config/layerlist-actions/layerlist-actions.js)
 
 ## Quick Start
 
