@@ -81,7 +81,7 @@ export function getTextType (f) {
  */
 export default function convertEsriFields (esriFields) {
     return esriFields.filter((f) => {
-        return !EXCLUDE[f.type];
+        return f.editable && !EXCLUDE[f.type];
     }).map((f) => {
         const mixin = getMixin(f);
         return Object.assign({
