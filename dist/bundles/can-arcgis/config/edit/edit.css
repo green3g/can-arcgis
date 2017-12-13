@@ -1,2 +1,13 @@
-modal-dialog .modal-dialog-no-backdrop{display:none;-webkit-animation:slide-down .2s;animation:slide-down .2s;max-width:64rem}modal-dialog .modal-dialog-no-backdrop.active{display:block;position:absolute;left:10%;top:10%}
-/*# sourceMappingURL=edit.css.map */
+/*can-admin@0.2.0#components/modal-dialog/modal-dialog.less!steal-less@1.2.2#less*/
+modal-dialog .modal-dialog-no-backdrop {
+  display: none;
+  -webkit-animation: slide-down 0.2s;
+  animation: slide-down 0.2s;
+  max-width: 64rem;
+}
+modal-dialog .modal-dialog-no-backdrop.active {
+  display: block;
+  position: absolute;
+  left: 10%;
+  top: 10%;
+}
