@@ -1,6 +1,2 @@
-/*can-arcgis@1.0.0#components/edit-feature-widget/styles.less!steal-less@1.2.2#less*/
-edit-feature-widget .menu-item .tile:hover {
-  background: #f1f1fc;
-  color: #5755d9;
-  cursor: pointer;
-}
+edit-feature-widget .menu-item .tile:hover{background:#f1f1fc;color:#5755d9;cursor:pointer}
+/*# sourceMappingURL=edit-features.css.map */
