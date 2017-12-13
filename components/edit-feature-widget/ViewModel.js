@@ -9,22 +9,28 @@ export default EditViewModel.extend('EditFeatureWidget', {
             if (this.graphicsLayer && this.graphicsLayer.graphics.length) { 
                 const g = this.graphicsLayer.graphics.items[0];
                 g.attributes = {};
+                this.view.graphics.add(g);
                 return g;
             }
             return {};
         }
     },
     graphicsLayer: {},
+    clearGraphics () {
+        this.view.graphics.remove(this.editGraphic);
+        this.graphicsLayer.graphics.removeAll();
+    },
     activate (layer) {
         this.editLayer = layer;
     },
     deactivate () {
         this.editLayer = null;
+        this.clearGraphics();
         return false;
     },
     submitForm () {
         EditViewModel.prototype.submitForm.apply(this, arguments).then(() => {
-            this.graphicsLayer.graphics.removeAll();
+            this.clearGraphics();
         });
     }
 });

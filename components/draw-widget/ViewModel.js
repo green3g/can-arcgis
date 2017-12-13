@@ -43,8 +43,10 @@ export default DefineMap.extend('DrawWidget', {
         type: 'string',
         set (type) {
             if (!type) {
+                if (this.sketch) {
+                    this.sketch.reset();
+                }
                 this.viewHandle = null;
-                this.sketch.reset();
                 return type;
             }
         

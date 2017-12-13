@@ -1,6 +1,7 @@
 import Component from 'can-component';
 import template from './template.stache';
 import ViewModel from './ViewModel';
+import './styles.less';
 
 import '../draw-widget/draw-widget';
 import 'can-admin/components/form-widget/form-widget';

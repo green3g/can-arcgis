@@ -1,10 +1,8 @@
 {{#if editLayer}}
 
     <ul class="menu">
-        <li class="menu-item">
-            <a on:click="deactivate()">
-                <i class="esri-icon-left"></i> Back
-            </a>
+        <li class="menu-item" on:click="deactivate()">
+            <a><i class="esri-icon-left"></i> Back</a>
         </li>
     </ul>
     <br />
@@ -34,12 +32,11 @@
                 <div class="tile tile-centered">
                 <div class="tile-icon">
                     <div class="example-tile-icon">
-                    <i class="icon icon-file centered"></i>
+                    <i class="esri-icon-{{#eq(layer.geometryType, 'point')}}map-pin{{else}}{{layer.geometryType}}{{/eq}}"></i>
                     </div>
                 </div>
                 <div class="tile-content">
                     <div class="tile-title">{{layer.title}}</div>
-                    <div class="tile-subtitle text-gray">Type: {{layer.geometryType}}</div>
                 </div>
                 <div class="tile-action">
                     <button class="btn btn-link">
