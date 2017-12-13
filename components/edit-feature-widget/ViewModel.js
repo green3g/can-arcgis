@@ -24,13 +24,17 @@ export default EditViewModel.extend('EditFeatureWidget', {
         this.editLayer = layer;
     },
     deactivate () {
-        this.editLayer = null;
         this.clearGraphics();
+        this.editLayer = null;
         return false;
     },
     submitForm () {
         EditViewModel.prototype.submitForm.apply(this, arguments).then(() => {
             this.clearGraphics();
         });
+    },
+    cancelForm () {
+        EditViewModel.prototype.cancelForm.apply(this, arguments);
+        this.clearGraphics();
     }
 });
