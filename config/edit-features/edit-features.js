@@ -4,7 +4,6 @@
 
 import '../../components/edit-feature-widget/edit-feature-widget';
 import stache from 'can-stache';
-import pubsub from 'pubsub-js';
 export default {
     debug: true,
 
@@ -49,11 +48,11 @@ export default {
         }]
     },
     widgets: [{
-        parent: 'expand',
+        parent: 'view',
         position: 'top-right',
         type: 'renderer',
         renderer: stache(`<edit-feature-widget 
-            style="width: 300px;height:500px;background:#fff;padding:10px;display:block;overflow:auto;" 
+            style="width: 300px;max-height:500px;background:#fff;padding:10px;display:block;overflow:auto;" 
             view:from="view" />`
         ),
         options: {}
