@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "arcgis-js-api": "4.5.0",
+    "arcgis-js-api": "^4.5.0",
     "can-admin": "github:roemhildtg/can-admin",
     "can-assign": "1.0.1",
     "can-component": "3.3.6",

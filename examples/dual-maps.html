@@ -1,0 +1,33 @@
+<script type="text/stache" id="app">
+
+    <esri-map view.extent:bind="scope.vars.x" mapOptions:from="mapOptions1" />
+    <esri-map view.extent:bind="scope.vars.x" mapOptions:from="mapOptions2" />
+
+    Center is: {{scope.vars.x.xmin}}, {{scope.vars.x.ymin}}
+
+</script>
+
+<style type="text/css">
+    esri-map {
+        float:left;
+        width: 300px !important;
+    }
+</style>
+
+<script src="../node_modules/steal/steal.js" main="@loader">
+    import stache from 'can-stache';
+    import 'arcgis-js-api/themes/light/main.css';
+    import 'arcgis-js-api/themes/light/view.css';
+    import 'spectre.css';
+    import 'can-stache-bindings';
+    import 'can-arcgis/components/esri-map/esri-map';
+
+    document.body.appendChild(stache.from('app')({
+        mapOptions1: {
+            basemap: 'gray'
+        },
+        mapOptions2: {
+            basemap: 'satellite'
+        }
+    }));
+</script>
