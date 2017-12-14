@@ -1,6 +1,6 @@
 {
   "name": "can-arcgis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A configureable mapping app built with canjs",
   "main": "app/app.js",
   "scripts": {
