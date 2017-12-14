@@ -77,43 +77,38 @@ export default DefineMap.extend({
             }
         });
 
-        // TODO: Remove this settimeout when the popup api bug gets fixed
-        // where there is a race condition between opening the popup on features
-        // and the graphics that are clicked
-        setTimeout(() => {
         // after all promises resolve, update the popup
-            Promise.all(promises).then((data) => {
+        Promise.all(promises).then((data) => {
 
             // reduce and sort to a plain array of features
-                const identifiedFeatures = data.reduce((a, b) => { 
-                    return a.concat(this.assignPopupTemplate(b)); 
-                }, [])
+            const identifiedFeatures = data.reduce((a, b) => { 
+                return a.concat(this.assignPopupTemplate(b)); 
+            }, [])
             
-                    // sort according to distance from map click
-                    .sort((a, b) => {
-                        const geoms = [a, b].map((f) => {
-                            return f.geometry.extent ? f.geometry.extent.center : f.geometry;
-                        });
-                        const distances = geoms.map((geom, index) => {
-                            return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
-                        });
-                        const ret = distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
-                        return ret;
+                // sort according to distance from map click
+                .sort((a, b) => {
+                    const geoms = [a, b].map((f) => {
+                        return f.geometry.extent ? f.geometry.extent.center : f.geometry;
                     });
+                    const distances = geoms.map((geom, index) => {
+                        return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
+                    });
+                    const ret = distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
+                    return ret;
+                });
 
-                // concat with graphics already in the popup
-                const features = this.view.popup.features.concat(identifiedFeatures);
+            // concat with graphics already in the popup
+            const features = this.view.popup.features.concat(identifiedFeatures);
 
-                // open the popup with the given features
-                if (features.length) { 
-                    this.view.popup.open({
-                        selectedFeatureIndex: 0,
-                        features: features,
-                        updateLocationEnabled: true
-                    }); 
-                }
-            });
-        }, 400);
+            // open the popup with the given features
+            if (features.length) { 
+                this.view.popup.open({
+                    selectedFeatureIndex: 0,
+                    features: features,
+                    updateLocationEnabled: true
+                }); 
+            }
+        });
     },
     assignPopupTemplate (data) {
         const {layerId, result} = data;

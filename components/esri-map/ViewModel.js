@@ -29,7 +29,7 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
         set (element) {
             if (!element && this.view) {
                 this.view.destroy();
-                this.set({
+                this.assign({
                     view: null,
                     map: null
                 });
@@ -73,7 +73,9 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
 
 
             // create a map
-            this.map = decorate(new Map(this.mapOptions));
+            if (!this.map) { 
+                this.map = decorate(new Map(this.mapOptions)); 
+            }
 
             // create the view
             this.view = decorate(new MapView(assign({
