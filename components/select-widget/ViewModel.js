@@ -3,12 +3,33 @@ import DefineList from 'can-define/list/list';
 import string from 'can-util/js/string/string';
 import esriPromise from 'esri-promise';
 import assignGraphics from '../_common/assignGraphics';
+import decorate from '../_common/decorateAccessor';
 import reflect from 'can-reflect';
 
 export default DefineMap.extend('SelectWidget', {seal: false}, {
-    view: { },
-    continueDraw: 'boolean',
+    view: { 
+        set (view) {
+            if (this.view) {
+                this.view.map.remove(this.selectGraphicsLayer);
+            }
+
+            if (view) {
+                if (!this.selectGraphicsLayer) {
+                    esriPromise(['esri/layers/GraphicsLayer']).then(([GraphicsLayer]) => {
+                        this.selectGraphicsLayer = decorate(new GraphicsLayer({
+                            listMode: 'hide'
+                        }));
+                        view.map.add(this.selectGraphicsLayer);
+                    });
+                }
+
+            }
+
+            return view;
+        }
+    },
     title: {
+        type: 'string',
         value: 'Select Features'
     },
     // select layer dropdown
@@ -107,7 +128,8 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     formIsSaving: 'boolean',
     selectedFeatures: {Value: DefineList},
-    graphicsLayer: {},
+    drawGraphicsLayer: {},
+    selectGraphicsLayer: {},
     
 
     // form query submit
@@ -120,24 +142,24 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     searchGraphics () {
         this.activeButton = null;
 
-        if (this.graphicsLayer.graphics.items.length === 1) {
+        if (this.drawGraphicsLayer.graphics.items.length === 1) {
             this.selectFeatures({
-                geometry: this.graphicsLayer.graphics.getItemAt(0).geometry
+                geometry: this.drawGraphicsLayer.graphics.getItemAt(0).geometry
             });
-            this.clearGraphics();
+            this.clearDrawing();
 
-        } else if (this.graphicsLayer.graphics.items.length > 1) {
+        } else if (this.drawGraphicsLayer.graphics.items.length > 1) {
             
             // if graphics is more than one, we need to union them
             // get the geometries
-            const geometries = this.graphicsLayer.graphics.map((g) => {
+            const geometries = this.drawGraphicsLayer.graphics.map((g) => {
                 return g.geometry;
             }).toArray();
 
             esriPromise(['esri/geometry/geometryEngine']).then(([geometryEngine]) => {
                 const geom = geometryEngine.union(geometries);
             
-                this.clearGraphics();
+                this.clearDrawing();
                 this.selectFeatures({
                     geometry: geom
                 });
@@ -146,13 +168,13 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         
         
     },
-    clearGraphics () {
-        this.graphicsLayer.graphics.removeAll();
+    clearDrawing () {
+        this.drawGraphicsLayer.graphics.removeAll();
     },
     
     clearSelected () {
-        this.selectedFeatures.replace([]);
-        this.graphicsLayer.graphics.removeAll();
+        this.selectGraphicsLayer.graphics.removeAll();
+        this.drawGraphicsLayer.graphics.removeAll();
         this.formIsSaving = false;
     },
     
@@ -191,14 +213,14 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         
         if (features.length) {
             assignGraphics(features).then((updatedFeatures) => {
-                this.graphicsLayer.removeAll();
-                this.graphicsLayer.addMany(updatedFeatures);
+                this.drawGraphicsLayer.removeAll();
+                this.selectGraphicsLayer.addMany(updatedFeatures);
             });
         }
                         
     },
     onActionClick (action) {
-        action.onClick(this);
+        action.onClick(this.selectGraphicsLayer.graphics, this);
         return false;
     }
     

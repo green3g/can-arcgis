@@ -36,8 +36,7 @@ options: {
     actions: [{
         label: 'Log Selected Features',
         iconClass: 'fa fa-announcement',
-        onClick(selectViewModel){
-            const features = vm.graphicsLayer.graphics;
+        onClick(features, selectViewModel){
             console.log(features);
         }
     }]
@@ -71,3 +70,7 @@ A field object is optional, and may be a simple string which will result in a te
         }
     }]
 ```
+
+### Actions
+
+Actions are the functions to perform on selected features. They are passed two parameters, the collection of graphics (Collection<Graphic>) that were selected, and the select view model, in case you want to modify some selection state. 

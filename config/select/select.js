@@ -4,6 +4,8 @@
 import '../../components/select-widget/select-widget';
 import 'can-admin/components/form-widget/field-components/text-field/text-field';
 import stache from 'can-stache';
+import swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
 
 const layerUrl = 'https://services1.arcgis.com/6bXbLtkf4y11TosO/arcgis/rest/services/Restaurants/FeatureServer/0';
 export default {
@@ -80,11 +82,13 @@ export default {
             actions: [{
                 label: 'Log Selected Features',
                 iconClass: 'esri-icon-announcement',
-                onClick (selectViewModel) {
-                    const graphics = selectViewModel.graphicsLayer.graphics.toArray();
-                    const attributes = selectViewModel.selectedFeatures;
-                    console.log(graphics, attributes);
-                    alert('Check your browser console for feature information');
+                onClick (graphics) {
+                    swal({
+                        title: 'Features',
+                        html: graphics.map((graphic) => {
+                            return `<li>${graphic.attributes.EstablishmentName}</li>`;
+                        }).join('')
+                    });
                 }
             }]
         }

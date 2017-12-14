@@ -1,9 +1,8 @@
 <div class="workorder-picker container" 
     style="background:#fff;width:300px;padding:10px;">
     <p class="text-bold">{{title}}</p>
-
-    {{#if(selectedFeatures.length)}}
-        <p>You've selected {{selectedFeatures.length}} features.
+    {{#if(selectGraphicsLayer.graphics.items.length)}}
+        <p>You've selected {{selectGraphicsLayer.graphics.items.length}} features.
             <button class="btn" type="button" on:el:click="clearSelected()">Cancel</button>
         </p>
         <ul class="menu">
@@ -32,9 +31,9 @@
                 {{#eq(query, 'spatial')}}
                     <draw-widget 
                         view:from="view" 
-                        graphicsLayer:bind="graphicsLayer" />
+                        graphicsLayer:bind="drawGraphicsLayer" />
                     
-                    {{#if(graphicsLayer.graphics.items.length)}}
+                    {{#if(drawGraphicsLayer.graphics.items.length)}}
                         <button class="btn btn-primary" on:el:click="searchGraphics">
                             <i class="esri-icon-search"></i> Search</button> 
                     {{/if}}
