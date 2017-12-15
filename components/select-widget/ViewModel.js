@@ -140,10 +140,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         });
     },
     searchGraphics () {
-        this.assign({
-            message: null,
-            activeButton: null
-        });
+        this.activeButton = null;
 
         if (this.drawGraphicsLayer.graphics.items.length === 1) {
             this.selectFeatures({
@@ -182,6 +179,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     
     selectFeatures (queryProps) {
+        this.message = null;
         esriPromise([
             'esri/tasks/QueryTask', 
             'esri/tasks/support/Query'
