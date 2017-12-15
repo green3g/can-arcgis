@@ -1,6 +1,7 @@
 import EditViewModel from '../edit-attribute-dialog/ViewModel';
 
 export default EditViewModel.extend('EditFeatureWidget', {
+    title: 'Create Features',
     editMode: {value: 'add'},
     view: {},
     editLayer: {},

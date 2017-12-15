@@ -1,3 +1,5 @@
+<p class="text-bold">{{title}}</p>
+
 {{#if editLayer}}
 
     <ul class="menu">
@@ -6,11 +8,9 @@
         </li>
     </ul>
     <br />
-        
-    <p class="text-bold">Create {{editLayer.title}}:</p>
-
     
     {{#if(graphicsLayer.graphics.items.length)}}
+        <p>Add Details:</p>
         <form-widget 
             isSaving:bind="isSaving" 
             on:submit="submitForm" 
@@ -18,10 +18,11 @@
             fields:from="editFields"
             formObject:from="editGraphic" />
     {{else}}
+        <p>Create {{editLayer.title}}:
         <draw-widget geometries:from="editLayer.geometryType" 
             view:from="view"
             graphicsLayer:bind="graphicsLayer"
-            allowContinuous:from="false" />
+            allowContinuous:from="false" /></p>
     {{/if}}
 
 {{else}}
