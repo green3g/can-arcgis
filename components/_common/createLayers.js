@@ -88,7 +88,12 @@ export default function createLayers (layers) {
                 } else { 
                     const l = new LayerClass(layerOptions);
                     l.then((readyLayer) => {
-                        assignDefaultPopupTemplate(readyLayer);
+
+                        // default popup template for feature layers!
+                        if (path === 'esri/layers/FeatureLayer') { 
+                            assignDefaultPopupTemplate(readyLayer); 
+                        }
+                        
                     }).otherwise((error) => {
                         dev.warn(`layer failed to initialize: ${l.id}`, error);
                     });
