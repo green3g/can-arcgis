@@ -4,6 +4,8 @@
 
 import '../../components/edit-feature-widget/edit-feature-widget';
 import stache from 'can-stache';
+import './edit.less';
+
 export default {
     debug: true,
 
@@ -52,9 +54,16 @@ export default {
         position: 'top-right',
         type: 'renderer',
         renderer: stache(`<edit-feature-widget 
-            style="width: 300px;max-height:500px;background:#fff;padding:10px;display:block;overflow:auto;" 
+            layerInfos:from="layerInfos"
             view:from="view" />`
         ),
-        options: {}
+        options: {
+            layerInfos: {
+                workorders: {
+                    // fields: ['test', 'field', {ui: 'datepicker', name: 'test_date', alias: 'Im a date'}] // supply custom fields
+                    // exclude: true //exclude from editing
+                }
+            }
+        }
     }]
 };

@@ -27,26 +27,24 @@
 
 {{else}}
     <ul class="menu">
-        {{#each(view.map.layers.items, layer=value)}}
-            {{#if layer.capabilities.editing.supportsGeometryUpdate}}
-            <li class="menu-item" on:click="activate(layer)">
-                <div class="tile tile-centered">
-                <div class="tile-icon">
-                    <div class="example-tile-icon">
-                    <i class="esri-icon-{{#eq(layer.geometryType, 'point')}}map-pin{{else}}{{layer.geometryType}}{{/eq}}"></i>
-                    </div>
+        {{#each(layers, layer=value)}}
+        <li class="menu-item" on:click="activate(layer)">
+            <div class="tile tile-centered">
+            <div class="tile-icon">
+                <div class="example-tile-icon">
+                <i class="esri-icon-{{#eq(layer.geometryType, 'point')}}map-pin{{else}}{{layer.geometryType}}{{/eq}}"></i>
                 </div>
-                <div class="tile-content">
-                    <div class="tile-title">{{layer.title}}</div>
-                </div>
-                <div class="tile-action">
-                    <button class="btn btn-link">
-                    <i class="esri-icon-right"></i>
-                    </button>
-                </div>
-                </div>
-            </li>
-            {{/if}}
+            </div>
+            <div class="tile-content">
+                <div class="tile-title">{{layer.title}}</div>
+            </div>
+            <div class="tile-action">
+                <button class="btn btn-link">
+                <i class="esri-icon-right"></i>
+                </button>
+            </div>
+            </div>
+        </li>
         {{/each}}
     </ul>
 {{/if}}

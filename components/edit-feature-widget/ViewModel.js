@@ -1,9 +1,25 @@
 import EditViewModel from '../edit-attribute-dialog/ViewModel';
+import canReflect from 'can-reflect';
+import DefineMap from 'can-define/map/map';
+import get from 'can-util/js/get/get';
 
 export default EditViewModel.extend('EditFeatureWidget', {
-    title: 'Create Features',
-    editMode: {value: 'add'},
+    title: {type: 'string', value: 'Create Features'},
+    editMode: {type: 'string', value: 'add'},
+    layerInfos: {Value: DefineMap},
     view: {},
+    layers: {
+        get () {
+            const layers = this.view.map.layers.items;
+            const info = this.layerInfos;
+            return layers.filter((l) => {
+                if (get(info, `${l.id}.exclude`)) {
+                    return false;
+                }
+                return canReflect.getKeyValue(l, 'capabilities.editing.supportsGeometryUpdate');
+            });
+        }
+    },
     editLayer: {},
     editGraphic: {
         get () {
@@ -22,7 +38,11 @@ export default EditViewModel.extend('EditFeatureWidget', {
         this.graphicsLayer.graphics.removeAll();
     },
     activate (layer) {
-        this.editLayer = layer;
+        const info = get(this.layerInfos, `${layer.id}.fields`);
+        this.assign({
+            editLayer: layer,
+            editFields: info ? info : null
+        });
     },
     deactivate () {
         this.clearGraphics();
