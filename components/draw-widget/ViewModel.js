@@ -15,7 +15,9 @@ export default DefineMap.extend('DrawWidget', {
                 this.sketchHandle = sketch.on('draw-complete', (evt) => {
                     this.graphicsLayer.add(evt.graphic);
                     if (this.continueDraw) {
-                        sketch.create(this.active);
+                        setTimeout(() => {
+                            sketch.create(this.active);
+                        });
                     } else {
 
                     // let the view's click event get stopped first, then deactivate
