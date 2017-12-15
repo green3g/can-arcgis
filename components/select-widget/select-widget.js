@@ -5,6 +5,7 @@ import ViewModel from './ViewModel';
 import '../draw-widget/draw-widget';
 import 'can-admin/components/form-widget/form-widget';
 import 'can-admin/components/form-widget/field-components/select-field/select-field';
+import 'can-admin/components/toast-item/toast-item';
 
 export default Component.extend({
     tag: 'select-widget',

@@ -7,6 +7,7 @@ import decorate from '../_common/decorateAccessor';
 import reflect from 'can-reflect';
 
 export default DefineMap.extend('SelectWidget', {seal: false}, {
+    message: 'string',
     view: { 
         set (view) {
             if (this.view) {
@@ -127,7 +128,6 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         Value: DefineMap
     },
     formIsSaving: 'boolean',
-    selectedFeatures: {Value: DefineList},
     drawGraphicsLayer: {},
     selectGraphicsLayer: {},
     
@@ -140,7 +140,10 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         });
     },
     searchGraphics () {
-        this.activeButton = null;
+        this.assign({
+            message: null,
+            activeButton: null
+        });
 
         if (this.drawGraphicsLayer.graphics.items.length === 1) {
             this.selectFeatures({
@@ -194,15 +197,11 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
             });
 
             task.execute(query).then((result) => {
-                this.highlightFeatures(result.features);
-                this.selectedFeatures.replace(result.features.map((f) => {
-                    return f.attributes;
-                }));
-
-                if (this.selectedFeatures.length) {
-                    this.view.goTo(result.features);
+                if (result.features.length) { 
+                    this.highlightFeatures(result.features); 
+                } else {
+                    this.message = 'No features were selected';
                 }
-
                 this.formIsSaving = false;
             }).otherwise((error) => {
                 console.log(error);
@@ -215,6 +214,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
             assignGraphics(features).then((updatedFeatures) => {
                 this.drawGraphicsLayer.removeAll();
                 this.selectGraphicsLayer.addMany(updatedFeatures);
+                this.view.goTo(updatedFeatures);
             });
         }
                         

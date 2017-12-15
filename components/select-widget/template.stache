@@ -1,6 +1,9 @@
 <div class="workorder-picker container" 
     style="background:#fff;width:300px;padding:10px;">
     <p class="text-bold">{{title}}</p>
+    {{#if message}}
+        <toast-item heading:from="'Oops'" body:from="message" severity:from="'warning'" dismissable:from="false" />
+    {{/if}}
     {{#if(selectGraphicsLayer.graphics.items.length)}}
         <p>You've selected {{selectGraphicsLayer.graphics.items.length}} features.
             <button class="btn" type="button" on:el:click="clearSelected()">Cancel</button>
