@@ -5,6 +5,12 @@
 import '../../components/edit-feature-widget/edit-feature-widget';
 import stache from 'can-stache';
 import './edit.less';
+import deleteFeature from '../../actions/deleteFeature';
+import openEditPopup from '../../actions/openEditPopup';
+
+const popupTemplate = {
+    actions: [deleteFeature, openEditPopup]
+};
 
 export default {
     debug: true,
@@ -23,17 +29,20 @@ export default {
         layers: [{
             type: 'feature',
             options: {
-                url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/6' 
+                url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/6',
+                popupTemplate: popupTemplate
             }
         }, {
             type: 'feature',
             options: {
-                url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/8' 
+                url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/8',
+                popupTemplate: popupTemplate
             }
         }, {
             type: 'feature',
             options: {
-                url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/9' 
+                url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/services/Military/FeatureServer/9',
+                popupTemplate: popupTemplate
             }
         }, {
             
@@ -45,7 +54,8 @@ export default {
             options: {
                 url: 'https://services1.arcgis.com/6bXbLtkf4y11TosO/arcgis/rest/services/Restaurants/FeatureServer/0',
                 id: 'workorders',
-                outFields: ['*']
+                outFields: ['*'],
+                popupTemplate: popupTemplate
             }
         }]
     },
