@@ -60,6 +60,11 @@ export default {
         }]
     },
     widgets: [{
+        parent: document.body,
+        type: 'renderer',
+        renderer: stache('<edit-attribute-dialog pubsubTopic="editGraphic" />'),
+        options: {}
+    }, {
         parent: 'view',
         position: 'top-right',
         type: 'renderer',
