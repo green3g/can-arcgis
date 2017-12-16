@@ -2,8 +2,8 @@ import DefineMap from 'can-define/map/map';
 import DefineList from 'can-define/list/list';
 import string from 'can-util/js/string/string';
 import esriPromise from 'esri-promise';
-import assignGraphics from '../_common/assignGraphics';
-import decorate from '../_common/decorateAccessor';
+import assignGraphics from 'can-arcgis/util/assignGraphics';
+import decorate from 'can-arcgis/util/decorateAccessor';
 import reflect from 'can-reflect';
 
 export default DefineMap.extend('SelectWidget', {seal: false}, {

@@ -23,8 +23,8 @@ export const IDENTIFY_METHODS = {
 
 // asynchronously load the geometry engine
 let geometryEngine;
-esriPromise(['esri/geometry/geometryEngine']).then(([engine]) => {
-    geometryEngine = engine;
+esriPromise(['esri/geometry/geometryEngine']).then((modules) => {
+    [geometryEngine] = modules;
 });
 
 /**

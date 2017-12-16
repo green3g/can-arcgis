@@ -1,7 +1,7 @@
 import DefineMap from 'can-define/map/map';
 import DefineList from 'can-define/list/list';
-import convertEsriFields from '../_common/convertEsriFields';
-import decorateAccessor from '../_common/decorateAccessor';
+import convertEsriFields from 'can-arcgis/util/convertEsriFields';
+import decorateAccessor from 'can-arcgis/util/decorateAccessor';
 import pubsub from 'pubsub-js';
 import dev from 'can-util/js/dev/dev';
 

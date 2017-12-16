@@ -1,6 +1,6 @@
 import DefineMap from 'can-define/map/map';
 import {graphics, buttons} from './defaults';
-import decorate from '../_common/decorateAccessor';
+import decorate from 'can-arcgis/util/decorateAccessor';
 import esriPromise from 'esri-promise';
 
 export default DefineMap.extend('DrawWidget', {

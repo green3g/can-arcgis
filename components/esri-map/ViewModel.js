@@ -3,8 +3,8 @@ import assign from 'can-assign';
 import esriPromise from 'esri-promise';
 
 import actions from './util/Actions';
-import createLayers from '../_common/createLayers';
-import decorate from '../_common/decorateAccessor';
+import createLayers from 'can-arcgis/util/createLayers';
+import decorate from 'can-arcgis/util/decorateAccessor';
 
 function serialize (obj) {
     return obj && obj.serialize ? obj.serialize() : obj;

@@ -17,7 +17,7 @@ editDialog.stache template:
 
 ```javascript
 import render from './editDialog.stache'
-import convertEsriFields from 'can-argis/components/_common/convertEsriFields';
+import convertEsriFields from 'can-argis/util/convertEsriFields';
 document.body.appendChild(render({
     graphic: view.popup.selectedFeature
 }));

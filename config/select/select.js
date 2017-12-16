@@ -25,7 +25,7 @@ export default {
         layers: [{
             
             // you can use "type" for a short hand version of the layer path
-            // see [types](../components/_common/createLayers.js) for all the types
+            // see [types](can-arcgis/util/createLayers.js) for all the types
             // or you can provide the full path, like this:
             // path: 'esri/layers/FeatureLayer',
             type: 'feature',

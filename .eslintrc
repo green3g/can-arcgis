@@ -1,5 +1,9 @@
 /* https://github.com/eslint/eslint/tree/master/docs/rules */
 {
+    
+    "ecmaFeatures": {
+        "jsx": true
+    },
     "rules": {
 
         /*
