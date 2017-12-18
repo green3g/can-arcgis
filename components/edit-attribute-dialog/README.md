@@ -8,7 +8,17 @@ A configureable dialog used to edit attributes of a feature or graphic.
 
 Basic usage: 
 
-Render a stache template with the `edit-attribute-dialog` component. 
+Use the can-arcgis application:
+```javascript
+{
+        parent: document.body,
+        type: 'renderer',
+        renderer: stache('<edit-attribute-dialog pubsubTopic="editGraphic" />'),
+        options: {}
+    },
+```
+
+Or render a stache template with the `edit-attribute-dialog` component. 
 
 editDialog.stache template:
 ```html
@@ -37,5 +47,5 @@ import pubsub from 'pubsub-js';
 // other app code
 
 // pass a feature/graphic to the edit widget
-pubsub.publish('editGraphic', view.popup.selectedFeature);
+pubsub.publish('editGraphic', selectedFeature);
 ```
