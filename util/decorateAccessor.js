@@ -142,7 +142,7 @@ export default function decorate (obj, parent = null, path = null, level = 0) {
     // handle collections
     if (obj.items) {
         obj.items.forEach((item) => {
-            decorate(item, level + 1);
+            decorate(item, null, null, level + 1);
         }); 
     }
         
