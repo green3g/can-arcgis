@@ -1,2 +1,0 @@
-define("can-arcgis@0.2.2#config/scene/scene",["exports"],function(e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={debug:!0,mapOptions:{type:"WebScene",portalItem:{id:"b1f8fb3b2fd14cc2a78728de108776b0"}},viewOptions:{type:"SceneView",environment:{lighting:{directShadowsEnabled:!1}}}}});
-//# sourceMappingURL=scene.js.map

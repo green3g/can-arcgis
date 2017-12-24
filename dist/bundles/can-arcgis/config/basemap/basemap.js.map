@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../../config/basemap/basemap.js"],"names":["mapOptions","basemap","baseLayers","title","id","thumbnailUrl","path","options","urlTemplate","subDomains","copyright"],"mappings":"kJAMIA,YACIC,SACIC,aACIC,MAAO,UACPC,GAAI,UACJC,aAAc,+DACdC,KAAM,2BACNC,SACIC,YAAa,qEACbC,YAAa,IAAK,IAAK,IAAK,KAC5BC,UAAW","file":"../../../../../config/basemap/basemap.js"}
