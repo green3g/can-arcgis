@@ -31,19 +31,27 @@ function get (obj, name) {
     return current;
 }
 
+
+// key to store canjs handles on the accessor object
 export const CANJS_KEY = '__canjs__';
+
+// max number of levels to iterate through...prevents max call stack errors on 
+// objects like view.exten.extent.extent.extent.extent....
+export const MAX_LEVEL = 10;
 
 /**
  * Decorate esri's observable type with canjs methods
  * @param {esri/core/Accessor} obj the current object being accessed
  * @param {esri/core/Accessor} parent the root parent accessor object
  * @param {String} path the path to the value of the object from the parent
+ * @param {Number} level the current level of recursion 
  * @returns {esri/core/Accessor} the decorated object or the value if `obj` is not an object
+ * 
  */
-export default function decorate (obj, parent = null, path = null) {
+export default function decorate (obj, parent = null, path = null, level = 0) {
     
     // make sure object exists and isn't already decorated through circular references
-    if (!obj || Object.isSealed(obj) || !obj.__accessor__ || obj[CANJS_KEY]) {
+    if (level > MAX_LEVEL || !obj || Object.isSealed(obj) || !obj.__accessor__ || obj[CANJS_KEY]) {
         return obj;
     }
         
@@ -128,18 +136,13 @@ export default function decorate (obj, parent = null, path = null) {
     // decorate child keys
     obj.keys().forEach((key) => {
         const fullPath = path ? `${path}.${key}` : key;
-        decorate(obj[key], (parent || obj), fullPath);
+        decorate(obj[key], (parent || obj), fullPath, level + 1);
     }); 
 
     // handle collections
-    // if (obj.items) {
-    //     obj[canSymbol.iterator] = function () {
-            
-    //     };
-    // }
     if (obj.items) {
         obj.items.forEach((item) => {
-            decorate(item);
+            decorate(item, null, null, level + 1);
         }); 
     }
         
