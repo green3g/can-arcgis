@@ -23,7 +23,7 @@ I've worked with cmv, web app builder, and several other web map templates. Each
     ES6, commonjs format and `stache` (mustache like) templating language
 
 ## Demos 
- - [Custom popup and actions](https://roemhildtg.github.io/can-arcgis/index-prod.html#!viewer) | [viewer.js](./config/viewer/viewer.js)
+ - [Basic example](https://roemhildtg.github.io/can-arcgis/index-prod.html#!viewer) | [viewer.js](./config/viewer/viewer.js)
  - [Using Esri and CanJS widgets](https://roemhildtg.github.io/can-arcgis/index-prod.html#!widgets) | [widgets.js](./config/widgets/widgets.js)
  - [Using 3d Webmap](https://roemhildtg.github.io/can-arcgis/index-prod.html#!scene) | [scene.js](./config/scene/scene.js)
  - [Using custom basemap](https://roemhildtg.github.io/can-arcgis/index-prod.html#!basemap) | [basemap.js](./config/basemap/basemap.js)
