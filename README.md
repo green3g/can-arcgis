@@ -37,6 +37,8 @@ I've worked with cmv, web app builder, and several other web map templates. Each
 
 ### Install
 
+Install [NodeJS](https://nodejs.org/en/) and [Git](https://git-scm.com/download/), then in a command prompt type:
+
 ```
 git clone https://github.com/this/repo.git
 cd repo
