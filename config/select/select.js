@@ -2,7 +2,7 @@
  * select layers and perform actions on selected features
  */
 import '../../components/select-widget/select-widget';
-import 'can-admin/components/form-widget/field-components/text-field/text-field';
+import 'spectre-canjs/sp-form/fields/sp-text-field/sp-text-field';
 import stache from 'can-stache';
 import swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';

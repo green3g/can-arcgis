@@ -3,10 +3,10 @@ import ViewModel from './ViewModel';
 import template from './template.stache';
 
 // our required field components
-import 'can-admin/components/modal-dialog/modal-dialog';
-import 'can-admin/components/form-widget/form-widget';
-import 'can-admin/components/form-widget/field-components/text-field/text-field';
-import 'can-admin/components/form-widget/field-components/select-field/select-field';
+import 'spectre-canjs/sp-modal/sp-modal';
+import 'spectre-canjs/sp-form/sp-form';
+import 'spectre-canjs/sp-form/fields/sp-text-field/sp-text-field';
+import 'spectre-canjs/sp-form/fields/sp-select-field/sp-select-field';
 
 
 // jquery ui datepicker

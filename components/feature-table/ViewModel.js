@@ -1,23 +1,19 @@
-import ViewModel from 'can-admin/components/list-table/ViewModel';
+import ViewModel from 'spectre-canjs/sp-list-table/ViewModel';
 import esriPromise from 'esri-promise';
 import dev from 'can-util/js/dev/dev';
-
 
 export default ViewModel.extend('FeatureTable', {
     layerId: 'string',
     view: {
-        type: '*', 
         set (view) {
-            view.map.layers.watch('length', () => {
-                const layer = view.map.findLayerById(this.layerId);
-                if (!layer) {
-                    dev.warn('feature-table:layer not found');
-                    return view;
-                }
+            const layer = view.map.findLayerById(this.layerId);
+            if (!layer) {
+                dev.warn('feature-table:layer not found');
+                return view;
+            }
 
-                view.whenLayerView(layer).then((layerView) => {
-                    this.layerView = layerView;
-                });
+            view.whenLayerView(layer).then((layerView) => {
+                this.layerView = layerView;
             });
 
             return view;
