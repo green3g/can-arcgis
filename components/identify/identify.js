@@ -1,10 +1,10 @@
 import DefineMap from 'can-define/map/map';
 import mapImage from './util/identifyMapImage';
 import dev from 'can-util/js/dev/dev';
-import esriPromise from 'esri-promise'; 
+import {loadModules} from 'esri-loader'; 
 // asynchronously load the geometry engine
 let geometryEngine;
-esriPromise(['esri/geometry/geometryEngine']).then((modules) => {
+loadModules(['esri/geometry/geometryEngine']).then((modules) => {
     [geometryEngine] = modules;
 });
 

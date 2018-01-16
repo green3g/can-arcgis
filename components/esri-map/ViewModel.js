@@ -1,6 +1,6 @@
 import DefineMap from 'can-define/map/map';
 import assign from 'can-assign';
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 
 import actions from './util/Actions';
 import createLayers from 'can-arcgis/util/createLayers';
@@ -45,7 +45,7 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
                 // create custom basemaps
                 const defaultBasemap = this.mapOptions.basemap;
                 if (defaultBasemap && typeof defaultBasemap === 'object') {
-                    esriPromise(['esri/Basemap']).then(([Basemap]) => {
+                    loadModules(['esri/Basemap']).then(([Basemap]) => {
                         createLayers(defaultBasemap.baseLayers).then((baseLayers) => {
                             baseLayers = baseLayers.map((bl) => {
                                 return bl.layer;
@@ -69,7 +69,7 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
         const viewType = this.viewOptions.type || 'MapView';
         const mapType = this.mapOptions.type || 'Map';
 
-        esriPromise([`esri/${mapType}`, `esri/views/${viewType}`]).then(([Map, MapView]) => {
+        loadModules([`esri/${mapType}`, `esri/views/${viewType}`]).then(([Map, MapView]) => {
 
 
             // create a map

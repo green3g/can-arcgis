@@ -1,5 +1,5 @@
 import ViewModel from 'spectre-canjs/sp-list-table/ViewModel';
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 import dev from 'can-util/js/dev/dev';
 
 export default ViewModel.extend('FeatureTable', {
@@ -24,7 +24,7 @@ export default ViewModel.extend('FeatureTable', {
         set (layerView) {
             layerView.watch('updating', (updating) => {
                 if (!updating) {
-                    esriPromise(['esri/tasks/support/Query']).then((Query) => {
+                    loadModules(['esri/tasks/support/Query']).then((Query) => {
                         const q = new Query();
                         q.geometry = this.view.extent;
                         layerView.queryFeatures(q).then((result) => {

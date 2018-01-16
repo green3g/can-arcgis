@@ -1,4 +1,4 @@
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 import dev from 'can-util/js/dev/dev';
 
 const TYPES = {
@@ -63,7 +63,7 @@ export default function createLayers (layers) {
         const path = layer.path ? layer.path : TYPES[layer.type] || 'esri/layers/UnknownLayer';
 
         return new Promise((resolve) => {
-            esriPromise([path]).then(([LayerClass]) => {
+            loadModules([path]).then(([LayerClass]) => {
 
                 const layerOptions = Object.assign({}, layer.options, {
                     outFields: ['*']

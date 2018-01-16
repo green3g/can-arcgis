@@ -1,7 +1,7 @@
 import DefineMap from 'can-define/map/map';
 import {graphics, buttons} from './defaults';
 import decorate from 'can-arcgis/util/decorateAccessor';
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 
 export default DefineMap.extend('DrawWidget', {
     sketch: {
@@ -84,7 +84,7 @@ export default DefineMap.extend('DrawWidget', {
             this.viewHandle = null;
 
             if (view) {
-                esriPromise([
+                loadModules([
                     'esri/layers/GraphicsLayer',
                     'esri/widgets/Sketch/SketchViewModel'
                 ]).then(([GraphicsLayer, SketchViewModel]) => {

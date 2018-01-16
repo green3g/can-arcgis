@@ -1,10 +1,10 @@
 const COOKIE_KEY = 'esri_cred';
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 
 /**
- * Checks for local storage support
- * @return {Boolean}  whether or not local storage is supported
- */
+     * Checks for local storage support
+     * @return {Boolean}  whether or not local storage is supported
+     */
 function supportsLocalStorage () {
     try {
         return 'localStorage' in window && window.localStorage !== null;
@@ -14,10 +14,10 @@ function supportsLocalStorage () {
 }
 
 /**
- * initialize the esri identity manager with credentials if they were stored
- * @param {Object} config the loaded config
- * @param {esri/identity/IdentityManager} esriId the esri identity manager 
- */
+     * initialize the esri identity manager with credentials if they were stored
+     * @param {Object} config the loaded config
+     * @param {esri/identity/IdentityManager} esriId the esri identity manager 
+     */
 function loadCredentials (config, esriId) {
     if (config.credentials) {
         esriId.initialize(config.credentials);
@@ -49,9 +49,9 @@ function loadCredentials (config, esriId) {
 }
 
 /**
- * Store the credentials in local storage for next time
- * @param {esri/identity/IdentityManager} esriId the identity manager
- */
+     * Store the credentials in local storage for next time
+     * @param {esri/identity/IdentityManager} esriId the identity manager
+     */
 function storeCredentials (esriId) {
 
     // make sure there are some credentials to persist
@@ -63,23 +63,23 @@ function storeCredentials (esriId) {
     var idString = JSON.stringify(esriId.toJSON());
     // store it client side
     if (supportsLocalStorage()) {
-    // use local storage
+        // use local storage
         window.localStorage.setItem(COOKIE_KEY, idString);
-    // console.log("wrote to local storage");
+        // console.log("wrote to local storage");
     } else {
         // use a cookie
         // cookie(this.key, idString, {
         //     expires: 1
         // });
-    // console.log("wrote a cookie :-/");
+        // console.log("wrote a cookie :-/");
     }
 }
 
 /**
- * clears existing credentials from local storage or cookie. Essentially
- * like a logout function, except it doesn't remove credentials from memory
- * in the identity manager
- */
+     * clears existing credentials from local storage or cookie. Essentially
+     * like a logout function, except it doesn't remove credentials from memory
+     * in the identity manager
+     */
 export function clearCredentials () {
     if (supportsLocalStorage()) {
         window.localStorage.removeItem(COOKIE_KEY);
@@ -88,14 +88,14 @@ export function clearCredentials () {
     }
 }
 
-        
+            
 export default {
     postConfig (vm) {
 
         // return a promise that loads the identity manager
         return new Promise((resolve) => {
-            esriPromise(['esri/identity/IdentityManager']).then(([esriId]) => {
-         
+            loadModules(['esri/identity/IdentityManager']).then(([esriId]) => {
+            
                 //remember credentials once they're created
                 esriId.on('credential-create', () => {
                     storeCredentials(esriId);

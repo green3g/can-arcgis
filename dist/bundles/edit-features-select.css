@@ -1,2 +1,2 @@
-form-widget file-field:not(:last-child) .form-group,form-widget json-field:not(:last-child) .form-group,form-widget select-field:not(:last-child) .form-group,form-widget text-field:not(:last-child) .form-group{margin-bottom:1rem}
+sp-form json-field:not(:last-child) .form-group,sp-form sp-file-field:not(:last-child) .form-group,sp-form sp-select-field:not(:last-child) .form-group,sp-form sp-text-field:not(:last-child) .form-group{margin-bottom:1rem}
 /*# sourceMappingURL=edit-features-select.css.map */

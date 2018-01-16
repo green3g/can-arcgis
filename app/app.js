@@ -13,8 +13,10 @@ import 'can-stache-bindings';
 import route from 'can-route';
 import dev from 'can-util/js/dev/dev';
 
-import {esriBootstrap} from 'esri-promise';
-esriBootstrap('https://js.arcgis.com/4.6/');
+import {loadScript} from 'esri-loader';
+loadScript({
+    url: 'https://js.arcgis.com/4.6/'
+});
 
 // init dojo config
 import '../config/dojoConfig';

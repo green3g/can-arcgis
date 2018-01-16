@@ -1,4 +1,4 @@
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 import assign from 'can-util/js/assign/assign';
 function constructWidget (WidgetClass, widgetConfig, options, callback, resolve) {
     
@@ -20,7 +20,7 @@ function constructWidget (WidgetClass, widgetConfig, options, callback, resolve)
 export default function createEsriWidget (view, widgetConfig, callback) {
     return new Promise((resolve) => {
 
-        esriPromise([widgetConfig.path]).then(([WidgetClass]) => {
+        loadModules([widgetConfig.path]).then(([WidgetClass]) => {
 
             // if optionsPromise, wait for options, then construct widget
             if (widgetConfig.optionsPromise) {
