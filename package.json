@@ -54,7 +54,8 @@
       "can-arcgis/config/select/select",
       "can-arcgis/config/map-image/map-image",
       "can-arcgis/config/layerlist-actions/layerlist-actions",
-      "can-arcgis/config/edit-features/edit-features"
+      "can-arcgis/config/edit-features/edit-features",
+      "can-arcgis/config/options-promise/options-promise"
     ],
     "paths": {}
   }
