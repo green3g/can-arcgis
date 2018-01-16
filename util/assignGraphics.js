@@ -1,9 +1,9 @@
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 
 // assigns a default set of graphics to features
 export default function getGraphics (features) {
     return new Promise((resolve) => {
-        esriPromise([
+        loadModules([
             'esri/symbols/SimpleMarkerSymbol',
             'esri/symbols/SimpleLineSymbol',
             'esri/symbols/SimpleFillSymbol'
@@ -16,13 +16,13 @@ export default function getGraphics (features) {
                     symbol = new SimpleLineSymbol({
                         color: '#de4343',
                         width: '5px',
-                        style: "solid"
+                        style: 'solid'
                     });
                     break;
                 case 'polygon': 
                     symbol = new SimpleFillSymbol({
                         color: '#de4343',
-                        style: "solid",
+                        style: 'solid',
                         outline: { // autocasts as esri/symbols/SimpleLineSymbol
                             color: '#000',
                             width: 1
@@ -32,10 +32,10 @@ export default function getGraphics (features) {
                 case 'point':
                 default:
                     symbol = new SimpleMarkerSymbol({
-                        color: "red",
+                        color: 'red',
                         outline: {
                             color: '#000',
-                            width: "0.5px"
+                            width: '0.5px'
                         }
                     });
                 }

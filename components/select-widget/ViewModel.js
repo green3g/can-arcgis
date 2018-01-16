@@ -1,7 +1,7 @@
 import DefineMap from 'can-define/map/map';
 import DefineList from 'can-define/list/list';
 import string from 'can-util/js/string/string';
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 import assignGraphics from 'can-arcgis/util/assignGraphics';
 import decorate from 'can-arcgis/util/decorateAccessor';
 import reflect from 'can-reflect';
@@ -16,7 +16,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
 
             if (view) {
                 if (!this.selectGraphicsLayer) {
-                    esriPromise(['esri/layers/GraphicsLayer']).then(([GraphicsLayer]) => {
+                    loadModules(['esri/layers/GraphicsLayer']).then(([GraphicsLayer]) => {
                         this.selectGraphicsLayer = decorate(new GraphicsLayer({
                             listMode: 'hide'
                         }));
@@ -156,7 +156,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
                 return g.geometry;
             }).toArray();
 
-            esriPromise(['esri/geometry/geometryEngine']).then(([geometryEngine]) => {
+            loadModules(['esri/geometry/geometryEngine']).then(([geometryEngine]) => {
                 const geom = geometryEngine.union(geometries);
             
                 this.clearDrawing();
@@ -180,7 +180,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     
     selectFeatures (queryProps) {
         this.message = null;
-        esriPromise([
+        loadModules([
             'esri/tasks/QueryTask', 
             'esri/tasks/support/Query'
         ]).then(([QueryTask, Query]) => {

@@ -1,11 +1,11 @@
 // import a custom alert js library for our action
 import swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 
 export default function (event) {
     swal.showLoading();
-    esriPromise(['esri/request']).then(([Request]) => {
+    loadModules(['esri/request']).then(([Request]) => {
         new Request(event.item.layer.url, {
             query: {f: 'json'},
             responseType: 'json'

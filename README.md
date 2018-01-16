@@ -29,7 +29,7 @@ I've worked with cmv, web app builder, and several other web map templates. Each
  - [Using custom basemap](https://roemhildtg.github.io/can-arcgis/index-prod.html#!basemap) | [basemap.js](./config/basemap/basemap.js)
  - [Using group layers](https://roemhildtg.github.io/can-arcgis/index-prod.html#!group) | [group.js](./config/group/group.js)
  - [Selecting features (select/query widget)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!select) | [select.js](./config/select/select.js)
- - [Identify other layers (Identify widget - map image layers)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!map-image) | [map-imageselect.js](./config/map-image/map-image.js)
+ - [Identify other layers (Identify widget - map image layers)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!map-image) | [map-image.js](./config/map-image/map-image.js)
  - [Access Widgets using onCreate (LayerList - item actions)](https://roemhildtg.github.io/can-arcgis/index-prod.html#!layerlist-actions) | [layerlist-actions.js](./config/layerlist-actions/layerlist-actions.js)
  - [Edit and Create Features](https://roemhildtg.github.io/can-arcgis/index-prod.html#!edit-features) | [edit-features.js](./config/edit-features/edit-features.js)
 
@@ -176,7 +176,7 @@ Example: configuring a BasemapToggle widget with `optionsPromise`:
 
 ```javascript
 // viewer.js config file
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 
 export default {
     // ...
@@ -189,7 +189,7 @@ export default {
     position: 'top-left',
     iconClass: 'esri-icon-basemap',
     optionsPromise: new Promise((resolve) => {
-        esriPromise([
+        loadModules([
             'esri/Basemap', 
             'esri/layers/TileLayer',
             'esri/layers/MapImageLayer'

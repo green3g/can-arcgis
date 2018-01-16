@@ -5,6 +5,7 @@
   "main": "app/app.js",
   "scripts": {
     "start": "live-server --no-browser",
+    "build": "node build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -20,7 +21,6 @@
     "can-stache": "^3.14.8",
     "dgrid": "^1.2.1",
     "esri-loader": "^2.0.0",
-    "esri-promise": "github:roemhildtg/esri-promise",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
     "object-assign": "^4.1.1",

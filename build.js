@@ -10,7 +10,6 @@ stealTools.build({
 
     // ignore dojo modules
     ignore: [
-        'esri'
     ]
     
 });

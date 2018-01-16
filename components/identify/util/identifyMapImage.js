@@ -1,4 +1,4 @@
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 import get from 'can-util/js/get/get';
 import assign from 'can-util/js/assign/assign';
 import {makeSentenceCase} from 'spectre-canjs/util/string/string';
@@ -34,7 +34,7 @@ function assignPopupTemplate (data, popupTemplates, layer) {
 export default function identify (event, layer, scope) {
     return new Promise((resolve) => {
         
-        esriPromise([
+        loadModules([
             'esri/tasks/support/IdentifyParameters', 
             'esri/tasks/IdentifyTask'
         ]).then(([IdentifyParameters, IdentifyTask]) => {

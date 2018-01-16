@@ -1,7 +1,7 @@
 import dev from 'can-util/js/dev/dev';
 import createEsriWidget from './createEsriWidget';
 import createRendererWidget from './createRendererWidget';
-import esriPromise from 'esri-promise';
+import {loadModules} from 'esri-loader';
 import assign from 'can-util/js/assign/assign';
 
 const DEFAULT_POSITION = 'top-left',
@@ -12,7 +12,7 @@ function addWidget (view, widget) {
     case 'expand': 
         // expand type widget. places a widget inside a expand wrapper that is toggle able and mobile friendly
         // https://developers.arcgis.com/javascript/latest/sample-code/widgets-expand/index.html
-        esriPromise(['esri/widgets/Expand']).then(([Expand]) => {
+        loadModules(['esri/widgets/Expand']).then(([Expand]) => {
             const expand = new Expand(assign({
 
                 // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
