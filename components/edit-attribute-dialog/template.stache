@@ -7,5 +7,5 @@
         object:from="editGraphic.attributes" 
         on:submit="submitForm" 
         on:cancel="cancelForm" 
-        fields:from="editFields" />
+        fields:from="editFields"></sp-form>
 </sp-modal>
