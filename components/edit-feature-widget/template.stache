@@ -11,18 +11,18 @@
     
     {{#if(graphicsLayer.graphics.items.length)}}
         <p>Add Details:</p>
-        <form-widget 
+        <sp-form 
             isSaving:bind="isSaving" 
             on:submit="submitForm" 
             on:cancel="cancelForm" 
             fields:from="editFields"
-            formObject:from="editGraphic" />
+            object:from="editGraphic"></sp-form>
     {{else}}
         <p>Create {{editLayer.title}}:
         <draw-widget geometries:from="editLayer.geometryType" 
             view:from="view"
             graphicsLayer:bind="graphicsLayer"
-            allowContinuous:from="false" /></p>
+            allowContinuous:from="false"></draw-widget></p>
     {{/if}}
 
 {{else}}

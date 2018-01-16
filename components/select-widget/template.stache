@@ -22,13 +22,13 @@
         </ul>
     {{else}}
 
-        <select-field vm:properties:from="layerProperties" vm:value:bind="layer" />
+        <select-field properties:from="layerProperties" value:bind="layer" />
 
         {{#if(layer)}}
 
             <select-field 
-                vm:properties:from="queryProperties" 
-                vm:value:bind="query" /> 
+                properties:from="queryProperties" 
+                value:bind="query" /> 
 
             {{#if(query)}}
                 {{#eq(query, 'spatial')}}
@@ -41,12 +41,12 @@
                             <i class="esri-icon-search"></i> Search</button> 
                     {{/if}}
                 {{else}}
-                    <form-widget 
-                        vm:isSaving:bind="formIsSaving"
-                        vm:fields:from="selectedQuery.fields" 
-                        vm:formObject:from="queryFormObject" 
-                        on:vm:submit="searchFormSubmit(queryFormObject)" 
-                        on:vm:cancel="reset" />
+                    <sp-form 
+                        isSaving:bind="formIsSaving"
+                        fields:from="selectedQuery.fields" 
+                        object:from="queryFormObject" 
+                        on:submit="searchFormSubmit(queryFormObject)" 
+                        on:cancel="reset" />
                 {{/eq}}
             {{/if}}
         {{/if}}

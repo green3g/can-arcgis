@@ -26,9 +26,9 @@ const EXCLUDE = {
  */
 function getFieldType (f) {
     if (f.domain) {
-        return 'select';
+        return 'sp-select-field';
     }
-    return 'text';
+    return 'sp-text-field';
 }
 
 /**
@@ -40,7 +40,7 @@ export function getMixin (f) {
     let mixin = {};
     if (f.domain && f.domain.codedValues) {
         mixin = {
-            type: 'select',
+            fieldTag: 'sp-select-field',
             options: f.domain.codedValues.map((item) => {
                 return {
                     label: item.name,
@@ -52,7 +52,6 @@ export function getMixin (f) {
 
     if (f.type === 'date') {
         mixin = {
-            type: 'text',
             ui: 'datepicker',
             uiOptions: {
                 yearRange: '1900:2050',
@@ -87,7 +86,7 @@ export default function convertEsriFields (esriFields) {
         return Object.assign({
             name: f.name,
             alias: f.alias,
-            fieldType: getFieldType(f),
+            fieldTag: getFieldType(f),
             textType: getTextType(f.type)
         }, mixin);
     });

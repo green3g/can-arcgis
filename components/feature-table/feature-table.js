@@ -1,5 +1,5 @@
 import './feature-table.less';
-import ListTable from 'can-admin/components/list-table/list-table';
+import ListTable from 'spectre-canjs/sp-list-table/sp-list-table';
 import ViewModel from './ViewModel';
 export default ListTable.extend({
     tag: 'feature-table',

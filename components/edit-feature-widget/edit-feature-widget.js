@@ -4,9 +4,9 @@ import ViewModel from './ViewModel';
 import './styles.less';
 
 import '../draw-widget/draw-widget';
-import 'can-admin/components/form-widget/form-widget';
-import 'can-admin/components/form-widget/field-components/text-field/text-field';
-import 'can-admin/components/form-widget/field-components/select-field/select-field';
+import 'spectre-canjs/sp-form/sp-form';
+import 'spectre-canjs/sp-form/fields/sp-text-field/sp-text-field';
+import 'spectre-canjs/sp-form/fields/sp-select-field/sp-select-field';
 import 'jquery';
 import 'jquery-ui';
 import 'jquery-ui/ui/widgets/datepicker';

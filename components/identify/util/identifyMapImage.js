@@ -1,7 +1,7 @@
 import esriPromise from 'esri-promise';
 import get from 'can-util/js/get/get';
 import assign from 'can-util/js/assign/assign';
-import {makeSentenceCase} from 'can-admin/util/string/string';
+import {makeSentenceCase} from 'spectre-canjs/util/string/string';
 
 
 function assignPopupTemplate (data, popupTemplates, layer) {

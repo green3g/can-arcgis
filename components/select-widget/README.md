@@ -52,7 +52,7 @@ A query object consists of 4 properties.
 
 ### Field Objects
 
-A field object is optional, and may be a simple string which will result in a text field. If an object is provided, it may be any of the field properties that are used in [can-admin](https://github.com/roemhildtg/can-admin). For example, to configure a select dropdown, you may use the following:
+A field object is optional, and may be a simple string which will result in a text field. If an object is provided, it may be any of the field properties that are used in [spectre-canjs](https://github.com/roemhildtg/spectre-canjs). For example, to configure a select dropdown, you may use the following:
 
 ```javascript
     fields: [{
