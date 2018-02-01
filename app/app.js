@@ -28,6 +28,7 @@ export default DefineMap.extend('App',
          * hooks to run
          */
         hooks: {
+            serialize: false,
             get () {
                 return hooks;
             },
