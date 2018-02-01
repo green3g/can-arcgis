@@ -1,6 +1,6 @@
 if(typeof steal === "undefined") steal = {};
 steal.bundlesPath = "bundles";
-steal.main = "can-arcgis/app/app";
+steal.main = "can-arcgis/index";
 steal.configMain = "package.json!npm";
 /*
  *  steal v1.6.3

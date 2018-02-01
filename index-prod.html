@@ -22,10 +22,9 @@
             }
         };
     </script>
-    <script src="dist/steal.production.js" data-main="can-arcgis/app/app">
-        steal.import('can-arcgis/app/app').then(function(module){
-            var AppViewModel = module.default;
-            new AppViewModel();
+    <script src="dist/steal.production.js" data-main="can-arcgis/index">
+        steal.import('can-arcgis/index').then(module => {
+            module.default(null, true);
         });
     </script>
 

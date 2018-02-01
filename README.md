@@ -248,7 +248,7 @@ Now you can copy the output `dist` folder and `index.html` to production.
 ## Hooks 
 
 Hooks are available to customize the core of this app. Hooks may be added or removed via the 
-`app/extensions.js` config file.
+`app/hooks.js` config file.
 
 Hooks are simple modules that export an object with one or more 
 of the following methods. All methods accept a parameter based on the hook, and should return a promise that resolves to the same parameter. This ensures each hook is run sequentially, even if they are async. 

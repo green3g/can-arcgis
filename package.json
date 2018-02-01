@@ -2,7 +2,7 @@
   "name": "can-arcgis",
   "version": "0.3.0",
   "description": "A configureable mapping app built with canjs",
-  "main": "app/app.js",
+  "main": "index.js",
   "scripts": {
     "start": "live-server --no-browser",
     "build": "node build",

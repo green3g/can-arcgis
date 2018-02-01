@@ -1,0 +1,2 @@
+define("can-arcgis@0.3.0#config/secure/secure",["exports"],function(e){"use strict";Object.defineProperty(e,"__esModule",{value:!0}),e.default={mapOptions:{basemap:"topo",layers:[{type:"feature",options:{url:"https://sampleserver6.arcgisonline.com/arcgis/rest/services/SaveTheBay/FeatureServer/0"}}]},viewOptions:{center:[-120.723,35.165],zoom:12}}});
+//# sourceMappingURL=secure.js.map

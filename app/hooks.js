@@ -1,3 +1,3 @@
-import auth from './extensions/authentication';
+import auth from './hooks/authentication';
 
 export default [auth];
