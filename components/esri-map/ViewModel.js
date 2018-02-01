@@ -1,5 +1,4 @@
 import DefineMap from 'can-define/map/map';
-import assign from 'can-assign';
 import {loadModules} from 'esri-loader';
 
 import actions from './util/Actions';
@@ -62,7 +61,7 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
                             baseLayers = baseLayers.map((bl) => {
                                 return bl.layer;
                             });
-                            this.mapOptions.basemap = new Basemap(assign(defaultBasemap, {
+                            this.mapOptions.basemap = new Basemap(Object.assign(defaultBasemap, {
                                 baseLayers: baseLayers
                             }));
                             this.createMap(element);
@@ -90,7 +89,7 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
             }
 
             // create the view
-            this.view = decorate(new MapView(assign({
+            this.view = decorate(new MapView(Object.assign({
                 container: element,
                 map: this.map
             }, this.viewOptions)));

@@ -202,6 +202,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
                 }
                 this.formIsSaving = false;
             }).otherwise((error) => {
+                // eslint-disable-next-line
                 console.log(error);
             });
         });
@@ -217,7 +218,10 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         }
                         
     },
-    onActionClick (action) {
+    onActionClick (action, event) {
+        if (event) {
+            event.preventDefault();
+        }
         action.onClick(this.selectGraphicsLayer.graphics, this);
         return false;
     }

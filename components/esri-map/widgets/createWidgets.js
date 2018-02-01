@@ -61,6 +61,9 @@ function addWidget (view, widget) {
  * @param {Array<Object>} options.widgets The array of json widget objects
  */
 export default function createWidgets (options) {
+    if (!options.view) {
+        return;
+    }
     const promises = [];
 
     

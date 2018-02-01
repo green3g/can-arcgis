@@ -1,3 +1,5 @@
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.css';
 
 export const TEXT_TYPES = {
     'small-integer': 'number',
@@ -40,7 +42,7 @@ export function getMixin (f) {
     let mixin = {};
     if (f.domain && f.domain.codedValues) {
         mixin = {
-            fieldTag: 'sp-select-field',
+            editTag: 'sp-select-field',
             options: f.domain.codedValues.map((item) => {
                 return {
                     label: item.name,
@@ -52,7 +54,9 @@ export function getMixin (f) {
 
     if (f.type === 'date') {
         mixin = {
-            ui: 'datepicker',
+            onInsert (el) {
+                flatpickr(el);
+            },
             uiOptions: {
                 yearRange: '1900:2050',
                 changeMonth: true,
@@ -86,7 +90,7 @@ export default function convertEsriFields (esriFields) {
         return Object.assign({
             name: f.name,
             alias: f.alias,
-            fieldTag: getFieldType(f),
+            editTag: getFieldType(f),
             textType: getTextType(f.type)
         }, mixin);
     });

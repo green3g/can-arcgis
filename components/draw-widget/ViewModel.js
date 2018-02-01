@@ -75,7 +75,7 @@ export default DefineMap.extend('DrawWidget', {
     continueDraw: {value: false, type: 'boolean'},
     view: {
         set (view) {
-            if (this.graphicsLayer && this.view) {
+            if (this.graphicsLayer && this.view && this.view.map) {
                 // clean up
                 this.view.map.remove(this.graphicsLayer);
             }

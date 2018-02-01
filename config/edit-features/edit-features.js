@@ -75,7 +75,7 @@ export default {
         options: {
             layerInfos: {
                 workorders: {
-                    // fields: ['test', 'field', {ui: 'datepicker', name: 'test_date', alias: 'Im a date'}] // supply custom fields
+                    // fields: ['test', ] // supply custom fields
                     // exclude: true //exclude from editing
                 }
             }

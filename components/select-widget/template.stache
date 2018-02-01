@@ -14,7 +14,7 @@
             <!-- menu item -->
             {{#each(actions)}}
                 <li class="menu-item">
-                    <a href="#" on:el:click="onActionClick(.)">
+                    <a href="#" on:el:click="onActionClick(., scope.event)">
                         <i class="{{iconClass}}"></i> {{label}}
                     </a>
                 </li>
@@ -22,11 +22,11 @@
         </ul>
     {{else}}
 
-        <select-field properties:from="layerProperties" value:bind="layer" />
+        <sp-select-field properties:from="layerProperties" value:bind="layer" />
 
         {{#if(layer)}}
 
-            <select-field 
+            <sp-select-field 
                 properties:from="queryProperties" 
                 value:bind="query" /> 
 

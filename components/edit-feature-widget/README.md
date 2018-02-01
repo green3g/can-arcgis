@@ -15,7 +15,7 @@ Create new geometries and attributes
         options: {
             layerInfos: {
                 workorders: { // feature layer id
-                    // fields: ['test', 'field', {ui: 'datepicker', name: 'test_date', alias: 'Im a date'}] // supply custom fields
+                    // fields: ['test', 'field', {onInsert(el){flatpickr(el); }, name: 'test_date', alias: 'Im a date'}] // supply custom fields
                     // exclude: true //exclude from editing
                 }
             }
