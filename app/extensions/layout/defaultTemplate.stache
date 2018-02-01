@@ -1,7 +1,0 @@
-{{#if configured}}    
-    <esri-map mapOptions:from="config.mapOptions"  viewOptions:from="config.viewOptions" view:to="view" />
-{{/if}}
-
-{{#unless view}}
-    <div class="loading" />
-{{/unless}}

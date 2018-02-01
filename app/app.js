@@ -1,9 +1,6 @@
 import DefineMap from 'can-define/map/map';
-import extensions from './extensions';
-import isPromiseLike from 'can-util/js/is-promise-like/is-promise-like';
-import defaultTemplate from './extensions/layout/defaultTemplate.stache';
-import get from 'can-util/js/get/get';
-
+import DefineList from 'can-define/list/';
+import steal from '@loader';
 import '../components/esri-map/esri-map';
 import './styles.less';
 import 'arcgis-js-api/themes/light/main.css';
@@ -11,7 +8,8 @@ import 'arcgis-js-api/themes/light/view.css';
 import 'spectre.css';
 import 'can-stache-bindings';
 import route from 'can-route';
-import dev from 'can-util/js/dev/dev';
+
+import hooks from './hooks';
 
 import {loadScript} from 'esri-loader';
 loadScript({
@@ -25,150 +23,93 @@ export default DefineMap.extend('App',
 
     //allow extra props to be added to viewmodel from template or other
     {seal: false}, {
+
+        /**
+         * hooks to run
+         */
+        hooks: {
+            get () {
+                return hooks;
+            },
+            Type: DefineList
+        },
         configRoot: {
             value: 'can-arcgis/config',
             serialize: false
         },
-        domNode: {
-            value: 'app',
-            serialize: false
-        },
-        extensions: {
-            type: '*',
-            value: extensions,
-            serialize: false
-        },
-        debug: {
-            value: true, 
-            type: 'boolean',
-            serialize: false
-        },
-        defaultTemplate: {
-            type: '*',
-            serialize: false,
-            value () {
-                return defaultTemplate;
-            }
-        },
-        
+    
         /**
-         * @property {String}
-         * @description The name of the config file to load
-         * The default is 'viewer' and is loaded via the config extension 
-         * which loads the config file in 'config/viewer/viewer.js'
-         */
+     * @property {String}
+     * @description The name of the config file to load
+     * The default is 'viewer' and is loaded via the config extension 
+     * which loads the config file in 'config/viewer/viewer.js'
+     */
         configName: {
             value: 'viewer', 
             type: 'string'
         },
         /**
-         * @property {Promise<Object>}
-         * @description The promise that will resolve to the first promise 
-         * resolved from the `loadConfig` extension
-         */
+     * @property {Promise<Object>}
+     * @description The promise that will resolve to the first promise 
+     * resolved from the `loadConfig` extension
+     */
         configPromise: {
             serialize: false,
             get () {
-                // trigger observation
-                this.get('configName');
-
-                const promise = new Promise((resolve) => {
-                    this.handleEvent('loadConfig').then((config) => {
-    
-                        // only handle first one for now...
-                        resolve(config[0]);
-                    });
+                const configName = this.configName;
+                return steal.import(`${this.configRoot}/${configName}/${configName}`).then((module) => {
+                    return this.callHooks('preConfig', module.default);
                 });
-
-                return promise;
             }
         },
         config: {
             serialize: false, 
             get (val, set) {
-                
-                // reset initialization flags 
-                this.assign({
-                    configured: false,
-                    started: false
-                });
-
                 this.configPromise.then((config) => {
                     set(config);
-                    
-                    if (config.debug) {
-                        window.app = this;
-                    }
-                    
-                    // event after config loads but before startup is called
-                    this.handleEvent('postConfig').then(() => {
-                        this.configured = true;
-
-                        // event to start layout
-                        this.handleEvent('startup');
-                        this.started = true;
-                    });
+                    this.callHooks('postConfig', config);
                 });
             }
         },
-        configured: {
-            type: 'boolean',
-            serialize: false
-        },
-        started: {
-            type: 'boolean',
-            serialize: false
-        },
         /**
-         * @property {esri/views/MapView}
-         */
+     * @property {esri/views/MapView}
+     */
         view: {
-            serialize: false
+            serialize: false,
+            set (view) {
+                this.callHooks('postView', this);
+                return view;
+            }
         },
         /**
-         * initializes the viewmodel event listeners
-         */
+     * initializes the viewmodel event listeners
+     */
         init () {
-            route.data = this;
-
-            // init event is for logic that only needs to happen once
-            // i.e. routing
-            this.handleEvent('init');
-
-            this.on('view', (newView, oldView) => {
-                
-                // "postView" occurs after view is intialized and 
-                // app is ready for widgets etc
-                this.handleEvent('postView');
-            });
-            
+            this.callHooks('init', this);
+            route('{configName}', {configName: 'viewer'});
+            route.data = this; 
+            route.ready();
         },
         /**
-         * Implements the extension api for various event names
-         * @param {String} eventName The name of the event to call on extensions
-         * @returns {Promise<any>}
+         * Calls hooks that return a promise in order
+         * @param {String} name The name of the hook
+         * @param {Object} args The arguments to pass
+         * @return {Promise} that resolves to the modified args object
          */
-        handleEvent (eventName) {
-            const promises = [];
-            this.extensions.forEach((ext) => {
-                if (typeof ext[eventName] === 'function') {
-                    const result = ext[eventName](this);
-                    if (isPromiseLike(result)) {
-                        promises.push(result);
-                        result.catch((error) => {
-                            dev.warn('app::promise threw ' + error);
-                        });
-                    }
-                }
+        callHooks (name, args) {
+            const hooks = this.hooks.filter((hook) => {
+                return hook.hasOwnProperty(name);
+            }).map((hook) => {
+                return hook[name];
             });
 
-            // allow extension methods to be passed by config also?
-            // if (typeof this[eventName] === 'function') {
-            //     this[eventName](this);
-            // }
-            return Promise.all(promises);
-        },
-        getSubProperty (obj, path) {
-            return get(obj, path);
+            if (!hooks.length) {
+                return Promise.resolve(args);
+            }
+
+            return hooks.reduce((chain, func) => {
+                return chain ? chain(args).then(func) : func(args);
+            }, null);
         }
     });
+

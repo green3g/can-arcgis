@@ -1,0 +1,8 @@
+{{#if configPromise.isPending}}
+    <div class="loading loading-lg" />
+{{else}}
+    <esri-map mapOptions:from="config.mapOptions"  
+        viewOptions:from="config.viewOptions" 
+        view:to="view"
+        widgets:from="config.widgets" />
+{{/if}}

@@ -4,6 +4,7 @@ import {loadModules} from 'esri-loader';
 
 import actions from './util/Actions';
 import createLayers from 'can-arcgis/util/createLayers';
+import createWidgets from './widgets/createWidgets';
 import decorate from 'can-arcgis/util/decorateAccessor';
 
 function serialize (obj) {
@@ -23,8 +24,19 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
         },
         value: {}
     },
+    widgets: {},
     map: {},
-    view: {},
+    view: {
+        set (view) {
+            if (this.widgets) { 
+                createWidgets({
+                    view: view,
+                    widgets: this.widgets
+                }); 
+            }
+            return view;
+        }
+    },
     element: {
         set (element) {
             if (!element && this.view) {

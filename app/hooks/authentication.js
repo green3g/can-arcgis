@@ -90,21 +90,19 @@ export function clearCredentials () {
 
             
 export default {
-    postConfig (vm) {
+    preConfig (config) {
 
         // return a promise that loads the identity manager
-        return new Promise((resolve) => {
-            loadModules(['esri/identity/IdentityManager']).then(([esriId]) => {
+        return loadModules(['esri/identity/IdentityManager']).then(([esriId]) => {
             
-                //remember credentials once they're created
-                esriId.on('credential-create', () => {
-                    storeCredentials(esriId);
-                });
-
-                //initialize our saved credentials
-                loadCredentials(vm.config, esriId);
-                resolve();
+            //remember credentials once they're created
+            esriId.on('credential-create', () => {
+                storeCredentials(esriId);
             });
+
+            //initialize our saved credentials
+            loadCredentials(config, esriId);
+            return config;
         });
     }
 };

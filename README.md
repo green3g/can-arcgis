@@ -19,7 +19,7 @@ I've worked with cmv, web app builder, and several other web map templates. Each
  - Configure multiple apps using a simple JSON like syntax 
  - Utilize existing Esri API widgets, layers, and map views
  - Easily compact, progressivly loaded bundles with `steal-tools`
- - Extend functionality by creating widgets or [extensions](#extensions) in 
+ - Extend functionality by creating widgets or [hooks](#hooks) in 
     ES6, commonjs format and `stache` (mustache like) templating language
 
 ## Demos 
@@ -48,7 +48,7 @@ npm install
 
 ### Customize
 
-Configs are loaded via the config extension. By default, configs are stored in the config folder. Each config should be placed
+Configs are loaded dynamically based on the current hash/route. By default, configs are stored in the config folder. Each config should be placed
 in its own folder, and related files can be placed next to that file. Each config gets its own url: `https://roemhildtg.github.io/can-arcgis/index-prod.html#!scene`. For example, you can link to other configs within the app just by specifying its hash: 
 
 ```html
@@ -72,8 +72,7 @@ Within this object are the configuration parameters for widgets, layers, and map
 
 #### `mapOptions`
 
-Options passed to the map constructor. These options are passed via 
-binding in the navigation extension.
+Options passed to the map constructor. These options are documented in the [esri/Map api](https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html).
 
 ```javascript
 mapOptions: {
@@ -106,8 +105,7 @@ be inside the `mapOptions` object.
 
 #### `viewOptions` 
 
-Options to be passed to the map view constructor.These options are passed via 
-binding in the navigation extension.
+Options to be passed to the map view constructor.These options are documented in the [esri/views/View api](https://developers.arcgis.com/javascript/latest/api-reference/esri-views-View.html)
 
 ```javascript
 viewOptions: {
@@ -118,7 +116,13 @@ viewOptions: {
 
 #### `widgets`
 
-Array of widget config objects. Implemented by the widgets extension. 
+Array of widget config objects to be passed to the esri-map. 
+These widgets are basic json structures that represent the types
+and parameters for widgets that the esri-map component should create. 
+
+These configs tell the esri-map how to find, load, and create widgets. 
+
+Additional widget types may be created by modifying teh esri-map/widgets files. 
 
 ```javascript
 widgets: [{
@@ -241,14 +245,13 @@ npm run build
 
 Now you can copy the output `dist` folder and `index.html` to production.
 
-## Extensions 
+## Hooks 
 
-Extensions are the core of this app. Extensions may be added or removed via the 
+Hooks are available to customize the core of this app. Hooks may be added or removed via the 
 `app/extensions.js` config file.
 
-Extensions are simple modules that export an object with one or more 
-of the following methods. All methods accept one parameter
-`viewModel` which is the application view model. From this object, `config` may be accessed in addition to any other property necessary.
+Hooks are simple modules that export an object with one or more 
+of the following methods. All methods accept a parameter based on the hook, and should return a promise that resolves to the same parameter. This ensures each hook is run sequentially, even if they are async. 
 
 ## Application Lifecycle
 
@@ -259,26 +262,17 @@ created correctly.
 
 ### `init`: 
 
-Called immediately, but does not halt program execution so all methods should 
-be synchronous if program requires them to function.
+Called immediately with the `AppViewModel`.
 
-Expected return: `undefined`
+### `preConfig`:
 
-### `loadConfig`:
-
-Called immediately. At the moment, one plugin should implement this method and 
-load a config object. and following methods will wait on any promises returned by 
-this method.
-
-Expected return: `Promise<Object>` - a promise that resolves to the config object
+Called with the `config` that was loaded, but not yet set on the app. Useful for modifying the config before the map begins loading. 
 
 ### `postConfig`:
 
-Called after `loadConfig` to allow for modifications to the config object. 
+Called after config is set with the `AppViewModel`. 
 
-Expected return: `Promise` OR `undefined`
-
-### `startup`:
+### `postView`:
 
 The final stage to the application loading process. A perfect time 
 to initialize widgets on the view, change map layers, or any other 

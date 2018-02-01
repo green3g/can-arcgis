@@ -54,6 +54,12 @@ function addWidget (view, widget) {
     }
 }
 
+/**
+ * Creates widgets for you
+ * @param {Object} options the options object
+ * @param {esri/views/MapView} options.view The esri view
+ * @param {Array<Object>} options.widgets The array of json widget objects
+ */
 export default function createWidgets (options) {
     const promises = [];
 
