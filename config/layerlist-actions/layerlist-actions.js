@@ -8,6 +8,7 @@
 import getInfo from './actions/getInfo';
 
 export default {
+    title: 'Creating custom layerlist actions',
     debug: true,
 
     // viewOptions - options to be passed to view constructor

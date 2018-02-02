@@ -24,6 +24,20 @@ export default DefineMap.extend('App',
     //allow extra props to be added to viewmodel from template or other
     {seal: false}, {
 
+        links: {
+            get () {
+                return steal.bundle.map((bundle) => {
+                    const parts = bundle.split('/');
+                    const id = parts[parts.length - 1];
+                    const title = id.substring(0, 1).toUpperCase() + id.substring(1, id.length);
+                    return {
+                        id: id, 
+                        title: title
+                    };
+                });
+            }
+        },
+
         /**
          * hooks to run
          */

@@ -3,6 +3,7 @@
  */
 
 export default {
+    title: 'Loading a 3d map',
     debug: true,
     mapOptions: {
 

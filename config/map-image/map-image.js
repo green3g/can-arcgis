@@ -12,6 +12,7 @@
 import Identify from 'can-arcgis/components/identify/identify';
 
 export default {
+    title: 'Identifying map image layers',
     mapOptions: {
         basemap: 'gray-vector',
         layers: [{

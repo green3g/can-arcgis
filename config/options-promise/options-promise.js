@@ -4,6 +4,7 @@
 import {loadModules} from 'esri-loader';
 import thumbnailUrl from './thumbnail';
 export default {
+    title: 'Loading complex options via async promise',
     debug: true,
     viewOptions: {
         center: [-85.05019999999857, 33.12552399999943],

@@ -4,6 +4,7 @@
  */
 
 export default {
+    title: 'Loading a custom basemap',
     mapOptions: {
         basemap: {
             baseLayers: [{

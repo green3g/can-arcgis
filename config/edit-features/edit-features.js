@@ -13,6 +13,7 @@ const popupTemplate = {
 };
 
 export default {
+    title: 'A complete editing toolset',
     debug: true,
 
     // viewOptions - options to be passed to view constructor

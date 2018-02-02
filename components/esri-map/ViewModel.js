@@ -77,8 +77,8 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
     createMap (element) {
 
         // check for view options and map options types for scene view capability
-        const viewType = this.viewOptions.type || 'MapView';
-        const mapType = this.mapOptions.type || 'Map';
+        const viewType = this.viewOptions && this.viewOptions.type ? this.viewOptions.type : 'MapView';
+        const mapType = this.mapOptions && this.mapOptions.type ? this.mapOptions.type : 'Map';
 
         loadModules([`esri/${mapType}`, `esri/views/${viewType}`]).then(([Map, MapView]) => {
 

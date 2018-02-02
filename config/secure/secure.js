@@ -1,4 +1,5 @@
 export default {
+    title: 'Accessing secure resources <i class="esri-icon-key"></i><code>user1</code>',
     mapOptions: {
         basemap: 'topo',
         layers: [{

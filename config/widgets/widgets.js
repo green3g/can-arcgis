@@ -29,6 +29,7 @@ element.style = 'background: #fff;display:block; padding:10px;';
 element.innerHTML = route.link('Back to Viewer', {configName: 'viewer'});
 
 export default {
+    title: 'Using widgets',
     debug: true,
     viewOptions: {
         center: [-85.05019999999857, 33.12552399999943],

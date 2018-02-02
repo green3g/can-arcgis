@@ -9,6 +9,7 @@ import 'sweetalert2/dist/sweetalert2.css';
 
 const layerUrl = 'https://services1.arcgis.com/6bXbLtkf4y11TosO/arcgis/rest/services/Restaurants/FeatureServer/0';
 export default {
+    title: 'Use the search icon widget to select features',
     debug: true,
 
     // viewOptions - options to be passed to view constructor

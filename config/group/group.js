@@ -8,6 +8,7 @@
 import Identify from 'can-arcgis/components/identify/identify';
 
 export default {
+    title: 'Using group layers',
     debug: true,
     mapOptions: {
         basemap: 'gray',

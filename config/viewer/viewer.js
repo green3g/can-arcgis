@@ -5,6 +5,7 @@
 
 
 export default {
+    title: 'Welcome to can-arcgis',
     debug: true,
 
     // viewOptions - options to be passed to view constructor
