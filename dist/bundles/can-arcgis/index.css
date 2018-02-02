@@ -1,4 +1,4 @@
-@charset "utf-8";esri-map{display:block;height:100%;width:100%}body,html{height:100%;width:100%;margin:0;padding:0}/*!
+@charset "utf-8";esri-map{display:block;height:100%;width:100%}body,html{height:100%;width:100%;margin:0;padding:0}body{display:flex;flex-direction:column}/*!
 This CSS resource incorporates links to font software which is the valuable copyrighted
 property of Monotype Imaging and/or its suppliers. You may not attempt to copy, install,
 redistribute, convert, modify or reverse engineer this font software. Please contact Monotype
