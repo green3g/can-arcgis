@@ -1,6 +1,7 @@
 import Component from 'can-component';
 import ViewModel from './ViewModel';
 import './esri-map.less';
+import 'can-3-4-compat/dom-mutation-events';
 
 Component.extend({
     tag: 'esri-map',

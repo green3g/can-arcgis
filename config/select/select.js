@@ -56,7 +56,7 @@ export default {
                     queries: [{
                         value: 'name',
                         label: 'Establishment Name',
-                        fields: ['name'],
+                        fields: [{name: 'name', placeholder: 'Example: KFC'}],
                         queryTemplate: 'EstablishmentName LIKE \'%{name}%\''
                     }, {
                         value: 'riskType',
@@ -65,7 +65,7 @@ export default {
                         fields: [{
                             name: 'risk',
                             alias: 'Risk Type',
-                            fieldType: 'select',
+                            editTag: 'sp-select-field',
                             options: [{
                                 value: 1,
                                 label: 'Inspected one time per year'

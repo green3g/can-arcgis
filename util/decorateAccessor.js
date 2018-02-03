@@ -1,7 +1,7 @@
 import canSymbol from 'can-symbol';
 import observation from 'can-observation';
 import isContainer from 'can-util/js/is-container/is-container';
-import canBatch from 'can-event/batch/batch';
+import queues from 'can-queues';
 
 function get (obj, name) {
     // The parts of the name we are looking up
@@ -21,7 +21,7 @@ function get (obj, name) {
 
     // Walk current to the 2nd to last object or until there
     // is not a container.
-    for (i = 0; i < length && current && isContainer(current); i++) {
+    for (i = 0; i < length && current && typeof current === 'object'; i++) {
         container = current;
         const key = parts[i];
         observation.add(obj, key);
@@ -104,20 +104,20 @@ export default function decorate (obj, parent = null, path = null, level = 0) {
                 handlers[key].oldLength = obj.length;
                 handlers[key].watch = obj.on('change', (event) => {
                     // console.log('--onchange------', event);
-                    canBatch.start();
+                    queues.batch.start();
                     handlers[key].handlers.forEach((handle) => {
                         handle(obj.length, handlers[key].oldLength); 
                     });
                     handlers[key].oldLength = obj.length;
-                    canBatch.stop();
+                    queues.batch.stop();
                 });
             } else { 
                 handlers[key].watch = (parent || obj).watch(watchProp, (newValue, oldValue, propertyName, target) => {
-                    canBatch.start();
+                    queues.batch.start();
                     handlers[key].handlers.forEach((handle) => {
                         handle(newValue, oldValue); 
                     });
-                    canBatch.stop();
+                    queues.batch.stop();
                 }); 
             }
         }

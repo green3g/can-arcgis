@@ -6,6 +6,7 @@ export default {
     title: 'Loading a 3d map',
     debug: true,
     mapOptions: {
+        basemap: 'satelite',
 
         // the main difference is we need to specify the map type as "WebScene"
         // this can be either "WebMap" (default) or "WebScene"
@@ -18,11 +19,6 @@ export default {
 
         // We also need to specify the view type
         // this can be either "MapView" (default) or "SceneView"
-        type: 'SceneView',
-        environment: {
-            lighting: {
-                directShadowsEnabled: false
-            }
-        }
+        type: 'SceneView'
     }
 };

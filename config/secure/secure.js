@@ -1,5 +1,6 @@
 export default {
-    title: 'Accessing secure resources <i class="esri-icon-key"></i><code>user1</code>',
+    title: `can-arcgis provides an auth hook that will store passwords for you. 
+        Try entering user1 for the username/password and refreshing the page`,
     mapOptions: {
         basemap: 'topo',
         layers: [{
@@ -14,3 +15,4 @@ export default {
         zoom: 12
     }
 };
+

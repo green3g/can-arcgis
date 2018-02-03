@@ -12,27 +12,31 @@
   "license": "ISC",
   "dependencies": {
     "arcgis-js-api": "^4.6.1",
-    "can-component": "^3.3.8",
-    "can-define": "1.5.4",
-    "can-observation": "3.3.6",
-    "can-reflect": "1.7.3",
-    "can-route": "3.2.4",
-    "can-stache": "^3.14.8",
+    "can-3-4-compat": "^1.0.0",
+    "can-component": "^4.0.1",
+    "can-define": "^2.0.1",
+    "can-observation": "^4.0.0",
+    "can-queues": "^1.0.0",
+    "can-reflect": "^1.13.2",
+    "can-route": "^4.0.1",
+    "can-stache": "^4.0.2",
     "esri-loader": "^2.0.0",
     "flatpickr": "^4.2.4",
     "pubsub-js": "^1.5.7",
-    "spectre-canjs": "^1.0.1",
+    "spectre-canjs": "^2.0.1",
     "spectre.css": "^0.5.0",
+    "steal": "^1.6.4",
     "sweetalert2": "^6.6.6"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "can-debug": "^1.0.0",
     "eslint": "^4.6.1",
     "nodemon": "^1.14.3",
-    "steal-css": "^1.3.1",
-    "steal-less": "^1.2.0",
-    "steal-stache": "^3.1.1",
-    "steal-tools": "^1.8.4"
+    "steal-css": "^1.3.2",
+    "steal-less": "^1.2.2",
+    "steal-stache": "^4.0.1",
+    "steal-tools": "^1.11.3"
   },
   "steal": {
     "plugins": [

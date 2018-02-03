@@ -101,9 +101,9 @@ export default DefineMap.extend('App',
      */
         init () {
             this.callHooks('init', this);
-            route('{configName}', {configName: 'viewer'});
+            route.register('{configName}', {configName: 'viewer'});
             route.data = this; 
-            route.ready();
+            route.start();
         },
         /**
          * Calls hooks that return a promise in order

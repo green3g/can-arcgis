@@ -1,8 +1,11 @@
+<can-import from="spectre-canjs/sp-toast/" />
+
 <div class="workorder-picker container" 
     style="background:#fff;width:300px;padding:10px;">
     <p class="text-bold">{{title}}</p>
     {{#if message}}
-        <toast-item heading:from="'Oops'" body:from="message" severity:from="'warning'" dismissable:from="false" />
+        <sp-toast heading:from="'Oops'" 
+            body:from="message" severity:from="'warning'" dismissable:from="false" />
     {{/if}}
     {{#if(selectGraphicsLayer.graphics.items.length)}}
         <p>You've selected {{selectGraphicsLayer.graphics.items.length}} features.
@@ -14,7 +17,7 @@
             <!-- menu item -->
             {{#each(actions)}}
                 <li class="menu-item">
-                    <a href="#" on:el:click="onActionClick(., scope.event)">
+                    <a href="#" on:click="../onActionClick(., scope.event)">
                         <i class="{{iconClass}}"></i> {{label}}
                     </a>
                 </li>
@@ -37,7 +40,7 @@
                         graphicsLayer:bind="drawGraphicsLayer" />
                     
                     {{#if(drawGraphicsLayer.graphics.items.length)}}
-                        <button class="btn btn-primary" on:el:click="searchGraphics">
+                        <button class="btn btn-primary" on:el:click="searchGraphics()">
                             <i class="esri-icon-search"></i> Search</button> 
                     {{/if}}
                 {{else}}
@@ -46,7 +49,7 @@
                         fields:from="selectedQuery.fields" 
                         object:from="queryFormObject" 
                         on:submit="searchFormSubmit(queryFormObject)" 
-                        on:cancel="reset" />
+                        on:cancel="reset()" />
                 {{/eq}}
             {{/if}}
         {{/if}}

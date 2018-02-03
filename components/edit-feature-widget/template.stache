@@ -13,8 +13,8 @@
         <p>Add Details:</p>
         <sp-form 
             isSaving:bind="isSaving" 
-            on:submit="submitForm" 
-            on:cancel="cancelForm" 
+            on:submit="submitForm()" 
+            on:cancel="cancelForm()" 
             fields:from="editFields"
             object:from="editGraphic"></sp-form>
     {{else}}
@@ -28,7 +28,7 @@
 {{else}}
     <ul class="menu">
         {{#each(layers, layer=value)}}
-        <li class="menu-item" on:click="activate(layer)">
+        <li class="menu-item" on:click="../activate(layer)">
             <div class="tile tile-centered">
             <div class="tile-icon">
                 <div class="example-tile-icon">

@@ -38,6 +38,9 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
     },
     element: {
         set (element) {
+            if (element === this.element) {
+                return element;
+            }
             if (!element && this.view) {
                 this.view.destroy();
                 this.assign({
