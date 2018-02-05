@@ -276,7 +276,7 @@ Called after config is set with the `AppViewModel`.
 
 The final stage to the application loading process. A perfect time 
 to initialize widgets on the view, change map layers, or any other 
-runtime stuff.
+runtime stuff on the view. Called with the `AppViewModel`
 
 ## FAQ
 

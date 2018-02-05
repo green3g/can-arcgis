@@ -5,6 +5,9 @@
 
 export default {
     title: 'Loading a custom basemap',
+
+    // restore hook
+    restore: true,
     mapOptions: {
         basemap: {
             baseLayers: [{

@@ -22,6 +22,7 @@
     "can-stache": "^4.0.2",
     "esri-loader": "^2.0.0",
     "flatpickr": "^4.2.4",
+    "lodash.debounce": "^4.0.8",
     "pubsub-js": "^1.5.7",
     "spectre-canjs": "^2.0.2",
     "spectre.css": "^0.5.0",

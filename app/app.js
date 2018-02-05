@@ -82,7 +82,7 @@ export default DefineMap.extend('App',
             get (val, set) {
                 this.configPromise.then((config) => {
                     set(config);
-                    this.callHooks('postConfig', config);
+                    return this.callHooks('postConfig', this);
                 });
             }
         },
@@ -92,7 +92,11 @@ export default DefineMap.extend('App',
         view: {
             serialize: false,
             set (view) {
-                this.callHooks('postView', this);
+                if (view) { 
+                    setTimeout(() => {
+                        this.callHooks('postView', this); 
+                    }, 100);
+                }
                 return view;
             }
         },
@@ -123,7 +127,7 @@ export default DefineMap.extend('App',
             }
 
             return hooks.reduce((chain, func) => {
-                return chain ? chain(args).then(func) : func(args);
+                return chain && chain.then ? chain.then(func) : func(args);
             }, null);
         }
     });
