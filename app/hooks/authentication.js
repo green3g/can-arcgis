@@ -15,14 +15,24 @@ function supportsLocalStorage () {
 
 /**
      * initialize the esri identity manager with credentials if they were stored
-     * @param {Object} config the loaded config
+     * 
+     * tokens look like:
+     * {
+     *  token: 'lskadjflsdakjflsdkjf',
+     *  expires: 1283948932834,
+     *  server: 'https://my-server.com/arcgis/rest/services',
+     *  ssl: true,
+     * }
+     * 
+     * @param {Array|Object} tokens array of tokens or one object token
      * @param {esri/identity/IdentityManager} esriId the esri identity manager 
      */
-function loadCredentials (config, esriId) {
-    if (config.credentials) {
-        esriId.initialize(config.credentials);
-        // console.log('provided credentials were initialized');
-        return;
+function loadCredentials (tokens, esriId) {
+    if (tokens) {
+        tokens = tokens.length ? tokens : [tokens];
+        tokens.forEach((token) => {
+            esriId.registerToken(token);
+        });
     }
     var idJson, idObject;
 
@@ -90,6 +100,12 @@ export function clearCredentials () {
 
             
 export default {
+    /**
+     * Registers tokens with identity manager, or rehydrates the identity manager with locally cached tokens
+     * @param {Object} config the config object
+     * @param {Array|Object} config.tokens Array of esri token objects or one individual token object
+     * @returns {Object} the config
+     */
     preConfig (config) {
 
         // return a promise that loads the identity manager
@@ -101,7 +117,7 @@ export default {
             });
 
             //initialize our saved credentials
-            loadCredentials(config, esriId);
+            loadCredentials(config.tokens, esriId);
             return config;
         });
     }
