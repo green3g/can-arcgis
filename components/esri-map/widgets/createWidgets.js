@@ -68,7 +68,7 @@ function addWidget (view, widget) {
  */
 export default function createWidgets (options) {
     if (!options.view) {
-        return;
+        return [];
     }
     const promises = [];
 
