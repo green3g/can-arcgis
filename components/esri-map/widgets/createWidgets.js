@@ -2,7 +2,6 @@ import dev from 'can-util/js/dev/dev';
 import createEsriWidget from './createEsriWidget';
 import createRendererWidget from './createRendererWidget';
 import {loadModules} from 'esri-loader';
-import assign from 'can-util/js/assign/assign';
 
 const DEFAULT_POSITION = 'top-left',
     DEFAULT_ICON = 'esri-icon-expand';
@@ -12,8 +11,14 @@ function addWidget (view, widget) {
     case 'expand': 
         // expand type widget. places a widget inside a expand wrapper that is toggle able and mobile friendly
         // https://developers.arcgis.com/javascript/latest/sample-code/widgets-expand/index.html
+        //!steal-remove-start
+        if (widget.iconClass) {
+            //eslint-disable-next-line
+            console.warn('widget.iconClass is deprecated: use widget.parentOptions.expandIconClass instead')
+        }
+        //!steal-remove-end
         loadModules(['esri/widgets/Expand']).then(([Expand]) => {
-            const expand = new Expand(assign({
+            const expand = new Expand(Object.assign({
 
                 // see https://developers.arcgis.com/javascript/latest/guide/esri-icon-font/
                 expandIconClass: widget.iconClass || DEFAULT_ICON,
@@ -59,6 +64,7 @@ function addWidget (view, widget) {
  * @param {Object} options the options object
  * @param {esri/views/MapView} options.view The esri view
  * @param {Array<Object>} options.widgets The array of json widget objects
+ * @returns {Array<Promise>} promise that resolves to the widgets
  */
 export default function createWidgets (options) {
     if (!options.view) {
@@ -94,11 +100,11 @@ export default function createWidgets (options) {
                 return;
             }
 
-            const opts = assign({}, widgetConfig.options);
-            const widget = new widgetConfig.Constructor(assign(opts, {
+            const opts = Object.assign({}, widgetConfig.options);
+            const widget = new widgetConfig.Constructor(Object.assign(opts, {
                 view: options.view
             }));
-            addWidget(options.view, assign(widgetConfig, {component: widget}));
+            addWidget(options.view, Object.assign(widgetConfig, {component: widget}));
         }
 
     });
