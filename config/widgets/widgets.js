@@ -9,6 +9,9 @@
 // templates to bind data to dom nodes in our widgets
 import stache from 'can-stache';
 
+// import draw widget <draw-widget />
+import '../../components/draw-widget/';
+
 // since we use can-route to switch between configs, import it so we can use it below
 import route from 'can-route';
 
@@ -134,7 +137,7 @@ export default {
         // parent: expand means the widget will be placed inside an esri/widgets/Expand widget
         parent: 'expand',
         path: 'esri/widgets/LayerList',
-        iconClass: 'esri-icon-layers',
+        parentOptions: {expandIconClass: 'esri-icon-layers'},
         position: 'top-right'
     }, {
         type: 'esri',
@@ -144,7 +147,15 @@ export default {
     }, {
         type: 'esri',
         parent: 'expand',
-        iconClass: 'esri-icon-basemap',
+        parentOptions: {expandIconClass: 'esri-icon-basemap'},
         path: 'esri/widgets/BasemapGallery'
+    }, {
+        type: 'renderer', 
+        // renderer for draw widget. we should move this css to a .less file somewhere but this works well enough for now
+        renderer: stache('<draw-widget style="width: 200px; background:#fff; display:block; padding:10px;" view:from="view"></draw-widget>'),
+        parent: 'expand',
+        
+        parentOptions: {expandIconClass: 'esri-icon-polyline', expandTooltip: 'Draw'},
+        position: 'top-left'
     }]
 };
