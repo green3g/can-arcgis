@@ -1,6 +1,5 @@
 import DefineMap from 'can-define/map/map';
 import mapImage from './util/identifyMapImage';
-import dev from 'can-util/js/dev/dev';
 import {loadModules} from 'esri-loader'; 
 // asynchronously load the geometry engine
 let geometryEngine;
@@ -34,6 +33,7 @@ export const IDENTIFY_METHODS = {
 export default DefineMap.extend({
     clickHandle: '*',
     layerInfos: DefineMap,
+    timeout: {type: 'number', value: 2000},
     view: {
         type: '*',
         set (view) {
@@ -85,25 +85,40 @@ export default DefineMap.extend({
                         let isResolved = false;
                         IDENTIFY_METHODS[layer.declaredClass](event, layer, this).then((result) => {
                             if (isResolved) {
-                                dev.warn('identify: promise was already resolved');
+                                //!steal-remove-start
+                                //eslint-disable-next-line
+                                console.warn('identify: promise was already resolved');
+                                //!steal-remove-end
                             }
                             isResolved = true;
                             resolve(result);
+                        }).catch((e) => {
+                            //!steal-remove-start
+                            //eslint-disable-next-line
+                            console.warn('identify: promise returned an error!', e);
+                            //!steal-remove-end
+                            resolve([]);
                         });
 
                         setTimeout(() => {
                             if (isResolved) {
                                 return;
-                            }                            
-                            dev.warn('identify: promise timeout exceeded');
+                            }                          
+                            //!steal-remove-start
+                            //eslint-disable-next-line  
+                            console.warn('identify: promise timeout exceeded');
+                            //!steal-remove-end
                             resolve([]);
-                        }, 5000);
+                        }, this.timeout);
                     });
                 
 
                     promises.push(promise);
                 } else {
-                    dev.warn(`identify: no identify function registered for type ${layer.declaredClass}`);
+                    //!steal-remove-start
+                    //eslint-disable-next-line
+                    console.warn(`identify: no identify function registered for type ${layer.declaredClass}`);
+                    //!steal-remove-end
                 }
             });
 
