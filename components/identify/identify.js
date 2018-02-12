@@ -15,7 +15,7 @@ export const IDENTIFY_METHODS = {
 
                 //return the result, filtering out any vector tile results
                 resolve(hitTest.results.filter((result) => {
-                    return result.graphic.layer.declaredClass !== 'esri.layers.VectorTileLayer';
+                    return result.graphic.layer && result.graphic.layer.declaredClass !== 'esri.layers.VectorTileLayer';
                 }).map((result) => {
                     return result.graphic;
                 }));
