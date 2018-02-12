@@ -34,13 +34,21 @@ export default {
             text: `Are you sure you want to delete this feature: ${featureName}?`,
             showConfirmButton: true,
             showCancelButton: true
-        }).then(() => {
-
+        }).then(({dismiss}) => {
+            if (dismiss) {
+                return;
+            }
             // if the user confirms, delete the selected feature
             selected.layer.applyEdits({
                 deleteFeatures: [selected]
             }).then(() => {
-                swal('Item Deleted', 'The item was successfully deleted', 'success');
+                swal({
+                    title: 'Item Deleted', 
+                    text: 'The item was successfully deleted', 
+                    type: 'success',
+                    toast: true,
+                    timer: 5000
+                });
                 componentVM.view.popup.close();
             });
         });

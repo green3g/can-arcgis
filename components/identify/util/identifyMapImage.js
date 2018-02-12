@@ -32,55 +32,53 @@ function assignPopupTemplate (data, popupTemplates, layer) {
 }
 
 export default function identify (event, layer, scope) {
-    return new Promise((resolve) => {
         
-        loadModules([
-            'esri/tasks/support/IdentifyParameters', 
-            'esri/tasks/IdentifyTask'
-        ]).then(([IdentifyParameters, IdentifyTask]) => {
+    return loadModules([
+        'esri/tasks/support/IdentifyParameters', 
+        'esri/tasks/IdentifyTask'
+    ]).then(([IdentifyParameters, IdentifyTask]) => {
 
-            const include = get(scope.layerInfos, `${layer.id}.include`);
-            const exclude = get(scope.layerInfos, `${layer.id}.exclude`);
+        const include = get(scope.layerInfos, `${layer.id}.include`);
+        const exclude = get(scope.layerInfos, `${layer.id}.exclude`);
 
-            // get an array of visible layer ids
-            const layerIds = layer.sublayers.filter((l) => {
+        // get an array of visible layer ids
+        const layerIds = layer.sublayers.filter((l) => {
 
-                // exclude nonconfigured ids
-                if (include && include.length && include.indexOf(l.id) === -1) {
-                    return false;
-                }
+            // exclude nonconfigured ids
+            if (include && include.length && include.indexOf(l.id) === -1) {
+                return false;
+            }
 
-                // exclude excluded ids 
-                if (exclude && exclude.length && exclude.indexOf(l.id) > -1) {
-                    return false;
-                }
+            // exclude excluded ids 
+            if (exclude && exclude.length && exclude.indexOf(l.id) > -1) {
+                return false;
+            }
 
-                // exclude invisible layers
-                return l.visible;
-            }).map((l) => {
-                return l.id;
-            });
+            // exclude invisible layers
+            return l.visible;
+        }).map((l) => {
+            return l.id;
+        });
 
-            const params = new IdentifyParameters({
-                layerIds: layerIds,
-                layerOption: 'visible',
-                returnGeometry: true,
-                spatialReference: event.mapPoint.spatialReference,
-                tolerance: 15,
-                geometry: event.mapPoint,
-                height: scope.view.height,
-                width: scope.view.width,
-                mapExtent: scope.view.extent
-            });
+        const params = new IdentifyParameters({
+            layerIds: layerIds,
+            layerOption: 'visible',
+            returnGeometry: true,
+            spatialReference: event.mapPoint.spatialReference,
+            tolerance: 15,
+            geometry: event.mapPoint,
+            height: scope.view.height,
+            width: scope.view.width,
+            mapExtent: scope.view.extent
+        });
 
-            const task = new IdentifyTask({
-                url: layer.url
-            });
+        const task = new IdentifyTask({
+            url: layer.url
+        });
 
-            task.execute(params).then((result) => {
-                const features = assignPopupTemplate(result, scope.popupTemplates, layer);
-                resolve(features);
-            });
+        return task.execute(params).then((result) => {
+            const features = assignPopupTemplate(result, scope.popupTemplates, layer);
+            return features;
         });
     });
 }

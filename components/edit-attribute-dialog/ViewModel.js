@@ -86,6 +86,8 @@ export default DefineMap.extend('EditWidget', {
         const propName = editProps[this.editMode];
         const params = {};
         params[propName] = [this.editGraphic];
+
+        // wrap esri's applyEdits with a a native then/catch promise
         return new Promise((resolve, reject) => {
             this.editLayer.applyEdits(params).then(() => {
                 this.assign({
