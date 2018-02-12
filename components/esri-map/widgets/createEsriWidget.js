@@ -1,6 +1,6 @@
 import {loadModules} from 'esri-loader';
 import assign from 'can-util/js/assign/assign';
-function constructWidget (WidgetClass, widgetConfig, options, callback) {
+function constructWidget (WidgetClass, widgetConfig, options) {
     
     const node = widgetConfig.node || document.createElement('div');
     
@@ -10,24 +10,21 @@ function constructWidget (WidgetClass, widgetConfig, options, callback) {
     const widget = Object.assign({}, {
         component: component
     }, widgetConfig);
-
-    // call the appropriate addWidget function
-    callback(options.view, widget);
-            
-    return component;
+     
+    return widget;
 }
 
-export default function createEsriWidget (view, widgetConfig, callback) {
+export default function createEsriWidget (view, widgetConfig) {
 
     return loadModules([widgetConfig.path]).then(([WidgetClass]) => {
 
         // if optionsPromise, wait for options, then construct widget
         if (widgetConfig.optionsPromise) {
-            widgetConfig.optionsPromise.then((options) => {
+            return widgetConfig.optionsPromise.then((options) => {
                 options = assign(options, {
                     view: view
                 });
-                return constructWidget(WidgetClass, widgetConfig, options, callback);
+                return constructWidget(WidgetClass, widgetConfig, options);
             });
         } 
 
@@ -35,7 +32,7 @@ export default function createEsriWidget (view, widgetConfig, callback) {
         const options = assign((widgetConfig.options || {}), {
             view: view
         });
-        return constructWidget(WidgetClass, widgetConfig, options, callback);
+        return constructWidget(WidgetClass, widgetConfig, options);
 
     });
 }
