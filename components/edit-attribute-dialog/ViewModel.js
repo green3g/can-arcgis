@@ -3,7 +3,6 @@ import DefineList from 'can-define/list/list';
 import convertEsriFields from 'can-arcgis/util/convertEsriFields';
 import decorateAccessor from 'can-arcgis/util/decorateAccessor';
 import pubsub from 'pubsub-js';
-import dev from 'can-util/js/dev/dev';
 
 const editProps = {
     'update': 'updateFeatures',
@@ -95,7 +94,10 @@ export default DefineMap.extend('EditWidget', {
                 });
                 resolve();
             }).otherwise((response) => {
-                dev.warn(response);
+                //!steal-remove-start
+                //eslint-disable-next-line
+                console.warn(response);
+                //!steal-remove-end
                 reject(response);
             });
         });
