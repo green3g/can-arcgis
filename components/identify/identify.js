@@ -10,15 +10,13 @@ loadModules(['esri/geometry/geometryEngine']).then((modules) => {
 export const IDENTIFY_METHODS = {
     'esri.layers.MapImageLayer': mapImage,
     'esri.layers.FeatureLayer': function (event, layer, scope) {
-        return new Promise((resolve) => {
-            scope.view.hitTest(event).then((hitTest) => {
+        return scope.view.hitTest(event).then((hitTest) => {
 
-                //return the result, filtering out any vector tile results
-                resolve(hitTest.results.filter((result) => {
-                    return result.graphic.layer && result.graphic.layer.declaredClass !== 'esri.layers.VectorTileLayer';
-                }).map((result) => {
-                    return result.graphic;
-                }));
+            //return the result, filtering out any vector tile results
+            return hitTest.results.filter((result) => {
+                return result.graphic.layer && result.graphic.layer.declaredClass !== 'esri.layers.VectorTileLayer';
+            }).map((result) => {
+                return result.graphic;
             });
         });
     }
