@@ -57,5 +57,13 @@ export default EditViewModel.extend('EditFeatureWidget', {
     cancelForm () {
         EditViewModel.prototype.cancelForm.apply(this, arguments);
         this.clearGraphics();
+    },
+    resetScroll () {
+        setTimeout(() => {
+            const node = document.querySelector('edit-feature-widget');
+            if (node) { 
+                node.scrollTop = 0; 
+            } 
+        });
     }
 });

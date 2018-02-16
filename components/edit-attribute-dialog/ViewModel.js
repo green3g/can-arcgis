@@ -11,6 +11,15 @@ const editProps = {
 export default DefineMap.extend('EditWidget', {
     layerInfos: DefineMap,
     modal: '*',
+    error: {
+        type: 'string',
+        set (error) {
+            if (error) {
+                this.resetScroll();
+            }
+            return error;
+        }
+    },
     editLayer: {},
     editMode: {value: 'update', type: 'string'},
     editTitle: {
@@ -67,12 +76,7 @@ export default DefineMap.extend('EditWidget', {
         type: 'boolean',
         value: false,
         set (val) {
-            setTimeout(() => {
-                const modal = document.querySelector('.modal-body');
-                if (modal) { 
-                    modal.scrollTop = 0; 
-                } 
-            });
+            this.resetScroll();
             return val;
         }
     },
@@ -93,6 +97,7 @@ export default DefineMap.extend('EditWidget', {
      * @returns {Promise} a promise object when the apply edits function resolves
      */
     submitForm (args) {
+        this.error = null;
         const attributes = args[0].serialize();
         Object.assign(this.editGraphic.attributes, attributes);
         const propName = editProps[this.editMode];
@@ -102,7 +107,20 @@ export default DefineMap.extend('EditWidget', {
 
         // wrap esri's applyEdits with a a native then/catch promise
         return new Promise((resolve, reject) => {
-            this.editLayer.applyEdits(params).then(() => {
+            this.editLayer.applyEdits(params).then((result) => {
+                const resultProps = Object.keys(result);
+                resultProps.forEach((resultProp) => {
+                    result[resultProp].forEach((feature) => {
+                        if (feature.error && feature.error.message) {
+                            this.error = feature.error.message;
+                        }
+                    });
+                });
+                if (this.error) {
+                    this.isSaving = false;
+                    reject(this.error);
+                    return;
+                }
                 this.assign({
                     isSaving: false,
                     modalVisible: false
@@ -121,6 +139,14 @@ export default DefineMap.extend('EditWidget', {
         this.assign({
             isSaving: false,
             modalVisible: false
+        });
+    },
+    resetScroll () {
+        setTimeout(() => {
+            const modal = document.querySelector('.modal-body');
+            if (modal) { 
+                modal.scrollTop = 0; 
+            } 
         });
     }
     

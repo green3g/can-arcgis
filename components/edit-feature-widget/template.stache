@@ -10,13 +10,20 @@
     <br />
     
     {{#if(graphicsLayer.graphics.items.length)}}
+        {{#if(error)}}
+            <sp-toast body:from="error" severity:from="'error'"></sp-toast>
+        {{/if}}
+
+        {{#if(editFields.length)}}
         <p>Add Details:</p>
+        
         <sp-form 
             isSaving:bind="isSaving" 
-            on:submit="submitForm()" 
+            on:submit="submitForm(scope.arguments)" 
             on:cancel="cancelForm()" 
             fields:from="editFields"
             object:from="editGraphic"></sp-form>
+        {{/if}}
     {{else}}
         <p>Create {{editLayer.title}}:
         <draw-widget geometries:from="editLayer.geometryType" 

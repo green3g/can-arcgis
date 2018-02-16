@@ -1,7 +1,14 @@
+
+
 <sp-modal 
     active:bind="modalVisible" 
     title:from="editTitle" 
     on:beforeremove="setModal()">
+
+    {{#if(error)}}
+        <sp-toast body:from="error" severity:from="'error'"></sp-toast>
+    {{/if}}
+
     <sp-form isSaving:bind="isSaving" 
         object:from="editGraphic.attributes" 
         on:submit="submitForm(scope.arguments)" 
