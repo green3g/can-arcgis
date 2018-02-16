@@ -21,26 +21,13 @@ const EXCLUDE = {
 };
 
 /**
- * Gets the field type for an esri field 
- * 'select' if the field has a domain, 'text' if it doesn't
- * @param {esriField} f the esri field
- * @returns {String} the field type
- */
-function getFieldType (f) {
-    if (f.domain) {
-        return 'sp-select-field';
-    }
-    return 'sp-text-field';
-}
-
-/**
  * Gets a mixin for a esri field type if available, else null
  * @param {esriField} f the esri field 
  * @returns {Object|Null} the mixin or null 
  */
 export function getMixin (f) {
     let mixin = {};
-    if (f.domain && f.domain.codedValues) {
+    if (f.domain && f.domain.codedValues && f.domain.codedValues.length) {
         mixin = {
             editTag: 'sp-select-field',
             options: f.domain.codedValues.map((item) => {
@@ -56,11 +43,6 @@ export function getMixin (f) {
         mixin = {
             onInsert (el) {
                 flatpickr(el);
-            },
-            uiOptions: {
-                yearRange: '1900:2050',
-                changeMonth: true,
-                changeYear: true
             }
         };
     }
@@ -90,7 +72,7 @@ export default function convertEsriFields (esriFields) {
         return Object.assign({
             name: f.name,
             alias: f.alias,
-            editTag: getFieldType(f),
+            editTag: 'sp-text-field',
             textType: getTextType(f.type)
         }, mixin);
     });
