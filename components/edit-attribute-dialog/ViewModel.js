@@ -2,7 +2,6 @@ import DefineMap from 'can-define/map/map';
 import DefineList from 'can-define/list/list';
 import convertEsriFields from 'can-arcgis/util/convertEsriFields';
 import decorateAccessor from 'can-arcgis/util/decorateAccessor';
-import pubsub from 'pubsub-js';
 import dev from 'can-util/js/dev/dev';
 
 const editProps = {
@@ -15,6 +14,14 @@ export default DefineMap.extend('EditWidget', {
     modal: '*',
     editLayer: {},
     editMode: {value: 'update', type: 'string'},
+    editTitle: {
+        get () {
+            if (this.editGraphic) {
+                return 'Edit ' + this.editGraphic.layer.title;
+            }
+            return '';
+        }
+    },
     editGraphic: {
         set (graphic) {
             decorateAccessor(graphic);
@@ -36,57 +43,63 @@ export default DefineMap.extend('EditWidget', {
             return [];
         }
     },
-    pubsubTopic: {
-        type: 'string',
-        set (topic) {
+    eventName: {value: 'edit'},
+    dispatcher: {
+        set (dispatcher) {
             
-            if (this.pubsubToken) {
-                pubsub.unsubscribe(this.pubsubToken);
-                this.pubsubToken = null;
+            // unregister handler
+            if (this.dispatcher) {
+                this.dispatcher.off(this.eventName, this.handler);
             }
 
-            if (topic) { 
-                this.pubsubToken = pubsub.subscribe(topic, this.openDialog.bind(this)); 
+            // add new handler 
+            if (dispatcher) { 
+                dispatcher.on(this.eventName, this.handler);
             } 
-            return topic;
+            return dispatcher;
         }
     },
-    pubsubToken: '*',
+    handler: {
+        get () {
+            return this.openDialog.bind(this);
+        }
+    },
     modalVisible: {
         type: 'boolean',
         value: false,
         set (val) {
-            if (this.modal) { 
-                setTimeout(() => {
-                    this.modal.querySelector('.modal-body').scrollTop = 0; 
-                });
-            }
+            setTimeout(() => {
+                const modal = document.querySelector('.modal-body');
+                if (modal) { 
+                    modal.scrollTop = 0; 
+                } 
+            });
             return val;
         }
     },
     isSaving: 'boolean',
     /**
      * Opens the edit dialog with the ViewModel properties passed
-     * @param {String} tpc topic name (not used but passed from pubsubjs)
-     * @param {Object} props the attributes to assign to the view model
+     * @param {String} event event dispatched from the dispatcher
+     * @param {Object} args the attributes to assign to the view model
      */
-    openDialog (tpc, props) {
-        props.modalVisible = true;
-        this.assign(props);
+    openDialog (event, args) {
+        this.modalVisible = true;
+        this.assign(args);
     },
     /**
      * 
-     * @param {FormViewModel} vm the form viewmodel
-     * @param {Element} element form element
-     * @param {Event} event The submit event
-     * @param {Object} attributes The attributes that have been modified
+     * @param {Array<Object>} args the event arguments
+     * @param {Object} args.0 The attributes that have been modified
      * @returns {Promise} a promise object when the apply edits function resolves
      */
-    submitForm (vm, element, event, attributes) {
+    submitForm (args) {
+        const attributes = args[0].serialize();
         Object.assign(this.editGraphic.attributes, attributes);
         const propName = editProps[this.editMode];
-        const params = {};
-        params[propName] = [this.editGraphic];
+        const params = {
+            [propName]: [this.editGraphic]
+        };
         return new Promise((resolve, reject) => {
             this.editLayer.applyEdits(params).then(() => {
                 this.assign({
@@ -105,9 +118,6 @@ export default DefineMap.extend('EditWidget', {
             isSaving: false,
             modalVisible: false
         });
-    },
-    setModal (element) {
-        this.modal = element;
     }
     
 });

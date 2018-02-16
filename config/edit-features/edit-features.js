@@ -6,10 +6,10 @@ import '../../components/edit-feature-widget/edit-feature-widget';
 import stache from 'can-stache';
 import './edit.less';
 import deleteFeature from '../../actions/deleteFeature';
-import openEditPopup from '../../actions/openEditPopup';
+import {dispatcher, createEditAction} from '../../actions/openEditPopup';
 
 const popupTemplate = {
-    actions: [deleteFeature, openEditPopup]
+    actions: [deleteFeature, createEditAction()]
 };
 
 export default {
@@ -63,8 +63,10 @@ export default {
     widgets: [{
         parent: document.body,
         type: 'renderer',
-        renderer: stache('<edit-attribute-dialog pubsubTopic="editGraphic" />'),
-        options: {}
+        renderer: stache(`
+            <edit-attribute-dialog dispatcher:from="dispatcher" />
+        `),
+        options: {dispatcher}
     }, {
         parent: 'view',
         position: 'top-right',

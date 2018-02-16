@@ -1,6 +1,7 @@
 import Component from 'can-component';
 import ViewModel from './ViewModel';
 import template from './template.stache';
+import 'can-3-4-compat/dom-mutation-events';
 
 // our required field components
 import 'spectre-canjs/sp-modal/sp-modal';

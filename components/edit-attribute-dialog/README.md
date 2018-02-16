@@ -13,8 +13,8 @@ Use the can-arcgis application:
 {
         parent: document.body,
         type: 'renderer',
-        renderer: stache('<edit-attribute-dialog pubsubTopic="editGraphic" />'),
-        options: {}
+        renderer: stache('<edit-attribute-dialog dispatcher:from="dispatcher"  />'),
+        options: {dispatcher}
     },
 ```
 
@@ -33,19 +33,22 @@ document.body.appendChild(render({
 }));
 ```
 
-Pubsub-js Usage (like from another widget):
+Event Usage (like from another widget):
 
 Render the component passing the topic name:
 ```html
-<edit-attribute-dialog pusubTopic="editGraphic" />
+<edit-attribute-dialog dispatcher:from="dispatcher" eventName:from="'editGraphic'" />
 ```
 
-Pass a graphic to the edit widget via pubsub-js.
+Pass a graphic to the edit widget via event.
 ```javascript
-import pubsub from 'pubsub-js';
+
+const dispatcher = new DefineMap();
 
 // other app code
 
 // pass a feature/graphic to the edit widget
-pubsub.publish('editGraphic', selectedFeature);
+dispatcher.dispatch('editGraphic', {
+    editGraphic: selectedFeature
+});
 ```
