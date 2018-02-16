@@ -106,7 +106,7 @@ export default {
      * @param {Array|Object} config.tokens Array of esri token objects or one individual token object
      * @returns {Object} the config
      */
-    preConfig (config) {
+    preConfig (config = {}) {
 
         // return a promise that loads the identity manager
         return loadModules(['esri/identity/IdentityManager']).then(([esriId]) => {

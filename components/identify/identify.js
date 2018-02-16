@@ -1,6 +1,5 @@
 import DefineMap from 'can-define/map/map';
 import mapImage from './util/identifyMapImage';
-import dev from 'can-util/js/dev/dev';
 import {loadModules} from 'esri-loader'; 
 // asynchronously load the geometry engine
 let geometryEngine;
@@ -11,15 +10,13 @@ loadModules(['esri/geometry/geometryEngine']).then((modules) => {
 export const IDENTIFY_METHODS = {
     'esri.layers.MapImageLayer': mapImage,
     'esri.layers.FeatureLayer': function (event, layer, scope) {
-        return new Promise((resolve) => {
-            scope.view.hitTest(event).then((hitTest) => {
+        return scope.view.hitTest(event).then((hitTest) => {
 
-                //return the result, filtering out any vector tile results
-                resolve(hitTest.results.filter((result) => {
-                    return result.graphic.layer.declaredClass !== 'esri.layers.VectorTileLayer';
-                }).map((result) => {
-                    return result.graphic;
-                }));
+            //return the result, filtering out any vector tile results
+            return hitTest.results.filter((result) => {
+                return result.graphic.layer && result.graphic.layer.declaredClass !== 'esri.layers.VectorTileLayer';
+            }).map((result) => {
+                return result.graphic;
             });
         });
     }
@@ -34,6 +31,7 @@ export const IDENTIFY_METHODS = {
 export default DefineMap.extend({
     clickHandle: '*',
     layerInfos: DefineMap,
+    timeout: {type: 'number', value: 2000},
     view: {
         type: '*',
         set (view) {
@@ -85,73 +83,82 @@ export default DefineMap.extend({
                         let isResolved = false;
                         IDENTIFY_METHODS[layer.declaredClass](event, layer, this).then((result) => {
                             if (isResolved) {
-                                dev.warn('identify: promise was already resolved');
+                                //!steal-remove-start
+                                //eslint-disable-next-line
+                                console.warn('identify: promise was already resolved');
+                                //!steal-remove-end
                             }
                             isResolved = true;
                             resolve(result);
+                        }).catch((e) => {
+                            //!steal-remove-start
+                            //eslint-disable-next-line
+                            console.warn('identify: promise returned an error!', e);
+                            //!steal-remove-end
+                            resolve([]);
                         });
 
                         setTimeout(() => {
                             if (isResolved) {
                                 return;
-                            }                            
-                            dev.warn('identify: promise timeout exceeded');
+                            }                          
+                            //!steal-remove-start
+                            //eslint-disable-next-line  
+                            console.warn('identify: promise timeout exceeded');
+                            //!steal-remove-end
                             resolve([]);
-                        }, 5000);
+                        }, this.timeout);
                     });
                 
 
                     promises.push(promise);
                 } else {
-                    dev.warn(`identify: no identify function registered for type ${layer.declaredClass}`);
+                    //!steal-remove-start
+                    //eslint-disable-next-line
+                    console.warn(`identify: no identify function registered for type ${layer.declaredClass}`);
+                    //!steal-remove-end
                 }
             });
 
         // after all promises resolve, update the popup
-        const identifyPromise = new Promise((resolve) => {
-            Promise.all(promises).then((data) => {
+        return Promise.all(promises).then((data) => {
 
             // reduce and sort to a plain array of features
-                const identifiedFeatures = data.reduce((a, b) => { 
-                    return a.concat(b); 
-                }, []);
+            const identifiedFeatures = data.reduce((a, b) => { 
+                return a.concat(b); 
+            }, []);
             
                 // sort according to distance from map click
-                identifiedFeatures.sort((a, b) => {
-                    const geoms = [a, b].map((f) => {
-                        return f.geometry.extent ? f.geometry.extent.center : f.geometry;
-                    });
-                    const distances = geoms.map((geom, index) => {
-                        return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
-                    });
-                        
-                    const ret = distances[0] - distances[1];//distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
-                        
-                    // if distance is a tie, sort so feature layers come first
-                    if (Math.round(ret * 100) / 100 === 0) {
-                        if (a.layer && a.layer.declaredClass === 'esri.layers.FeatureLayer') {
-                            return -1;
-                        }
-                        if (b.layer && b.layer.declaredClass === 'esri.layers.FeatureLayer') {
-                            return 1;
-                        }
-                    }
-                    return ret;
+            identifiedFeatures.sort((a, b) => {
+                const geoms = [a, b].map((f) => {
+                    return f.geometry.extent ? f.geometry.extent.center : f.geometry;
                 });
-
-                if (identifiedFeatures.length) { 
-                    this.view.popup.open({
-                        selectedFeatureIndex: 0,
-                        features: identifiedFeatures,
-                        updateLocationEnabled: true
-                    });
+                const distances = geoms.map((geom, index) => {
+                    return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
+                });
+                        
+                const ret = distances[0] - distances[1];//distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
+                        
+                // if distance is a tie, sort so feature layers come first
+                if (Math.round(ret * 100) / 100 === 0) {
+                    if (a.layer && a.layer.declaredClass === 'esri.layers.FeatureLayer') {
+                        return -1;
+                    }
+                    if (b.layer && b.layer.declaredClass === 'esri.layers.FeatureLayer') {
+                        return 1;
+                    }
                 }
-                resolve(identifiedFeatures);
+                return ret;
             });
+
+            if (identifiedFeatures.length) { 
+                this.view.popup.open({
+                    selectedFeatureIndex: 0,
+                    features: identifiedFeatures,
+                    updateLocationEnabled: true
+                });
+            }
+            return identifiedFeatures;
         });
-        // this.view.popup.open({
-        //     promises: [identifyPromise]
-        // })
-        return identifyPromise;
     }
 });

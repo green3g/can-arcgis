@@ -1,4 +1,3 @@
-import assign from 'can-util/js/assign/assign';
 import dev from 'can-util/js/dev/dev';
 
 function noop (selected, event) {
@@ -9,7 +8,7 @@ export default (function () {
     const _actionHandlers = {};
     return {
         register (handlers) {
-            assign(_actionHandlers, handlers);
+            Object.assign(_actionHandlers, handlers);
         },
         get (id) {
             return _actionHandlers[id] || noop;

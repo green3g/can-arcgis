@@ -1,6 +1,6 @@
 import {loadModules} from 'esri-loader';
 import assign from 'can-util/js/assign/assign';
-function constructWidget (WidgetClass, widgetConfig, options, callback, resolve) {
+function constructWidget (WidgetClass, widgetConfig, options) {
     
     const node = widgetConfig.node || document.createElement('div');
     
@@ -10,35 +10,29 @@ function constructWidget (WidgetClass, widgetConfig, options, callback, resolve)
     const widget = Object.assign({}, {
         component: component
     }, widgetConfig);
-
-    // call the appropriate addWidget function
-    callback(options.view, widget);
-            
-    resolve(widget);
+     
+    return widget;
 }
 
-export default function createEsriWidget (view, widgetConfig, callback) {
-    return new Promise((resolve) => {
+export default function createEsriWidget (view, widgetConfig) {
 
-        loadModules([widgetConfig.path]).then(([WidgetClass]) => {
+    return loadModules([widgetConfig.path]).then(([WidgetClass]) => {
 
-            // if optionsPromise, wait for options, then construct widget
-            if (widgetConfig.optionsPromise) {
-                widgetConfig.optionsPromise.then((options) => {
-                    options = assign(options, {
-                        view: view
-                    });
-                    constructWidget(WidgetClass, widgetConfig, options, callback, resolve);
+        // if optionsPromise, wait for options, then construct widget
+        if (widgetConfig.optionsPromise) {
+            return widgetConfig.optionsPromise.then((options) => {
+                options = assign(options, {
+                    view: view
                 });
-                return;
-            } 
-
-            // othherwisise construct the widget class
-            const options = assign((widgetConfig.options || {}), {
-                view: view
+                return constructWidget(WidgetClass, widgetConfig, options);
             });
-            constructWidget(WidgetClass, widgetConfig, options, callback, resolve);
+        } 
 
+        // othherwisise construct the widget class
+        const options = assign((widgetConfig.options || {}), {
+            view: view
         });
+        return constructWidget(WidgetClass, widgetConfig, options);
+
     });
 }

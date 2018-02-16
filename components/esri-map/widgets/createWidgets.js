@@ -79,12 +79,14 @@ export default function createWidgets (options) {
 
         // esri types need to be imported and created using esriPromise
         case 'esri':
-            promises.push(createEsriWidget(options.view, widgetConfig, addWidget));
+            promises.push(createEsriWidget(options.view, widgetConfig).then((widget) => {
+                addWidget(options.view, widget);
+            }));
             break;
         
         // renderers are a function that renders a stache template
         case 'renderer':
-            createRendererWidget(options.view, widgetConfig, addWidget);
+            addWidget(options.view, createRendererWidget(options.view, widgetConfig));
             break;
 
         // component is a ui component to add directly to the ui 

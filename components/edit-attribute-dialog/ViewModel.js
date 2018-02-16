@@ -2,7 +2,6 @@ import DefineMap from 'can-define/map/map';
 import DefineList from 'can-define/list/list';
 import convertEsriFields from 'can-arcgis/util/convertEsriFields';
 import decorateAccessor from 'can-arcgis/util/decorateAccessor';
-import dev from 'can-util/js/dev/dev';
 
 const editProps = {
     'update': 'updateFeatures',
@@ -97,9 +96,16 @@ export default DefineMap.extend('EditWidget', {
         const attributes = args[0].serialize();
         Object.assign(this.editGraphic.attributes, attributes);
         const propName = editProps[this.editMode];
+<<<<<<< HEAD
         const params = {
             [propName]: [this.editGraphic]
         };
+=======
+        const params = {};
+        params[propName] = [this.editGraphic];
+
+        // wrap esri's applyEdits with a a native then/catch promise
+>>>>>>> 64f5ad7b9ef6c6724058dae9304401c69305faa3
         return new Promise((resolve, reject) => {
             this.editLayer.applyEdits(params).then(() => {
                 this.assign({
@@ -108,7 +114,10 @@ export default DefineMap.extend('EditWidget', {
                 });
                 resolve();
             }).otherwise((response) => {
-                dev.warn(response);
+                //!steal-remove-start
+                //eslint-disable-next-line
+                console.warn(response);
+                //!steal-remove-end
                 reject(response);
             });
         });

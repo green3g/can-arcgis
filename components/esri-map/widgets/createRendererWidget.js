@@ -1,17 +1,16 @@
-import assign from 'can-util/js/assign/assign';
 import stache from 'can-stache';
 import DefineMap from 'can-define/map/map';
 import dev from 'can-util/js/dev/dev';
 
-export default function createRendererWidget (view, widgetConfig, callback) {
+export default function createRendererWidget (view, widgetConfig) {
 
-    const scope = new DefineMap(assign({
+    const scope = new DefineMap(Object.assign({
         view: view
     }, widgetConfig.options));
 
     if (!widgetConfig.renderer && !widgetConfig.template) { 
         dev.warn('renderer widget needs either a renderer function or a template property'); 
-        return;
+        return null;
     }
 
     const renderer = widgetConfig.renderer || stache(widgetConfig.template);
@@ -20,9 +19,9 @@ export default function createRendererWidget (view, widgetConfig, callback) {
     const node = document.createElement('div');
     node.appendChild(renderer(scope));
 
-    const widget = assign({
+    const widget = Object.assign({
         component: node
     }, widgetConfig);
 
-    callback(view, widget);
+    return widget;
 }

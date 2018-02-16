@@ -62,44 +62,42 @@ export default function createLayers (layers) {
 
         const path = layer.path ? layer.path : TYPES[layer.type] || 'esri/layers/UnknownLayer';
 
-        return new Promise((resolve) => {
-            loadModules([path]).then(([LayerClass]) => {
+        return loadModules([path]).then(([LayerClass]) => {
 
-                const layerOptions = Object.assign({}, layer.options, {
-                    outFields: ['*']
-                });
+            const layerOptions = Object.assign({}, layer.options, {
+                outFields: ['*']
+            });
 
                 // handle group layers
-                if (path === 'esri/layers/GroupLayer') {
-                    const groupPromise = createLayers(layerOptions.layers || []);
-                    groupPromise.then((newLayers) => {
-                        layerOptions.layers = newLayers.map((l) => {
-                            return l.layer; 
-                        });
-                        const l = new LayerClass(layerOptions);
-                        l.then((readyLayer) => {
-                            assignDefaultPopupTemplate(readyLayer);
-                        }).otherwise((error) => {
-                            dev.warn(`layer failed to initialize: ${l.id}`, error);
-                        });
-                        resolve({layer: l});
+            if (path === 'esri/layers/GroupLayer') {
+                const groupPromise = createLayers(layerOptions.layers || []);
+                return groupPromise.then((newLayers) => {
+                    layerOptions.layers = newLayers.map((l) => {
+                        return l.layer; 
                     });
-                
-                } else { 
                     const l = new LayerClass(layerOptions);
                     l.then((readyLayer) => {
-
-                        // default popup template for feature layers!
-                        if (path === 'esri/layers/FeatureLayer') { 
-                            assignDefaultPopupTemplate(readyLayer); 
-                        }
-                        
+                        assignDefaultPopupTemplate(readyLayer);
                     }).otherwise((error) => {
                         dev.warn(`layer failed to initialize: ${l.id}`, error);
                     });
-                    resolve({layer: l});
-                }
-            });
+                    return {layer: l};
+                });
+                
+            } else { 
+                const l = new LayerClass(layerOptions);
+                l.then((readyLayer) => {
+
+                    // default popup template for feature layers!
+                    if (path === 'esri/layers/FeatureLayer') { 
+                        assignDefaultPopupTemplate(readyLayer); 
+                    }
+                        
+                }).otherwise((error) => {
+                    dev.warn(`layer failed to initialize: ${l.id}`, error);
+                });
+                return {layer: l};
+            }
         });
     });
 
