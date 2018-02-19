@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/can-arcgis/Lobby](https://badges.gitter.im/can-arcgis/Lobby.svg)](https://gitter.im/can-arcgis/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-A configureable mapping app bundled with StealJS. Work in progress. Inspired by [cmv-app](https://github.com/cmv/cmv-app)
+A configureable mapping app bundled with StealJS. Designed for configurability, and modularity. A work in progress. Inspired by [cmv-app](https://github.com/cmv/cmv-app)
 
 ![screenshot](docs/images/zoom.gif)
 
@@ -19,8 +19,8 @@ I've worked with cmv, web app builder, and several other web map templates. Each
  - Configure multiple apps using a simple JSON like syntax 
  - Utilize existing Esri API widgets, layers, and map views
  - Easily compact, progressivly loaded bundles with `steal-tools`
- - Extend functionality by creating widgets or [hooks](#hooks) in 
-    ES6, commonjs format and `stache` (mustache like) templating language
+ - Add functionality by creating widgets built using CanJS Components and `stache` (mustache like) templating language
+ - Extend the application using builtin and custom [hooks](#hooks) in ES6 or commonjs format
 
 ## Demos 
  - [Basic example](https://roemhildtg.github.io/can-arcgis/index-prod.html#!viewer) | [viewer.js](./config/viewer/viewer.js)
