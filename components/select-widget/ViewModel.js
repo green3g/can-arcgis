@@ -117,11 +117,15 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     selectedQuery: {
         get () {
+            // reset form object
+            this.queryFormObject = new DefineMap();
+            
+            const q = this.query;
             const queries = this.queries.filter((query) => {
-                return query.value === this.query;
+                return query.value === q;
             });
             
-            return queries.length ? queries[0] : {};
+            return queries.length ? queries[0] : {fields: []};
         }
     },
     queryFormObject: {
@@ -202,8 +206,8 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
                 }
                 this.formIsSaving = false;
             }).otherwise((error) => {
-                // eslint-disable-next-line
-                console.log(error);
+                this.message = error.message;
+                this.formIsSaving = false;
             });
         });
     },
