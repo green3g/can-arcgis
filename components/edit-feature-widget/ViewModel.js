@@ -4,9 +4,9 @@ import DefineMap from 'can-define/map/map';
 import get from 'can-util/js/get/get';
 
 export default EditViewModel.extend('EditFeatureWidget', {
-    title: {type: 'string', value: 'Create Features'},
-    editMode: {type: 'string', value: 'add'},
-    layerInfos: {Value: DefineMap},
+    title: {type: 'string', default: 'Create Features'},
+    editMode: {type: 'string', default: 'add'},
+    layerInfos: {Default: DefineMap},
     view: {},
     layers: {
         get () {

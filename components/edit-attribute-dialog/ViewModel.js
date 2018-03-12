@@ -21,7 +21,7 @@ export default DefineMap.extend('EditWidget', {
         }
     },
     editLayer: {},
-    editMode: {value: 'update', type: 'string'},
+    editMode: {default: 'update', type: 'string'},
     editTitle: {
         get () {
             if (this.editGraphic) {
@@ -51,7 +51,7 @@ export default DefineMap.extend('EditWidget', {
             return [];
         }
     },
-    eventName: {value: 'edit'},
+    eventName: {default: 'edit'},
     dispatcher: {
         set (dispatcher) {
             
@@ -74,7 +74,7 @@ export default DefineMap.extend('EditWidget', {
     },
     modalVisible: {
         type: 'boolean',
-        value: false,
+        default: false,
         set (val) {
             this.resetScroll();
             return val;

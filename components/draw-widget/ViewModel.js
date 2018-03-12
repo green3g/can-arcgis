@@ -70,9 +70,9 @@ export default DefineMap.extend('DrawWidget', {
             return ['point', 'polyline', 'polygon'];
         }
     },
-    buttons: {value: buttons},
-    allowContinuous: {value: true, type: 'boolean'},
-    continueDraw: {value: false, type: 'boolean'},
+    buttons: {default: buttons},
+    allowContinuous: {default: true, type: 'boolean'},
+    continueDraw: {default: false, type: 'boolean'},
     view: {
         set (view) {
             if (this.graphicsLayer && this.view && this.view.map) {

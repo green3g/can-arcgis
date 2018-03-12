@@ -49,7 +49,7 @@ export default DefineMap.extend('App',
             Type: DefineList
         },
         configRoot: {
-            value: 'can-arcgis/config',
+            default: 'can-arcgis/config',
             serialize: false
         },
     
@@ -60,7 +60,7 @@ export default DefineMap.extend('App',
      * which loads the config file in 'config/viewer/viewer.js'
      */
         configName: {
-            value: 'viewer', 
+            default: 'viewer', 
             type: 'string'
         },
         /**

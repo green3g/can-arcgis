@@ -31,7 +31,7 @@ export const IDENTIFY_METHODS = {
 export default DefineMap.extend({
     clickHandle: '*',
     layerInfos: DefineMap,
-    timeout: {type: 'number', value: 2000},
+    timeout: {type: 'number', default: 2000},
     view: {
         type: '*',
         set (view) {

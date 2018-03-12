@@ -31,7 +31,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     title: {
         type: 'string',
-        value: 'Select Features'
+        default: 'Select Features'
     },
     // select layer dropdown
     layerOptions: {
@@ -49,7 +49,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         }
     },
     layerAlias: {
-        value: 'Layer to select'
+        default: 'Layer to select'
     },
     layerProperties: {
         get () {
@@ -95,7 +95,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     // select query dropdown
     query: {
         type: 'string',
-        value: 'spatial'
+        default: 'spatial'
     },
     queries: {
         get () {
@@ -129,7 +129,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
         }
     },
     queryFormObject: {
-        Value: DefineMap
+        Default: DefineMap
     },
     formIsSaving: 'boolean',
     drawGraphicsLayer: {},

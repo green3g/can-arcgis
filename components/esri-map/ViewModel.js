@@ -15,13 +15,13 @@ export default DefineMap.extend('EsriMap', {seal: false}, {
         set (val) {
             return serialize(val);
         },
-        value: {}
+        default: {}
     },
     viewOptions: {
         set (val) {
             return serialize(val);
         },
-        value: {}
+        default: {}
     },
     widgets: {},
     map: {},
