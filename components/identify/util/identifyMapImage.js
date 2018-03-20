@@ -3,7 +3,6 @@ import get from 'can-util/js/get/get';
 import assign from 'can-util/js/assign/assign';
 import {makeSentenceCase} from 'spectre-canjs/util/string/string';
 
-
 function assignPopupTemplate (data, popupTemplates, layer) {
 
     return data.results ? data.results.map((props) => {
@@ -41,8 +40,11 @@ export default function identify (event, layer, scope) {
         const include = get(scope.layerInfos, `${layer.id}.include`);
         const exclude = get(scope.layerInfos, `${layer.id}.exclude`);
 
-        // get an array of visible layer ids
+        // get an array of visible layer ids and build layerDefinitions
+        
+        const layerDefinitions = [];
         const layerIds = layer.sublayers.filter((l) => {
+            layerDefinitions[l.id] = l.definitionExpression;
 
             // exclude nonconfigured ids
             if (include && include.length && include.indexOf(l.id) === -1) {
@@ -61,7 +63,6 @@ export default function identify (event, layer, scope) {
         });
 
         const params = new IdentifyParameters({
-            layerIds: layerIds,
             layerOption: 'visible',
             returnGeometry: true,
             spatialReference: event.mapPoint.spatialReference,
@@ -69,7 +70,9 @@ export default function identify (event, layer, scope) {
             geometry: event.mapPoint,
             height: scope.view.height,
             width: scope.view.width,
-            mapExtent: scope.view.extent
+            mapExtent: scope.view.extent,
+            layerIds,
+            layerDefinitions
         });
 
         const task = new IdentifyTask({
