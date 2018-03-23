@@ -4,7 +4,7 @@
   "description": "A configureable mapping app built with canjs",
   "main": "index.js",
   "scripts": {
-    "start": "live-server --no-browser",
+    "start": "http-server -c-1",
     "build": "node build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postpublish": "git push && git push --tags"
@@ -14,31 +14,30 @@
   "dependencies": {
     "arcgis-js-api": "^4.6.1",
     "can-3-4-compat": "^1.0.0",
-    "can-component": "^4.0.4",
-    "can-define": "^2.0.1",
-    "can-observation": "^4.0.0",
-    "can-queues": "^1.0.0",
-    "can-reflect": "^1.13.2",
-    "can-route": "^4.0.1",
-    "can-stache": "^4.1.2",
-    "esri-loader": "^2.0.0",
-    "flatpickr": "^4.2.4",
+    "can-component": "^4.0.6",
+    "can-define": "^2.0.3",
+    "can-observation": "^4.0.1",
+    "can-queues": "^1.0.1",
+    "can-reflect": "^1.13.3",
+    "can-route": "^4.1.1",
+    "can-stache": "^4.2.5",
+    "esri-loader": "^2.2.0",
+    "flatpickr": "^4.3.2",
     "lodash.debounce": "^4.0.8",
-    "pubsub-js": "^1.5.7",
-    "spectre-canjs": "^2.1.3",
-    "spectre.css": "^0.5.0",
-    "steal": "^1.6.4",
-    "sweetalert2": "^7.11.0"
+    "spectre-canjs": "^2.2.1",
+    "spectre.css": "^0.5.1",
+    "steal": "^1.11.0",
+    "sweetalert2": "^7.17.0"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.3",
-    "can-debug": "^1.0.0",
-    "eslint": "^4.6.1",
-    "nodemon": "^1.14.3",
+    "babel-eslint": "^8.2.2",
+    "can-debug": "^1.0.1",
+    "eslint": "^4.19.1",
+    "nodemon": "^1.17.2",
     "steal-css": "^1.3.2",
-    "steal-less": "^1.2.2",
-    "steal-stache": "^4.0.1",
-    "steal-tools": "^1.11.3"
+    "steal-less": "^1.3.0",
+    "steal-stache": "^4.1.0",
+    "steal-tools": "^1.11.7"
   },
   "steal": {
     "plugins": [
