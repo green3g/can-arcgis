@@ -121,7 +121,7 @@ export default DefineMap.extend({
             });
 
         // after all promises resolve, update the popup
-        return Promise.all(promises).then((data) => {
+        const promise = Promise.all(promises).then((data) => {
 
             // reduce and sort to a plain array of features
             const identifiedFeatures = data.reduce((a, b) => { 
@@ -157,8 +157,21 @@ export default DefineMap.extend({
                     features: identifiedFeatures,
                     updateLocationEnabled: true
                 });
+            } else {
+                this.view.popup.open({
+                    content: 'No feature found',
+                    location: event.mapPoint
+                });
             }
             return identifiedFeatures;
+        });
+
+        this.view.popup.open({
+            title: 'Identifying',
+            content: 'Loading...',
+            location: event.mapPoint,
+            promises: [promise],
+            updateLocationEnaled: true
         });
     }
 });
