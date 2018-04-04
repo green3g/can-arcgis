@@ -1,7 +1,8 @@
 import DefineMap from 'can-define/map/map';
-import {graphics, buttons} from './defaults';
+import {buttons} from './defaults';
 import decorate from 'can-arcgis/util/decorateAccessor';
 import {loadModules} from 'esri-loader';
+import assignGraphics, {symbols} from '~/util/assignGraphics';
 
 export default DefineMap.extend('DrawWidget', {
     sketch: {
@@ -13,7 +14,10 @@ export default DefineMap.extend('DrawWidget', {
 
             if (sketch) { 
                 this.sketchHandle = sketch.on('draw-complete', (evt) => {
-                    this.graphicsLayer.add(evt.graphic);
+                    const g = assignGraphics([{
+                        geometry: evt.geometry
+                    }]);
+                    this.graphicsLayer.add(g[0]);
                     if (this.continueDraw) {
                         setTimeout(() => {
                             sketch.create(this.active);
@@ -100,9 +104,9 @@ export default DefineMap.extend('DrawWidget', {
                     // create a sketch view model
                     const sketch = new SketchViewModel({
                         view: view,
-                        pointSymbol: graphics.pointSymbol,
-                        polylineSymbol: graphics.polylineSymbol,
-                        polygonSymbol: graphics.polygonSymbol
+                        pointSymbol: symbols.point,
+                        polylineSymbol: symbols.polyline,
+                        polygonSymbol: symbols.polygon
                     });
                     this.sketch = sketch;
                 });

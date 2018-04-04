@@ -214,11 +214,10 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     highlightFeatures (features) {
         
         if (features.length) {
-            assignGraphics(features).then((updatedFeatures) => {
-                this.drawGraphicsLayer.removeAll();
-                this.selectGraphicsLayer.addMany(updatedFeatures);
-                this.view.goTo(updatedFeatures);
-            });
+            assignGraphics(features);
+            this.drawGraphicsLayer.removeAll();
+            this.selectGraphicsLayer.addMany(features);
+            this.view.goTo(features);
         }
                         
     },
