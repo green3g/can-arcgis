@@ -9,7 +9,14 @@ export default DefineMap.extend('DrawWidget', {
         type: '*',
         set (sketch) {
             if (this.sketch) {
-                this.sketch.destroy();
+                try {
+                    this.sketch.destroy();
+                } catch (e) {
+                    //!steal-remove-start
+                    //eslint-disable-next-line
+                    console.warn(e);
+                    //!steal-remove-end
+                }
             }
 
             if (sketch) { 
