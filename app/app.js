@@ -13,7 +13,7 @@ import hooks from './hooks';
 
 import {loadScript} from 'esri-loader';
 loadScript({
-    url: 'https://js.arcgis.com/4.6/'
+    url: 'https://js.arcgis.com/4.7/'
 });
 
 // init dojo config
