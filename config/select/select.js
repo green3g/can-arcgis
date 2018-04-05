@@ -39,12 +39,12 @@ export default {
     },
     widgets: [{
         parent: 'expand',
-        iconClass: 'esri-icon-search',
         type: 'renderer',
         renderer: stache(`<select-widget 
             layers:from="layers"
             view:from="view"
             actions:from="actions" />`),
+        parentOptions: {expanded: true, expandIconClass: 'esri-icon-search', expandTooltip: 'Expand/collapse search widget'},
         options: {
             layers: {
                 'Resteraunts': {
@@ -86,9 +86,9 @@ export default {
                 onClick (graphics) {
                     swal({
                         title: 'Features',
-                        html: graphics.map((graphic) => {
-                            return `<li>${graphic.attributes.EstablishmentName}</li>`;
-                        }).join('')
+                        html: '<ul class="menu">' + graphics.map((graphic) => {
+                            return `<li class="menu-item">${graphic.attributes.EstablishmentName || 'Unknown'}</li>`;
+                        }).join('') + '</ul>'
                     });
                 }
             }]

@@ -3,21 +3,21 @@ export const symbols = {
         type: 'simple-marker', // autocasts as new SimpleMarkerSymbol()
         style: 'round',
         color: '#8A2BE2',
-        size: '16px',
+        size: '10px',
         outline: { // autocasts as new SimpleLineSymbol()
             color: [255, 255, 255],
-            width: 3 // points
+            width: 1 // points
         }
     },
     polyline: { // symbol used for polylines
         type: 'simple-line', // autocasts as new SimpleMarkerSymbol()
         color: '#8A2BE2',
-        width: '4',
-        style: 'dash'
+        width: '2',
+        style: 'solid'
     },
     polygon: { // symbol used for polygons
         type: 'simple-fill', // autocasts as new SimpleMarkerSymbol()
-        color: 'rgba(138,43,226, 0.8)',
+        color: 'rgba(138,43,226, 0.2)',
         style: 'solid',
         outline: {
             color: 'white',
