@@ -1,7 +1,9 @@
-import dev from 'can-util/js/dev/dev';
 
 function noop (selected, event) {
-    dev.warn(`No handler registered for popup template action ${event.action.id}`);
+    //!steal-remove-start
+    //eslint-disable-next-line
+    console.warn(`No handler registered for popup template action ${event.action.id}`);
+    //!steal-remove-end
 }
 
 export default (function () {

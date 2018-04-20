@@ -1,11 +1,6 @@
 import DefineMap from 'can-define/map/map';
 import mapImage from './util/identifyMapImage';
 import {loadModules} from 'esri-loader'; 
-// asynchronously load the geometry engine
-let geometryEngine;
-loadModules(['esri/geometry/geometryEngine']).then((modules) => {
-    [geometryEngine] = modules;
-});
 
 export const IDENTIFY_METHODS = {
     'esri.layers.MapImageLayer': mapImage,
@@ -122,33 +117,45 @@ export default DefineMap.extend({
 
         // after all promises resolve, update the popup
         const promise = Promise.all(promises).then((data) => {
+            
+            return loadModules(['esri/geometry/geometryEngine']).then(([geometryEngine]) => {
 
             // reduce and sort to a plain array of features
-            const identifiedFeatures = data.reduce((a, b) => { 
-                return a.concat(b); 
-            }, []);
+                const identifiedFeatures = data.reduce((a, b) => { 
+                    return a.concat(b); 
+                }, []);
             
                 // sort according to distance from map click
-            identifiedFeatures.sort((a, b) => {
-                const geoms = [a, b].map((f) => {
-                    return f.geometry.extent ? f.geometry.extent.center : f.geometry;
-                });
-                const distances = geoms.map((geom, index) => {
-                    return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
-                });
+                identifiedFeatures.sort((a, b) => {
+                    const geoms = [a, b].map((f) => {
+                        return f.geometry.extent ? f.geometry.extent.center : f.geometry;
+                    });
+                    const distances = geoms.map((geom, index) => {
+                        return geometryEngine.distance(event.mapPoint, geoms[index], 'feet');
+                    });
                         
-                const ret = distances[0] - distances[1];//distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
+                    const ret = distances[0] - distances[1];//distances[0] < distances[1] ? -1 : distances[0] > distances[1] ? 1 : 0;
                         
-                // if distance is a tie, sort so feature layers come first
-                if (Math.round(ret * 100) / 100 === 0) {
-                    if (a.layer && a.layer.declaredClass === 'esri.layers.FeatureLayer') {
-                        return -1;
+                    // if distance is a tie, sort so feature layers come first
+                    if (Math.round(ret * 100) / 100 === 0) {
+                        if (a.layer && a.layer.declaredClass === 'esri.layers.FeatureLayer') {
+                            return -1;
+                        }
+                        if (b.layer && b.layer.declaredClass === 'esri.layers.FeatureLayer') {
+                            return 1;
+                        }
                     }
-                    if (b.layer && b.layer.declaredClass === 'esri.layers.FeatureLayer') {
-                        return 1;
-                    }
+                    return ret;
+                });
+
+                if (identifiedFeatures.length) { 
+                    this.view.popup.open({
+                        selectedFeatureIndex: 0,
+                        features: identifiedFeatures,
+                        updateLocationEnabled: true
+                    });
                 }
-                return ret;
+                return identifiedFeatures;
             });
 
             if (identifiedFeatures.length) { 
@@ -159,7 +166,7 @@ export default DefineMap.extend({
                 });
             } else {
                 this.view.popup.open({
-                    content: 'No feature found',
+                    content: 'No features found',
                     location: event.mapPoint
                 });
             }

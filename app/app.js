@@ -11,6 +11,7 @@ import route from 'can-route';
 
 import hooks from './hooks';
 
+// preload the esri api
 import {loadScript} from 'esri-loader';
 loadScript({
     url: 'https://js.arcgis.com/4.7/'
@@ -43,9 +44,7 @@ export default DefineMap.extend('App',
          */
         hooks: {
             serialize: false,
-            get () {
-                return hooks;
-            },
+            default: hooks,
             Type: DefineList
         },
         configRoot: {
