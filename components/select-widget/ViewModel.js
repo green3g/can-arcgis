@@ -86,7 +86,7 @@ export default DefineMap.extend('SelectWidget', {seal: false}, {
     },
     selectedLayer: {
         get () {
-            return this.layers[this.layer] || 'custom';
+            return this.layers[this.layer];
         }
     },
 

@@ -33,7 +33,6 @@ export default function createEsriWidget (view, widgetConfig) {
         }
 
         return Promise.resolve(resolver).then((options) => {
-            debugger;
             // othherwise construct the widget class
             options = Object.assign({}, (options || {}), {
                 view: view
