@@ -193,8 +193,8 @@ export default {
     type: 'esri',
     position: 'top-left',
     iconClass: 'esri-icon-basemap',
-    optionsPromise: new Promise((resolve) => {
-        loadModules([
+    getOptions(){
+        return loadModules([
             'esri/Basemap', 
             'esri/layers/TileLayer',
             'esri/layers/MapImageLayer'
@@ -209,11 +209,11 @@ export default {
                     url: `${url}/basemaps/gray_labels/MapServer`
                 })]
             });
-            resolve({
+            return {
                 nextBasemap: base
-            });
+            };
         });
-    })
+    }
 },
 }
 ```

@@ -1,6 +1,7 @@
 
 
-// showing how to use esri-loader
+// showing how to use esri-loader with `getOptions`
+
 import {loadModules} from 'esri-loader';
 import thumbnailUrl from './thumbnail';
 export default {
@@ -18,7 +19,8 @@ export default {
         parent: 'view',
         position: 'top-right',
         path: 'esri/widgets/BasemapToggle',
-        optionsPromise: loadModules(['esri/Basemap', 'esri/layers/WebTileLayer'])
+        getOptions(){
+            return loadModules(['esri/Basemap', 'esri/layers/WebTileLayer'])
             .then(([BaseMap, WebTileLayer]) => {
                 return {
                     titleVisible: true,
@@ -37,5 +39,6 @@ export default {
                     })
                 };
             })
+        }
     }]
 };

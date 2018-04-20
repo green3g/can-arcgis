@@ -1,5 +1,4 @@
 import {loadModules} from 'esri-loader';
-import assign from 'can-util/js/assign/assign';
 function constructWidget (WidgetClass, widgetConfig, options) {
     
     const node = widgetConfig.node || document.createElement('div');
@@ -18,21 +17,29 @@ export default function createEsriWidget (view, widgetConfig) {
 
     return loadModules([widgetConfig.path]).then(([WidgetClass]) => {
 
-        // if optionsPromise, wait for options, then construct widget
-        if (widgetConfig.optionsPromise) {
-            return widgetConfig.optionsPromise.then((options) => {
-                options = assign(options, {
-                    view: view
-                });
-                return constructWidget(WidgetClass, widgetConfig, options);
-            });
-        } 
+        let resolver;
 
-        // othherwisise construct the widget class
-        const options = assign((widgetConfig.options || {}), {
-            view: view
+        // if optionsPromise, wait for options, then construct widget - DEPRECATED
+        if (widgetConfig.optionsPromise) {
+            //!steal-remove-start
+            //eslint-disable-next-line
+            console.warn('createEsriWidget:optionsPromise is deprecated, use getOptions function and return a promise instead');
+            //!steal-remove-end
+            resolver = widgetConfig.optionsPromise;
+        } else if (typeof widgetConfig.getOptions === 'function') {
+            resolver = widgetConfig.getOptions();
+        } else {
+            resolver = widgetConfig.options;
+        }
+
+        return Promise.resolve(resolver).then((options) => {
+            debugger;
+            // othherwise construct the widget class
+            options = Object.assign({}, (options || {}), {
+                view: view
+            });
+            return constructWidget(WidgetClass, widgetConfig, options);
         });
-        return constructWidget(WidgetClass, widgetConfig, options);
 
     });
 }
