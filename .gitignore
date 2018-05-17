@@ -13,3 +13,6 @@ docs/
 *.log
 
 .vscode/
+
+dev-bundle.css
+dev-bundle.js
