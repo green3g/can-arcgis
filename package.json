@@ -6,8 +6,8 @@
   "scripts": {
     "start": "http-server -c-1",
     "build": "node build",
-    "postpublish": "git push && git push --tags",
-    "postinstall": "steal-tools bundle --dev"
+    "devbundle": "steal-tools bundle --dev",
+    "postpublish": "git push && git push --tags"
   },
   "author": "",
   "license": "ISC",
