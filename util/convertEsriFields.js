@@ -70,6 +70,7 @@ export default function convertEsriFields (esriFields) {
     }).map((f) => {
         const mixin = getMixin(f);
         return Object.assign({
+            classes: 'field-' + f.name,
             name: f.name,
             alias: f.alias,
             editTag: 'sp-text-field',
