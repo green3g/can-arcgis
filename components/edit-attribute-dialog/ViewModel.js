@@ -125,6 +125,7 @@ export default DefineMap.extend('EditWidget', {
                     isSaving: false,
                     modalVisible: false
                 });
+                this.dispatcher.dispatch('edit-complete', [this.editGraphic]);
                 resolve();
             }).otherwise((response) => {
                 //!steal-remove-start
