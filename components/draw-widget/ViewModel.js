@@ -20,7 +20,7 @@ export default DefineMap.extend('DrawWidget', {
       }
 
       if (sketch) {
-        this.sketchHandle = sketch.on('draw-complete', (evt) => {
+        this.sketchHandle = sketch.on('create-complete', (evt) => {
           const g = assignGraphics([{
             geometry: evt.geometry
           }]);
@@ -63,6 +63,7 @@ export default DefineMap.extend('DrawWidget', {
       }
 
       this.viewHandle = this.view.on('click', (evt) => {
+        debugger;
         evt.stopPropagation();
       });
       this.sketch.create(type);

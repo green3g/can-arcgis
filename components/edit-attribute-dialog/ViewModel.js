@@ -51,27 +51,6 @@ export default DefineMap.extend('EditWidget', {
             return [];
         }
     },
-    eventName: {default: 'edit'},
-    dispatcher: {
-        set (dispatcher) {
-            
-            // unregister handler
-            if (this.dispatcher) {
-                this.dispatcher.off(this.eventName, this.handler);
-            }
-
-            // add new handler 
-            if (dispatcher) { 
-                dispatcher.on(this.eventName, this.handler);
-            } 
-            return dispatcher;
-        }
-    },
-    handler: {
-        get () {
-            return this.openDialog.bind(this);
-        }
-    },
     modalVisible: {
         type: 'boolean',
         default: false,
@@ -86,7 +65,7 @@ export default DefineMap.extend('EditWidget', {
      * @param {String} event event dispatched from the dispatcher
      * @param {Object} args the attributes to assign to the view model
      */
-    openDialog (event, args) {
+    openDialog (args) {
         this.modalVisible = true;
         this.assign(args);
     },
@@ -106,34 +85,29 @@ export default DefineMap.extend('EditWidget', {
         };
 
         // wrap esri's applyEdits with a a native then/catch promise
-        return new Promise((resolve, reject) => {
-            this.editLayer.applyEdits(params).then((result) => {
-                const resultProps = Object.keys(result);
-                resultProps.forEach((resultProp) => {
-                    result[resultProp].forEach((feature) => {
-                        if (feature.error && feature.error.message) {
-                            this.error = feature.error.message;
-                        }
-                    });
+        return Promise.resolve(this.editLayer.applyEdits(params)).then((result) => {
+            const resultProps = Object.keys(result);
+            resultProps.forEach((resultProp) => {
+                result[resultProp].forEach((feature) => {
+                    if (feature.error && feature.error.message) {
+                        this.error = feature.error.message;
+                    }
                 });
-                if (this.error) {
-                    this.isSaving = false;
-                    reject(this.error);
-                    return;
-                }
+            });
+            if (this.error) {
+                this.isSaving = false;
+                throw new Error(this.error);
+            } else {
                 this.assign({
                     isSaving: false,
                     modalVisible: false
                 });
-                this.dispatcher.dispatch('edit-complete', [this.editGraphic]);
-                resolve();
-            }).otherwise((response) => {
-                //!steal-remove-start
-                //eslint-disable-next-line
-                console.warn(response);
-                //!steal-remove-end
-                reject(response);
-            });
+            }
+        }).catch((e) => {
+            //!steal-remove-start
+            //eslint-disable-next-line
+            console.warn(e);
+            //!steal-remove-end
         });
     },
     cancelForm () {

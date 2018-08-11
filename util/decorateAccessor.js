@@ -1,5 +1,5 @@
 import canSymbol from 'can-symbol';
-import observation from 'can-observation';
+import observation from 'can-observation-recorder';
 import isContainer from 'can-util/js/is-container/is-container';
 import queues from 'can-queues';
 
