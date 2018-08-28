@@ -1,3 +1,5 @@
+{{#if(modulePromise.isResolved)}}
+
 <div class="btn-group mt-2">                        
     {{#each(geometries, type=value)}}
         {{#with(button=../buttons[type])}}
@@ -17,4 +19,9 @@
             <i class="form-icon"></i> Enable continuous drawing
         </label>
     </div>
+{{/if}}
+
+{{else}}
+
+<div class="loading loading-lg"></div>
 {{/if}}

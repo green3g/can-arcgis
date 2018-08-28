@@ -13,10 +13,12 @@ import 'can-debug';
 import hooks from './hooks';
 
 // preload the esri api
-import {loadScript} from 'esri-loader';
+import {loadScript, loadModules} from 'esri-loader';
 
 // init dojo config
 import '../config/dojoConfig';
+import decorate from '../util/decorateAccessor';
+
 loadScript({
   url: 'https://js.arcgis.com/4.8/'
 });
@@ -73,7 +75,15 @@ export default DefineMap.extend('App',
       get () {
         const configName = this.configName;
         return steal.import(`${this.configRoot}/${configName}/${configName}`).then((module) => {
-          return this.callHooks('preConfig', module.default);
+          return loadModules([
+            'esri/core/Accessor',
+            'esri/layers/Layer'
+          ]).then(([Accessor, Layer]) => {
+            decorate(Accessor.prototype);
+            decorate(Layer.prototype);
+          }).then(() => {
+            return this.callHooks('preConfig', module.default);
+          });
         });
       }
     },
